@@ -25,7 +25,7 @@ function ignoreDevice(topic, payload)
     # test if is in list of devices to be ignored:
     #
     if Snips.matchConfig(:not_handled, device)
-        Snips.publishEndSession("$(TEXTS[:unhandled_device]) $device")
+        Snips.publishEndSession("$(TEXTS[:not_handled]) $device")
         return true     # no hotword needed for next command
     else
         return false    # hotword needed for next command

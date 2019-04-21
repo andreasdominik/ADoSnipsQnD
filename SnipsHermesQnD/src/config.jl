@@ -59,7 +59,7 @@ function matchConfig(name::Symbol, val::String)
     global CONFIG_INI
 
     if haskey(CONFIG_INI, name)
-        if CONFIG_INI[name] isa AbstactString
+        if CONFIG_INI[name] isa AbstractString
             return val == CONFIG_INI[name]
 
         elseif CONFIG_INI[name] isa AbstractArray
