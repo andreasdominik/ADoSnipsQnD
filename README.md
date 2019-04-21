@@ -18,8 +18,9 @@ For the moment, only German and English are supported.
 
 # Julia
 
-This skill is (like the SnipsHermesQnD framework) written in the
+This skill is (like the entire SnipsHermesQnD framework) written in the
 modern programming language Julia (because Julia is 50-100 times faster
 then Python and coding is much much easier and much more straight forward).
-However "Pythonians" often need some time to get familiar with Julia
-because there are types and many functional elements.
+However "Pythonians" often need some time to get familiar with Julia.
+
+If you are ready for the step   forward, start here:  https://julialang.org/
