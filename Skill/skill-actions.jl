@@ -18,15 +18,17 @@ function ignoreDevice(topic, payload)
 """
 function ignoreDevice(topic, payload)
 
+    println("Action ADoSnipsOnOff:ignoreDevice() started")
     # find the device in payload:
     #
     device = Snips.extractSlotValue(payload, SLOT_DEVICE)
-
+    #println(device)
     # test if is in list of devices to be ignored:
     #
     if Snips.matchConfig(:not_handled, device)
+        #println("matched")
         Snips.publishEndSession("$(TEXTS[:not_handled]) $device")
-        return true     # no hotword needed for next command
+        return false     # no hotword needed for next command
     else
         return false    # hotword needed for next command
     end
