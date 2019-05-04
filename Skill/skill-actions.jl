@@ -25,7 +25,12 @@ function ignoreDevice(topic, payload)
     #println(device)
     # test if is in list of devices to be ignored:
     #
-    if Snips.matchConfig(:not_handled, device)
+    if !(device isa AbstractString)
+        println("- ADoSnipsOnOff: No device: ignored and session ended.")
+        Snips.publishEndSession("$(TEXTS[:not_handled])")
+        return false     # no hotword needed for next command
+
+    elseif Snips.matchConfig(:not_handled, device)
         println("- ADoSnipsOnOff: device $device ignored and session ended.")
         Snips.publishEndSession("$(TEXTS[:not_handled]) $device")
         return false     # no hotword needed for next command
