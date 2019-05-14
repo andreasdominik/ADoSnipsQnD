@@ -14,7 +14,8 @@ TEXTS = TEXTS_DE
 #
 CONTINUE_WO_HOTWORD = true
 DEVELOPER_NAME = "andreasdominik"
-Snips.setLanguage(LANG)
+lang = Snips.getConfig(:language)
+const LANG = (lang != nothing) ? lang : "de"
 
 
 # Slots:
@@ -31,12 +32,6 @@ INI_NAME = "not_handled"
 
 #
 # link between actions and intents:
-# intent is linked to action{Funktion}
-# the action is only matched, if
-#   * intentname matches and
-#   * if the siteId matches, if site is  defined in config.ini
-#     (such as: "switch TV in room abc").
 #
-INTENT_ACTIONS = Dict{String, Function}()
-INTENT_ACTIONS["ADoSnipsOnOffDE"] = ignoreDevice
-# INTENT_ACTIONS["BrewCoffee"] = brewCoffee
+Snips.registerIntentAction("ADoSnipsOnOffDE", DEVELOPER_NAME,
+                            @__MODULE__, templateAction)
