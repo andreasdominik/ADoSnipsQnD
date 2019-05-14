@@ -17,7 +17,7 @@ function mainCallback(topic, payload)
 
     # get list of matched intents:
     #
-    matchedIntents = filter(INTENT_ACTIONS) do i
+    matchedIntents = filter(Main.INTENT_ACTIONS) do i
                         i[1] == intent && i[2] == developer
                     end
 
