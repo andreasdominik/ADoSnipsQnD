@@ -9,7 +9,7 @@ using Main.SnipsHermesQnD
 makedocs(#modules=[SOM],
          clean = false,
          #assets = ["assets/favicon.ico"],
-         sitename = "ADoSnipsTemplate",
+         sitename = "ADoSnipsQnD",
          authors = "Andreas Dominik",
          pages = [
                   "Introduction" => "index.md",

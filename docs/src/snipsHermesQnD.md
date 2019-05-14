@@ -70,22 +70,16 @@ run-time-compiled only once, with consequences:
 
 ## Installation
 
-The framework SnipsHermesQnD is currently not distributed as an
-individual package, because it is work-in-progress and will change
-continuously.
-In order to be sure, that existing skills/apps are not effected by
-changes of the framework, every skill brings its own version
-of SnipsHermesQnD with it.
-
-At some point in the future (when the framework is in a released state)
-this might change. But still existing skills will work.
-
-
 ### Installation of the framework
 
-The framework needs not to be installed, because it is distributed
-with each skill (see above).
-However `Eclipse modquitto` must be installed. On a Raspberry Pi the packages
+The framework is installed, by adding the app `ADoSnipsHermesQnD` to an
+Snips assistant. This will install the library and general `SwitchOnOff` intent.
+
+It is a good idea to install the template skill in addition. The skill
+fully functional and can be used to explore the framework.
+
+MQTT communication is performed via the `Eclipse modquitto`,
+therefore this must be installed. On a Raspberry Pi the packages
 `mosquitto` and `mosquitto-clients` are needed:
 
 ```sh
@@ -390,3 +384,22 @@ to the default if no definition is found.
 The latter part selects the intents and texts to be used.
 A dictionary of texts is necessary for each language and a dictionary of intents
 is necessary for each language.
+
+
+
+### Managing the Julia footprint
+
+The language Julia has a much bigger footprint as Python, consuming
+between 50-200 MB per Julia instance. In consequence it is not possible
+to run many Julia skills as separate processes, like it is possible
+with Python programs.
+
+To work around this issue, all skills within this framework are
+running in the same Julia progress. This reduces the footprint as well as the
+compile times (because the libraries must be compiled only once).
+
+It is still possible to add skills in the Snips console
+like all other skills.
+Theonly difference is, that the `action-...` executable of a skill
+is replaced by a `loader-...` script, which is recognised by the
+framework and loaded.
