@@ -28,6 +28,15 @@ publishSay
 ```
 
 
+## Functions to handle intents
+
+```@docs
+registerIntentAction
+getIntentActions
+```
+
+
+
 ## config.ini functions
 
 Helper functions for read values from the file `config.ini`.

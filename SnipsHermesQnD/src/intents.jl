@@ -1,7 +1,16 @@
 """
-    function registerIntentAction(intent, developer, inModule, action)
+    registerIntentAction(intent, developer, inModule, action)
 
-Add an intent to the list of intents to be listened.
+Add an intent to the list of intents to be subscribed to.
+Each function that shall be executed if Snips recognises
+an intent must be registered with this function.
+The framework will collect all these links, subscribe to all
+needed intents and execute the respectve functions.
+The links nieed not to be unique (in both directions):
+It is possible to assign several functions to one intent
+(all of them will be executed), or to assing one function to
+more then one intent.
+
 
 ## Arguments:
 - intent: Name of the intend (without developer name)
@@ -17,15 +26,11 @@ end
 
 
 """
-    function get IntentActions()
+    getIntentActions()
 
 Return the list of all intent-function mappings for this app.
 The function is exported to deliver the mappings
 to the Main context.
-
-# Arguments:
-- list: optional keyword arg: List which should be delivered.
-        default: SKILL_INTENT_ACTIONS
 """
 function getIntentActions()
 
