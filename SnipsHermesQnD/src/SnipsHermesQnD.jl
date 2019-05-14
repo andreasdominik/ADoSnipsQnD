@@ -13,6 +13,7 @@ include("config.jl")
 include("dates.jl")
 include("gpio.jl")
 include("languages.jl")
+include("callback.jl")
 
 CONFIG_INI = Dict{Symbol, Any}()
 CURRENT_SITE_ID = "default"
@@ -27,7 +28,7 @@ setLanguage(LANG)
 
 # List of intents to listen to:
 #
-SKILL_INTENT_ACTIONS = Tuple{AbstractString,Function}[]
+SKILL_INTENT_ACTIONS = Tuple{AbstractString, AbstractString, Module, Function}[]
 
 export subscribeMQTT, readOneMQTT, publishMQTT,
        subscribe2Intents, listenIntentsOneTime,

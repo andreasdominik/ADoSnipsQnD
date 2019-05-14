@@ -22,30 +22,28 @@ include("$FRAMEWORK_DIR/SnipsHermesQnD/src/SnipsHermesQnD.jl")
 INTENT_ACTIONS = Tuple{AbstractString, AbstractString, Module, Function}[]
 
 
-function main()
+# search all dir-tree for files like loader-<name>.jl
+#
+loaders = AbstractString[]
+for (root, dirs, files) in walkdir(SKILLS_DIR)
 
-    # search all dir-tree for files like loader-<name>.jl
-    #
-    for (root, dirs, files) in walkdir(SKILLS_DIR)
-
-        loaders = filter(files) do f
-                      occursin(r"^loader-.*\.jl", f)
-                  end
-        loaders = root .* "/" .* loaders
-
-        for loader in loaders
-            global INTENT_ACTIONS
-            println("[ADoSnipsQnD] loading Julia app $loader")
-            include(loader)
-        end
-    end
-
-    # start listening to MQTT with main callback
-    #
-    import Main.SnipsHermesQnD
-
-    intents = [i[2]*":"*i[1] for i in INTENT_ACTIONS]
-    SnipsHermesQnD.subscribe2Intents(intents, SnipsHermesQnD.mainCallback)
+    files = filter(f->occursin(r"^loader-.*\.jl", f), files) 
+    paths = root .* "/" .* files
+    append!(loaders, paths)
 end
 
-main()
+println("[ADoSnipsQnD]: $(length(loaders)) skills found to load.")
+
+for loader in loaders
+    global INTENT_ACTIONS
+    println("[ADoSnipsQnD]: loading Julia app $loader.")
+    include(loader)
+end
+
+# start listening to MQTT with main callback
+#
+import Main.SnipsHermesQnD
+
+intents = [i[2]*":"*i[1] for i in INTENT_ACTIONS]
+SnipsHermesQnD.subscribe2Intents(intents, SnipsHermesQnD.mainCallback)
+end
