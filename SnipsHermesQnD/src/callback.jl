@@ -12,7 +12,7 @@ function mainCallback(topic, payload)
     #         ************************************************""")
 
     fullIntent = payload[:intent][:intentName]
-    (developer, intent) = split(intent, ":")
+    (developer, intent) = split(fullIntent, ":")
     println("[QnD framework] Intent $fullIntent recognised")
 
     # get list of matched intents:
