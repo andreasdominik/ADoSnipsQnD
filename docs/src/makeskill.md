@@ -1,5 +1,11 @@
 # How to write a new skill
 
+** This section is NOT up-to-date**
+Starting with a new skill is now down with a shell scrit which takes care
+od all.
+Please be patient and wait some days, until the documentation is
+fixed!
+
 This brief tutorials guides through the process of
 making a new skill from this template in Julia language.
 
