@@ -1,25 +1,38 @@
-# ADoSnipsOnOff
+# SnipsHermesQnD
 
-This is a helper skill for the generalised ON-OFF-intent of the SnipsHermesQnD framework for Snips.ai.
+This is a really "Quick-and-Dirty" implementation of an Julia-ecosystem for the
+Snips.ai home assistant.
 
-The general intent handles all ON- and OFF-requests in one place.
-Every skill can subscribe to the intent to get the ON and OFF commands.
-Because the intent may include more devices as actually are handled (in the
-slot type `device_Type`), commands for unhandled devices can be
-recognised by the NLU, but will not be answered. As a result the session
-will stay alive until timeout.
+Aim is not yet a production system but testing ways to develop apps in the new and awesome programming
+language Julia.
 
-This skill handles these devices and ends the session explicitly if
-necessary.
+## Installation
+
+#### Dependencies:
+The package builds on the mosquitto MQTT (`mosquitto_pub` and `mosquitto_sub`), which can be installed from the debian repos
+(for Raspberry Pi: package `mosquitto` and `mosquitto-client`).
+
+#### Julia
+For the installation of the Julia language, refer to https://julialang.org/.
+
+#### The QnD framework
+The framework is installed as a Snips App.
+Install the App `SnipsHermesQnD` in the Snips console.
 
 
-For the moment, only German and English are supported.
+## Documentation
+
+Up-to-date documentation is in the source code.
+The full documentation is just work-in-progress!
+Current version can be visited here:
+
+ [Documentation under devellopment](https://andreasdominik.github.io/ADoSnipsTemplate/dev)
 
 
 # Julia
 
 This skill is (like the entire SnipsHermesQnD framework) written in the
-modern programming language Julia (because Julia is 50-100 times faster
+modern programming language Julia (because Julia is faster
 then Python and coding is much much easier and much more straight forward).
 However "Pythonians" often need some time to get familiar with Julia.
 
