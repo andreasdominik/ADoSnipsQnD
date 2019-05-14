@@ -1,11 +1,4 @@
 
-# language settings:
-# 1) set LANG to "en", "de", "fr", etc.
-# 2) link the Dict with messages to the version with
-#    desired language as defined in languages.jl:
-#
-LANG = "de"
-TEXTS = TEXTS_DE
 
 # DO NOT CHANGE THE FOLLOWING 3 LINES UNLESS YOU KNOW
 # WHAT YOU ARE DOING!
@@ -33,5 +26,17 @@ INI_NAME = "not_handled"
 #
 # link between actions and intents:
 #
-Snips.registerIntentAction("ADoSnipsOnOffDE", DEVELOPER_NAME,
-                            @__MODULE__, templateAction)
+# language settings:
+# 1) set LANG to "en", "de", "fr", etc.
+# 2) link the Dict with messages to the version with
+#    desired language as defined in languages.jl:
+#
+if LANG == "de"
+    Snips.registerIntentAction("ADoSnipsOnOffDE", DEVELOPER_NAME,
+                                @__MODULE__, ignoreDevice)
+    TEXTS = TEXTS_DE
+else
+    Snips.registerIntentAction("ADoSnipsOnOffEN", DEVELOPER_NAME,
+                                @__MODULE__, ignoreDevice)
+    TEXTS = TEXTS_EN
+end

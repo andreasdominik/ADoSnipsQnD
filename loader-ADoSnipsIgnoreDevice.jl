@@ -12,4 +12,4 @@ include("$APP_DIR/IgnoreDevice/IgnoreDevice.jl")
 import Main.IgnoreDevice
 
 global INTENT_ACTIONS
-append!(INTENT_ACTIONS, ADoSnipsTemplate.getIntentActions())
+append!(INTENT_ACTIONS, IgnoreDevice.getIntentActions())
