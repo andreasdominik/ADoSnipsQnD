@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>New skill tutorial · ADoSnipsTemplate</title><link rel="canonical" href="https://andreasdominik.github.io/ADoSnipsQnD/dev/makeskill/index.html"/><link href="https://cdnjs.cloudflare.com/ajax/libs/normalize/4.2.0/normalize.min.css" rel="stylesheet" type="text/css"/><link href="https://fonts.googleapis.com/css?family=Lato|Roboto+Mono" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL=".."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.2.0/require.min.js" data-main="../assets/documenter.js"></script><script src="../siteinfo.js"></script><script src="../../versions.js"></script><link href="../assets/documenter.css" rel="stylesheet" type="text/css"/></head><body><nav class="toc"><a href="../index.html"><img class="logo" src="../assets/logo.svg" alt="ADoSnipsTemplate logo"/></a><h1>ADoSnipsTemplate</h1><select id="version-selector" onChange="window.location.href=this.value" style="visibility: hidden"></select><form class="search" id="search-form" action="../search/"><input id="search-query" name="q" type="text" placeholder="Search docs"/></form><ul><li><a class="toctext" href="../">Introduction</a></li><li><a class="toctext" href="../snipsHermesQnD/">SnipsHermesQnD</a></li><li class="current"><a class="toctext" href>New skill tutorial</a><ul class="internal"><li><a class="toctext" href="#Set-up-a-new-project-1">Set up a new project</a></li><li><a class="toctext" href="#Files-in-the-template-1">Files in the template</a></li><li><a class="toctext" href="#Example-with-low-level-API-1">Example with low-level API</a></li></ul></li><li><a class="toctext" href="../api/api/">API Documentation</a></li><li><a class="toctext" href="../LICENSE/">License</a></li></ul></nav><article id="docs"><header><nav><ul><li><a href>New skill tutorial</a></li></ul><a class="edit-page" href="https://github.com/andreasdominik/ADoSnipsQnD/blob/master/docs/src/makeskill.md"><span class="fa"></span> Edit on GitHub</a></nav><hr/><div id="topbar"><span>New skill tutorial</span><a class="fa fa-bars" href="#"></a></div></header><h1><a class="nav-anchor" id="How-to-write-a-new-skill-1" href="#How-to-write-a-new-skill-1">How to write a new skill</a></h1><p>This brief tutorials guides through the process of making a new skill from this template in Julia language.</p><h2><a class="nav-anchor" id="Set-up-a-new-project-1" href="#Set-up-a-new-project-1">Set up a new project</a></h2><p>To start with a new SnipsHermesQnD skill, just set up a new GitHub repository for the code of your skill (such as mySkill), get a clone of the GitHub project ADoSnipsTemplate and define your repo as remote for the local clone of the template.</p><p>All file- and directory names can be left unchanged; however you may want to rename the project directory and the file <code>action-ADoSnipsTemplate.jl</code> to a name that identifies your new skill. The new name of the action-executable <strong>must</strong> start with <code>action-</code>, because the snips skill manager identifies executable apps by this naming convention:</p><pre><code class="language-sh">cd Documents
+cd SnipsSkills
+git clone git@github.com:andreasdominik/ADoSnipsTemplate.git
+
+mv ADoSnipsTemplate mySkill
+cd mySkill/
+mv action-ADoSnipsTemplate.jl action-mySkill.jl
+
+git rm action-ADoSnipsTemplate.jl
+git add action-mySkill.jl
+git status
+git commit -m &#39;initial commit&#39;
+git remote set-url origin git@github.com:yourGitHubName/mySkill.git
+git push origin master</code></pre><h2><a class="nav-anchor" id="Files-in-the-template-1" href="#Files-in-the-template-1">Files in the template</a></h2><p>The template consists of several files, but only some of them need to be adapted for a new skill.</p><table><tr><th style="text-align: right">filename</th><th style="text-align: right">comment</th><th style="text-align: right">needs to be adapted</th></tr><tr><td style="text-align: right"><code>api.jl</code></td><td style="text-align: right">source code of Julia low-level API for a controlled device</td><td style="text-align: right">optional</td></tr><tr><td style="text-align: right"><code>callback.jl</code></td><td style="text-align: right">holds the callback, used in the background</td><td style="text-align: right">no</td></tr><tr><td style="text-align: right"><code>config.jl</code></td><td style="text-align: right">global definitions for a skill</td><td style="text-align: right">yes</td></tr><tr><td style="text-align: right"><code>languages.jl</code></td><td style="text-align: right">text fragments for multi-language support</td><td style="text-align: right">optional</td></tr><tr><td style="text-align: right"><code>skill-actions.jl</code></td><td style="text-align: right">functions to be executed, if an intent is recognised</td><td style="text-align: right">yes</td></tr><tr><td style="text-align: right"><code>Skill.jl</code></td><td style="text-align: right">the julia module for the skill</td><td style="text-align: right">no</td></tr></table><p>In a minimum-setup only 2 things need to be adapted for a new skill:</p><ul><li>the action-functions which respond to an intent (the <em>direct</em> action, no callback) must be definded and implemented (<code>skill-actions.jl</code>)</li><li>the action-functions must be connected with the corresponding intent names (<code>config.jl</code>).</li></ul><p>Optionally, more fine-grained software engineering is possible by</p><ul><li>separating the user-interaction from the API of controlled devices (latter will go to <code>api.jl</code>)</li><li>adding multi-language support, by specifying phrases in different languages (<code>languages.jl</code>) and by using different intents, depending on the language defined in <code>config.ini</code>.</li></ul><h2><a class="nav-anchor" id="Example-with-low-level-API-1" href="#Example-with-low-level-API-1">Example with low-level API</a></h2><p>This tutorial shows how a skill to control an external device can be derived from the template.</p><p>The idea is to control an Amazon fire stick with a minimum set of commands <code>on, off, play, pause</code>. More commands can be implement easily the same way.</p><p>Switching on and off is implemented based on the common on-off-intent, included in the framework.</p><h3><a class="nav-anchor" id="The-Amazon-fire-low-level-API-1" href="#The-Amazon-fire-low-level-API-1">The Amazon fire low-level API</a></h3><p>The low-level API which sends commands to the Amazon fire is borrowed from Matt&#39;s ADBee project (<code>git@github.com:mattgyver83/adbee.git</code>) that provides a shell-script to send commands to the Amazon device. Please read theer for the steps to prepare the Amazon device for the remote control via ADB.</p><p>Although Python programmes usually find Python packages for every task, it is a very good idea to implement the lowest level af any device-control API as a shell script. Advantages:</p><ul><li>easy to write</li><li>fast and without any overhead</li><li>easy to test: the API canbe tested by just running the script from commandline as <code>controlFire ON</code> or <code>controlFire OFF</code> and see what happens.</li></ul><p>The simplified ADBee-script is:</p><pre><code class="language-sh">#!/bin/bash -xv
+# control fireTv via adb
+
+COMMANDS=$@
+IP=amazon-fire  # set to 192.168.1.200 by dhcp
+PORT=5555
+ADB=adb
+SEND_KEY=&quot;$ADB -s $IP:$PORT shell input keyevent&quot;
+
+adb connect amazon-fire
+
+for CMD in $COMMANDS ; do
+  case $CMD in
+    wake)
+      $SEND_KEY KEYCODE_WAKEUP
+      ;;
+    sleep)
+      $SEND_KEY KEYCODE_POWER
+      ;;
+    play)
+      $SEND_KEY KEYCODE_MEDIA_PLAY_PAUSE
+      ;;
+    pause)
+      $SEND_KEY KEYCODE_MEDIA_PLAY_PAUSE
+      ;;
+    # more commands may go here ...
+  esac
+done</code></pre><p>Once this script is tested, the Julia API can be set up.</p><h3><a class="nav-anchor" id="The-Julia-API-1" href="#The-Julia-API-1">The Julia API</a></h3><p>By default the API goes into the file api.jl, which is empty in the template.</p><p>In this case only a wrapper is needed, to make the API-commands available in the Julia program. The framework provide a function <code>tryrun()</code> to execute external commands safely (i.e. if an error occures, the program will not crash, but reading the error message via Hermes text to speech).</p><p>This API definition splits in the function to execute the ADBee-script and functions to be called by the user:</p><pre><code class="language-Julia">function adbCmds(cmds)
+
+    return tryrun(`$ADB $(split(cmds))`, errorMsg =
+            &quot;&quot;&quot;An error occured while sending commands $cmds
+            to Amazon fire.&quot;&quot;&quot;
+end
+
+
+
+
+function amazonON()
+    adbCmds(&quot;wake&quot;)
+end
+
+function amazonOFF()
+    adbCmds(&quot;sleep&quot;)
+end
+
+function amazonPlay()
+    adbCmds(&quot;play&quot;)
+end
+
+function amazonPause()
+    adbCmds(&quot;pause&quot;)
+end</code></pre><h3><a class="nav-anchor" id="The-skill-action-for-on/off-1" href="#The-skill-action-for-on/off-1">The skill-action for on/off</a></h3><p>This functions are executed by the framework if an intent is recognised. The functions are defined in the file <code>skill-actions.jl</code>. On/off is handled via the common on/off-intent, all other actions need a specific intent, that must be set up in the Snips console.</p><pre><code class="language-Julia">&quot;&quot;&quot;
+function powerOnOff(topic, payload)
+
+    Power on or of with SnipsHermesQnD mechanism.
+&quot;&quot;&quot;
+function powerOnOff(topic, payload)
+
+    if isOnOffMatched(payload, DEVICE_NAME) == :on
+        Snips.publishEndSession(&quot;I wake up the Amazon Fire Stick.&quot;)
+        amazonON()
+        return true
+
+    elseif isOnOffMatched(payload, DEVICE_NAME) == :off
+        Snips.publishEndSession(&quot;I send the Amazon Fire Stick to sleep.&quot;)
+        amazonOFF()
+        return true
+
+    else
+        return false
+    end
+end</code></pre><p>Returning <code>false</code> will disable the <em>continue without hotword</em> function; i.e. a hotword is necessary before the next command can be uttered. This is necessary for the default-case, because probably a different app will execute this non-recognised command.</p><h3><a class="nav-anchor" id="The-skill-action-for-all-other-commands-1" href="#The-skill-action-for-all-other-commands-1">The skill-action for all other commands</a></h3><p>All other commands must be handled by an intent that you must create in the Snips console. Let&#39;s assume the intent has the name <code>ControlAmazon</code> and delivers the command in the slot <code>Command</code>. The slot should know all known commands with synonyms.</p><p>To handle this, a second skill-action has to be defined in the file <code>skill-actions.jl</code>:</p><pre><code class="language-Julia">&quot;&quot;&quot;
+function commands(topic, payload)
+
+    Send commands to Amamzon device.
+&quot;&quot;&quot;
+function commands(topic, payload)
+
+    if Snips.isInSlot(payload, SLOT_NAME, &quot;play&quot;)
+        Snips.publishEndSession(&quot;I play the current selection!&quot;)
+        amazonPlay()
+        return true
+
+    elseif Snips.isInSlot(payload, SLOT_NAME, &quot;pause&quot;)
+        Snips.publishEndSession(&quot;I pause the movie.&quot;)
+        amazonPause()
+        return true
+
+    else
+        Snips.publishEndSession(&quot;I cannot respond!&quot;)
+        return true
+    end
+end</code></pre><h3><a class="nav-anchor" id="Tying-everything-together-1" href="#Tying-everything-together-1">Tying everything together</a></h3><p>The last step is to tell the skill the names of intents to listen and the names of the slots to extract values from. Both is defined in the file <code>config.jl</code>:</p><ul><li>The slot names are simply defined as global constants (they are global within the Module Skill).</li><li>Intents and respective functions are stored in a Dictionary with the intent names as keys and the functions as values.</li></ul><pre><code class="language-Julia">const SLOT_NAME = &quot;Command&quot;
+
+...
+
+INTENT_ACTIONS = Dict{String, Function}()
+INTENT_ACTIONS[&quot;AdoSnipsOnOffEN&quot;] = powerOnOff
+INTENT_ACTIONS[&quot;ControlAmazon&quot;] = commands</code></pre><footer><hr/><a class="previous" href="../snipsHermesQnD/"><span class="direction">Previous</span><span class="title">SnipsHermesQnD</span></a><a class="next" href="../api/api/"><span class="direction">Next</span><span class="title">API Documentation</span></a></footer></article></body></html>
