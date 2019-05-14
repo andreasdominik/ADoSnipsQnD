@@ -6,28 +6,28 @@
 
 
 """
-function subscribeMQTT(topics, callback; hostname = nothing, port = nothing)
+    subscribeMQTT(topics, callback; hostname = nothing, port = nothing)
 
-        Listens to one or more topics.
+    Listen to one or more topics.
 
-# Arguments
-    * topics: Abstract String or List of Abtsract Strings to define
-              topics to subscribe
-    * callback: Function to be executed for a incoming message.
-    * hostname:
-    * port:     Hostname and port to listen. If not specified
-                mosquitto_sub will be called without hostname/port
-                (use the default configuration of the system).
+## Arguments
+* `topics`: Abstract String or List of Abtsract Strings to define
+          topics to subscribe
+* `callback`: Function to be executed for a incoming message.
+* `hostname`:
+* `port`:     Hostname and port to listen. If not specified
+            mosquitto_sub will be called without hostname/port
+            (use the default configuration of the system).
 
-# Details:
-    The callback function has the signature f(topic, payload), where
-    topic is a String and payload a Dict{Symbol, Any} with the content
-    of the payload (assuming, that the payload is in JSON-formate) or
-    a String, if the payload is not valid JSON.
+## Details:
+The callback function has the signature f(topic, payload), where
+topic is a String and payload a Dict{Symbol, Any} with the content
+of the payload (assuming, that the payload is in JSON-formate) or
+a String, if the payload is not valid JSON.
 
-    The callback function is not spawned, but executed in the current
-    thread. As a result the function is not listening during execution of the
-    callback.
+The callback function is not spawned, but executed in the current
+thread. As a result the function is not listening during execution of the
+callback.
 """
 function subscribeMQTT(topics, callback; hostname = nothing, port = nothing)
 
@@ -49,19 +49,19 @@ end
 
 
 """
-function readOneMQTT(topics; hostname = nothing, port = nothing)
+    readOneMQTT(topics; hostname = nothing, port = nothing)
 
-        Listen to one or more topics until one message is
-        retrieved and return topic as string and payload as Dict
-        or as String if JSON parsing is not possible).
+Listen to one or more topics until one message is
+retrieved and return topic as string and payload as Dict
+or as String if JSON parsing is not possible).
 
-# Arguments
-    * topics: Abstract String or List of Abtsract Strings to define
-              topics to subscribe
-    * hostname:
-    * port:     Hostname and port to listen. If not specified
-                mosquitto_sub will be called without hostname/port
-                (use the default configuration of the system).
+## Arguments
+* `topics`: Abstract String or List of Abtsract Strings to define
+          topics to subscribe
+* `hostname`:
+* `port`:     Hostname and port to listen. If not specified
+            mosquitto_sub will be called without hostname/port
+            (use the default configuration of the system).
 """
 function readOneMQTT(topics; hostname = nothing, port = nothing)
 
@@ -82,11 +82,11 @@ end
 #
 
 """
-function constructMQTTcmd(topics; hostname = nothing, port = nothing
+    constructMQTTcmd(topics; hostname = nothing, port = nothing
                           timeout = nothing)
 
-    Builds the shell cmd to retrieve one MQTT massege with mosquito_sub.
-    Timeout is in sec.
+Build the shell cmd to retrieve one MQTT massege with mosquito_sub.
+Timeout is in sec.
 """
 function constructMQTTcmd(topics; hostname = nothing, port = nothing,
                           timeout = nothing)
@@ -122,9 +122,9 @@ end
 
 
 """
-function runOneMQTT(cmd)
+    runOneMQTT(cmd)
 
-    Run the cmd return mosquito_sub output.
+Run the cmd return mosquito_sub output.
 """
 function runOneMQTT(cmd)
 
@@ -133,10 +133,10 @@ end
 
 
 """
-function parseMQTT(message)
+    parseMQTT(message)
 
-    Parse the output of mosquito_sub -v and return topic as string
-    and payload as Dict (or String if JSON parsing is not possible)
+Parse the output of mosquito_sub -v and return topic as string
+and payload as Dict (or String if JSON parsing is not possible)
 """
 function parseMQTT(message)
 
@@ -161,17 +161,17 @@ end
 
 
 """
-function publishMQTT(topic, payload, hostname = nothing, port = nothing)
+    publishMQTT(topic, payload, hostname = nothing, port = nothing)
 
-    Publishes a MQTT message.
+Publishe a MQTT message.
 
-# Arguments
-    * topic: String with the topic
-    * payload: Dict() with message
-    * hostname:
-    * port:     Hostname and port to use. If not specified
-                mosquitto_sub will be called without hostname/port
-                (use the default configuration of the system).
+## Arguments
+* `topics`: String with the topic
+* `payload`: Dict() with message
+* `hostname`:
+* `port`:     Hostname and port to use. If not specified
+            mosquitto_sub will be called without hostname/port
+            (use the default configuration of the system).
 """
 function publishMQTT(topic, payload, hostname = nothing, port = nothing)
 

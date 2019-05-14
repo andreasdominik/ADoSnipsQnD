@@ -4,10 +4,11 @@
 #
 #
 """
-function tryParseJSON(text)
+    tryParseJSON(text)
 
-    parses a JSON and returns a hierarchy of Dicts{Symbol, Any} and Arrays with
-    the content or a string (text), if text is not a valid JSON string.
+parses a JSON and returns a hierarchy of Dicts{Symbol, Any} and Arrays with
+the content or a string (text), if text is not a valid JSON string is
+returned.
 """
 function tryParseJSON(text)
 
@@ -23,10 +24,13 @@ function tryParseJSON(text)
 end
 
 
-"""
-function key2symbol(arr::Array)
 
-wrapper for key2symbol, if 1st hierarchy is an Array
+
+
+"""
+    key2symbol(arr::Array)
+
+Wrapper for key2symbol, if 1st hierarchy is an Array
 """
 function key2symbol(arr::Array)
 
@@ -35,10 +39,10 @@ end
 
 
 """
-function key2symbol(dict::Dict)
+    key2symbol(dict::Dict)
 
-    returns a new Dict() with all keys replaced by Symbols.
-    d is scanned hierarchically
+Return a new Dict() with all keys replaced by Symbols.
+d is scanned hierarchically.
 """
 function key2symbol(dict::Dict)
 
@@ -59,10 +63,10 @@ function key2symbol(dict::Dict)
 end
 
 """
-function tryMkJSON(payload)
+    tryMkJSON(payload)
 
-    Creates a JSON representation of the input (nested Dict or Array)
-    and returns an empty string if not possible.
+Create a JSON representation of the input (nested Dict or Array)
+and return an empty string if not possible.
 """
 function tryMkJSON(payload)
 
@@ -78,12 +82,12 @@ end
 
 
 """
-function tryParseJSONfile(fname)
+    tryParseJSONfile(fname)
 
-    parses a JSON file and returns a hierarchy of Dicts with
-    the content.
-    * keys are changed to Symbol
-    * if error, nothing is returned
+Parse a JSON file and return a hierarchy of Dicts with
+the content.
+* keys are changed to Symbol
+* if error, nothing is returned
 """
 function tryParseJSONfile(fname; quiet = false)
 
@@ -104,10 +108,10 @@ end
 
 
 """
-setSiteId(siteId)
+    setSiteId(siteId)
 
-    set the siteId in the Module SnipsHermesQnD
-    (necessary to direct the say() output to the current room)
+Set the siteId in the Module SnipsHermesQnD
+(necessary to direct the say() output to the current room)
 """
 function setSiteId(siteId)
 
@@ -115,10 +119,10 @@ function setSiteId(siteId)
 end
 
 """
-getSiteId()
+    getSiteId()
 
-    returns the siteId in the Module SnipsHermesQnD
-    (necessary to direct the say() output to the current room)
+Return the siteId in the Module SnipsHermesQnD
+(necessary to direct the say() output to the current room)
 """
 function getSiteId()
 
@@ -128,10 +132,14 @@ end
 
 
 """
-setSessionId(siteId)
+    setSessionId(sessionId)
 
-    set the sessionId in the Module SnipsHermesQnD
-    (necessary to direct the say() output to the current room)
+Set the sessionId in the Module SnipsHermesQnD.
+The sessionId will be used to publish Hermes messages
+inside a runing session. The framework handles this in the background.
+
+## Arguments:
+* sessionId: as String from a Hermes payload.
 """
 function setSessionId(sessionId)
 
@@ -139,13 +147,11 @@ function setSessionId(sessionId)
 end
 
 """
-getSessionId()
+    getSessionId()
 
-    returns the siteId in the Module SnipsHermesQnD
-    (necessary to direct the say() output to the current room)
+Return the sessionId of the currently running session.
 """
 function getSessionId()
 
     return CURRENT_SESSION_ID
-
 end

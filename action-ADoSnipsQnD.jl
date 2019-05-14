@@ -16,7 +16,10 @@ const FRAMEWORK_DIR = @__DIR__
 const SKILLS_DIR = replace(FRAMEWORK_DIR, r"/[^/]*/?$"=>"")
 include("$FRAMEWORK_DIR/SnipsHermesQnD/src/SnipsHermesQnD.jl")
 
-INTENT_ACTIONS = Tuple{AbstractString,Function}[]
+# list of intents and related actions:
+# (name of intent, name of developer, module, function to be executed)
+#
+INTENT_ACTIONS = Tuple{AbstractString, AbstractString, Module, Function}[]
 
 
 function main()
@@ -31,10 +34,18 @@ function main()
         loaders = root .* "/" .* loaders
 
         for loader in loaders
+            global INTENT_ACTIONS
             println("[ADoSnipsQnD] loading Julia app $loader")
             include(loader)
         end
     end
+
+    # start listening to MQTT with main callback
+    #
+    import Main.SnipsHermesQnD
+
+    intents = [i[2]*":"*i[1] for i in INTENT_ACTIONS]
+    SnipsHermesQnD.subscribe2Intents(intents, SnipsHermesQnD.mainCallback)
 end
 
 main()

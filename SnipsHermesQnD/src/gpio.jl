@@ -7,13 +7,13 @@
 #
 
 """
-function setGPIO(gpio, onoff::Symbol)
+    setGPIO(gpio, onoff::Symbol)
 
-    Switches GPIO on or off.
+Switch a GPIO on or off.
 
-# Arguments:
-    * gpio: ID of GPIO (not pinID)
-    * onoff: one of :on or :off
+## Arguments:
+* gpio: ID of GPIO (not pinID)
+* onoff: one of :on or :off
 """
 function setGPIO(gpio, onoff::Symbol)
 

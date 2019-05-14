@@ -1,12 +1,12 @@
 """
-function addStringsToArray!( a, moreElements)
+    addStringsToArray!( a, moreElements)
 
-    add moreElements to a. If a is not an existing
-    Array of String, a new Array is created.
+Add moreElements to a. If a is not an existing
+Array of String, a new Array is created.
 
-# Arguments:
-    * a: Array of String.
-    * moreElements: elements to be added.
+## Arguments:
+* `a`: Array of String.
+* `moreElements`: elements to be added.
 """
 function addStringsToArray!( a, moreElements)
 
@@ -29,15 +29,17 @@ end
 
 
 """
-function extractSlotValue(payload, slotName; multiple = false)
+    extractSlotValue(payload, slotName; multiple = false)
 
-    return the value of a slot or nothing, if
-    * no slots in payload,
-    * no slots with name slotName in payload,
-    * no values in slot slotName.
+Return the value of a slot.
 
-    If multiple == true, a list of all slot values will be
-    returned. If false, only the 1st one as String.
+Nothing is returned, if
+* no slots in payload,
+* no slots with name slotName in payload,
+* no values in slot slotName.
+
+If multiple == `true`, a list of all slot values will be
+returned. If false, only the 1st one as String.
 """
 function extractSlotValue(payload, slotName; multiple = false)
 
@@ -65,12 +67,12 @@ end
 
 
 """
-function isInSlot(payload, slotName, value)
+    isInSlot(payload, slotName, value)
 
-    return true, if the value is present in the slot slotName
-    of the JSON payload (i.e. one of the slot values must match).
-    return false if something is wrong (value not inpayload or no
-    slots slotName.)
+Return `true`, if the value is present in the slot slotName
+of the JSON payload (i.e. one of the slot values must match).
+Return `false` if something is wrong (value not in payload or no
+slots slotName.)
 """
 function isInSlot(payload, slotName, value)
 
@@ -83,10 +85,10 @@ end
 
 
 """
-function tryrun(cmd; wait = true, errorMsg = "bla bla")
+    tryrun(cmd; wait = true, errorMsg = TEXTS[:error_script])
 
-    tries to run an external command and returns true if successful
-    or false if not.
+Try to run an external command and returns true if successful
+or false if not.
 """
 function tryrun(cmd; wait = true, errorMsg = TEXTS[:error_script])
 
@@ -103,6 +105,13 @@ function tryrun(cmd; wait = true, errorMsg = TEXTS[:error_script])
 end
 
 
+"""
+    tryReadTextfile(fname, errMsg = TEXTS[:error_read])
+
+Try to read a text file from file system and
+return the text as `String` or an `String` of length 0, if
+something went wrong.
+"""
 function tryReadTextfile(fname, errMsg = TEXTS[:error_read])
 
     text = ""
@@ -121,20 +130,28 @@ end
 
 
 """
-function setLanguage(lang)
+    setLanguage(lang)
 
-    sets the default language for SnipsHermesQnD.
+Set the default language for SnipsHermesQnD.
+Currently supported laguages are "en" and "de".
+
+This will affect publishSay() and all system messages.
+Log-messages will always be in English.
+
+## Arguments
+* lang: one of `"en"` or `"de"`.
 """
 function setLanguage(lang)
 
-    LANGUAGE = lang
+    if lang != nothing
+        global LANG = lang
+    else
+        global LANG = DEFAULT_LANG
+    end
 
-    if lang == "en"
-        TEXTS = TEXTS_EN
-    elseif lang == "de"
+    if LANG == "de"
         TEXTS = TEXTS_DE
     else
         TEXTS = TEXTS_EN
     end
-
 end
