@@ -1,4 +1,4 @@
-#!/bin/bash -xv
+#!/bin/bash
 #
 # Create a new Snips skill from the template!
 #
@@ -59,6 +59,8 @@ curl -u "$USERNAME" https://api.github.com/user/repos -d "{\"name\":\"$SKILLNAME
 
 # change the remote for the new projekct:
 #
+mv ADoSnipsTemplate $SKILLNAME
+cd $SKILLNAME
 git remote set-url origin git@github.com:${USERNAME}/${SKILLNAME}.git
 
 # modify code:
@@ -66,13 +68,23 @@ git remote set-url origin git@github.com:${USERNAME}/${SKILLNAME}.git
 #  - import new module
 #  - rename loader function
 #
-sed "s/module ADoSnipsTemplate/module ${SKILLNAME}/" Skill/Skill.jl > Skill/${SKILLNAME}.jl
-rm -f Skill/Skill.jl
+sed "s/module ADoSnipsTemplate/module ${SKILLNAME}/" Skill/ADoSnipsTemplate.jl > Skill/${SKILLNAME}.jl
+rm -f Skill/ADoSnipsTemplate.jl
 
-sed "s+/Skill/ADoSnipsTemplate.jl+/Skill/${SKILLNAME}.jl+" |
-    "s+import Main.ADoSnipsTemplate+import Main.${SKILLNAME}+" |
-    "s+ADoSnipsTemplate.getIntentActions()+${SKILLNAME}.getIntentActions()+" > loader-${SKILLNAME}.jl
+sed "s+/Skill/ADoSnipsTemplate.jl+/Skill/${SKILLNAME}.jl+" loader-ADoSnipsTemplate.jl |
+sed    "s+import Main.ADoSnipsTemplate+import Main.${SKILLNAME}+" |
+sed    "s+ADoSnipsTemplate.getIntentActions()+${SKILLNAME}.getIntentActions()+" > loader-${SKILLNAME}.jl
 rm loader-ADoSnipsTemplate.jl
+
+# cmplete GitHub repo:
+#
+git add -A
+git commit -m "Inital commit for new Skill $SKILLNAME"
+git push origin master
+GIT_REMOTE=$(git remote -v)
+echo "The new GitHub repository is:"
+echo "$GIT_REMOTE"
+git status
 
 echo "You're done!"
 echo "Change to $SKILLDIR/$SKILLNAME and add the action code to your skill!"
