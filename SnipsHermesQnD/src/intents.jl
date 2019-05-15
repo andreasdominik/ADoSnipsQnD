@@ -1,5 +1,6 @@
 """
     registerIntentAction(intent, developer, inModule, action)
+    registerIntentAction(intent, action)
 
 Add an intent to the list of intents to be subscribed to.
 Each function that shall be executed if Snips recognises
@@ -10,6 +11,10 @@ The links nieed not to be unique (in both directions):
 It is possible to assign several functions to one intent
 (all of them will be executed), or to assing one function to
 more then one intent.
+
+The variant with only `(intent, action)` as arguments
+applies the variables CURRENT_DEVEL_NAME and CURRENT_MODULE as
+stored in the framework.
 
 
 ## Arguments:
@@ -23,6 +28,13 @@ function registerIntentAction(intent, developer, inModule, action)
     global SKILL_INTENT_ACTIONS
     push!(SKILL_INTENT_ACTIONS, (intent, developer, inModule, action))
 end
+
+
+function registerIntentAction(intent, action)
+
+    registerIntentAction(intent, CURRENT_DEVEL_NAME, CURRENT_MODULE, action)
+end
+
 
 
 """
