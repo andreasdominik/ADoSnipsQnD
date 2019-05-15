@@ -182,3 +182,30 @@ function getDevelopperName()
 
     return CURRENT_DEVEL_NAME
 end
+
+
+
+"""
+    setModule(currentModule)
+
+Set the module of the currently running app in SnipsHermesQnD.
+The framework uses this in the background.
+
+## Arguments:
+* currentModule: The module in which the current skill is running.
+                 (acessible via marco `@__MODULE__`)
+"""
+function setModule(currentModule)
+
+    global CURRENT_MODULE = currentModule
+end
+
+"""
+    getModule()
+
+Return the module of the currently running app.
+"""
+function getModule()
+
+    return CURRENT_MODULE
+end

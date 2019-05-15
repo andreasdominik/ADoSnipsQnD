@@ -100,6 +100,8 @@ setSessionId
 getSessionId
 setDevelopperName
 getDevelopperName
+setModule
+getModule
 ```
 
 
