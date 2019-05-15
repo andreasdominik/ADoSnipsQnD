@@ -26,7 +26,7 @@ Up-to-date documentation is in the source code.
 The full documentation is just work-in-progress!
 Current version can be visited here:
 
- [Documentation under devellopment](https://andreasdominik.github.io/ADoSnipsQnD/dev)
+ [Documentation under development](https://andreasdominik.github.io/ADoSnipsQnD/dev)
 
 
 # Julia

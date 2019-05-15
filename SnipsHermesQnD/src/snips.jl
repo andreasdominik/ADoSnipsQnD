@@ -159,26 +159,26 @@ end
 
 
 """
-    setDevelopperName(name)
+    setDeveloperName(name)
 
-Set the developper name of the currently running app in the Module SnipsHermesQnD.
+Set the developer name of the currently running app in the Module SnipsHermesQnD.
 The framework adds the name to MQTT messages in the background.
 
 ## Arguments:
-* developperName: Name of the developper of the current app
+* developerName: Name of the developer of the current app
                   i.e. the part before the colon of an intent name.
 """
-function setDevelopperName(name)
+function setDeveloperName(name)
 
     global CURRENT_DEVEL_NAME = name
 end
 
 """
-    getDevelopperName()
+    getDeveloperName()
 
 Return the name of the develpper of the currently running app.
 """
-function getDevelopperName()
+function getDeveloperName()
 
     return CURRENT_DEVEL_NAME
 end
@@ -221,7 +221,7 @@ Set the intent for which the currently running app is working.
 The framework uses this in the background.
 
 ## Arguments:
-* intent: name of current intent (without developper name)
+* intent: name of current intent (without developer name)
 """
 function setIntent(intent)
 

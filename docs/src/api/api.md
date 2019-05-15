@@ -90,7 +90,7 @@ publishMQTT
 ## Utility functions
 
 Little helpers to provide functionality whichis commonly needed
-when develloping a skill.
+when developing a skill.
 
 ### Handle background information of recognised intent
 ```@docs
@@ -98,8 +98,8 @@ setSiteId
 getSiteId
 setSessionId
 getSessionId
-setDevelopperName
-getDevelopperName
+setDeveloperName
+getDeveloperName
 setModule
 getModule
 setIntent

@@ -89,7 +89,7 @@ sudo apt-get install mosquitto-clients
 
 ### App ADoSnipsHermesQnD
 
-To use skills, developped with SnipsHermesQnD, just add the ADoSnipsHermesQnD
+To use skills, developed with SnipsHermesQnD, just add the ADoSnipsHermesQnD
 App to your assistant. There are versions in German and English language
 (`ADoSnipsHermesQnD_DE` and `ADoSnipsHermesQnD_EN`).
 
@@ -163,7 +163,7 @@ The app will repeat the word.
 ### Strategy
 
 The idea behind the framework is, to put as much as possible in the background
-so that a developper only needs to provide the code for the
+so that a developer only needs to provide the code for the
 functions executed for an intent.
 
 The MQTT-messages of *Hermes* and the *Dialogue Manager* are wrapped, but
@@ -172,7 +172,7 @@ dialogues without using callbacks.
 
 In addion background information, such as current session-ID or
 current site-ID are mostly handled in the background and not exposed to a skill
-developper.
+developer.
 
 Additional utilities are provided to
 - read values from intent slots

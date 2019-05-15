@@ -1,10 +1,11 @@
 # How to write a new skill
 
 ** This section is NOT up-to-date**
-Starting with a new skill is now down with a shell scrit which takes care
-od all.
-Please be patient and wait some days, until the documentation is
-fixed!
+
+Starting with a new skill can be done by adapting the template skill
+to your needs. However, several files need to be modified. Therefore
+a shell script is provided, which takes care of the major part of the
+modifications.
 
 This brief tutorials guides through the process of
 making a new skill from this template in Julia language.
@@ -12,7 +13,7 @@ making a new skill from this template in Julia language.
 
 ## Set up a new project
 
-To start with a new SnipsHermesQnD skill, just set up a new GitHub repository for
+To start developing a with a new SnipsHermesQnD skill, just set up a new GitHub repository for
 the code of your skill (such as mySkill),
 get a clone of the GitHub project ADoSnipsTemplate and
 define your repo as remote for the local clone of the template.
