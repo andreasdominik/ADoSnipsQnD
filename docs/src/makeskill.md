@@ -1,62 +1,79 @@
 # How to write a new skill
 
-** This section is NOT up-to-date**
-
 Starting with a new skill can be done by adapting the template skill
 to your needs. However, several files need to be modified. Therefore
 a shell script is provided, which takes care of the major part of the
 modifications.
 
 This brief tutorials guides through the process of
-making a new skill from this template in Julia language.
+making a new skill using the init script and template in Julia language.
 
 
-## Set up a new project
+## Set up the framework (if starting from scratch)
 
-To start developing a with a new SnipsHermesQnD skill, just set up a new GitHub repository for
-the code of your skill (such as mySkill),
-get a clone of the GitHub project ADoSnipsTemplate and
-define your repo as remote for the local clone of the template.
+Create a directory in which the skills will be developed, such as
+`~/Documents/Snips/` and make a clone of the framework project at
+GitHub (install the git software before, if necessary):
 
-All file- and directory names can be left unchanged; however you
-may want to rename the project directory and
-the file `action-ADoSnipsTemplate.jl` to a name
-that identifies your new skill. The new name of the
-action-executable **must** start with
-`action-`, because the snips skill manager identifies executable
-apps by this naming convention:
-
-```sh
-cd Documents
-cd SnipsSkills
-git clone git@github.com:andreasdominik/ADoSnipsTemplate.git
-
-mv ADoSnipsTemplate mySkill
-cd mySkill/
-mv action-ADoSnipsTemplate.jl action-mySkill.jl
-
-git rm action-ADoSnipsTemplate.jl
-git add action-mySkill.jl
-git status
-git commit -m 'initial commit'
-git remote set-url origin git@github.com:yourGitHubName/mySkill.git
-git push origin master
+```bash
+$ ~/Documents/Snips/
+$ cd  ~/Documents/Snips/
+$ git clone git@github.com:andreasdominik/ADoSnipsQnD.git
 ```
 
+Now you have the source code of the framework in a local clone in
+the directory `~/Documents/Snips/ADoSnipsQnD/`.
 
-## Files in the template
 
-The template consists of several files, but only some of them need to be
+## Set up the skeleton a new project
+
+Before strating, prepare to give the init-script some information:
+- *name of the new skill:* the name must not contain any whitespace,
+      must be unique within your Snips skills,
+      and must be unique within your GitHub repositories.
+      The example below will create a skill to control an Amazon Fire device.
+      Therefore in this tutorial the name `MyFire` will be used as example.
+- *your GitHub name:* create a GitHub account in necessary.
+- *your gitHub password:* name and password are needed, because the script will
+      initialise a new GitHub repo for the new project.
+
+The script `init.sh` in the directory `/bin` will create
+a skeleton of the new skill. Enter (or stay in) the directory
+`~/Documents/Snips/` and run the script:
+
+```bash
+$ cd ~/Documents/Snips
+$ ./ADoSnipsQnD/bin/init.sh
+```
+
+Now provide the prepered information and follow the instructions of the script.
+At the end, the skeleton of a skill is created, committed into the
+git repo and pushed to GitHub.
+
+All file- and directory names can be left unchanged.
+The skill has no file `action-...` as demanded by the Snips skill server,
+because all SnipsHermesQnD-skills will run in the same Julia process. Only
+teh framework it self has the starter function `action-ADoSnipsQnD.jl`,
+all other skill have a loader function `loader-...` instead, which is
+recognised by the framework and loaded into the running instance.
+
+
+## Files in the sceleton
+
+The created skeleton consists of several files, but only some of them need to be
 adapted for a new skill.
 
 filename | comment | needs to be adapted
 ---------|---------|--------------------
-`api.jl` | source code of Julia low-level API for a controlled device | optional
-`callback.jl` | holds the callback, used in the background | no
-`config.jl`   | global definitions for a skill             | yes
-`languages.jl`| text fragments for multi-language support  | optional
+`loader-MyFire.jl` | generated loader function for the framework | no
+`config.ini`       | ini file as default in Snips                | yes
+`setup.sh`         | setup file as default in Snips              | yes
+`api.jl`           | source code of Julia low-level API for a controlled device | optional
+`config.jl`   | global initialisation of a skill                 | yes
+`exported.jl` | geberated exported function of the skill module  | no
+`languages.jl`| text fragments for multi-language support        | optional
 `skill-actions.jl` | functions to be executed, if an intent is recognised | yes
-`Skill.jl`    | the julia module for the skill             | no
+`MyFire.jl`        | the julia module for the skill              | no
 
 In a minimum-setup only 2 things need to be adapted for a new
 skill:
@@ -224,7 +241,7 @@ app will execute this non-recognised command.
 
 All other commands must be handled by an intent that you must
 create in the Snips console.
-Let's assume the intent has the name `ControlAmazon` and delivers
+Let's assume the intent has the name `MyFire` and delivers
 the command in the slot `Command`.
 The slot should know all known commands with synonyms.
 
@@ -264,16 +281,18 @@ and the names of the slots to extract values from.
 Both is defined in the file `config.jl`:
 
 - The slot names are simply defined as global constants
-  (they are global within the Module Skill).
-- Intents and respective functions are stored in a Dictionary with
-  the intent names as keys and the functions as values.
+  (they are global within the module MyFire).
+- Intents and respective functions are stored in the background
+  and registered with the function `registerIntentAction()`.
 
 ```Julia
 const SLOT_NAME = "Command"
 
 ...
 
-INTENT_ACTIONS = Dict{String, Function}()
-INTENT_ACTIONS["AdoSnipsOnOffEN"] = powerOnOff
-INTENT_ACTIONS["ControlAmazon"] = commands
+Snips.registerIntentAction("AdoSnipsOnOffEN", powerOnOff)
+Snips.registerIntentAction("MyFire", commands)
 ```
+
+Once the functuions are registered together with the intents,
+the framework will execute the functions.
