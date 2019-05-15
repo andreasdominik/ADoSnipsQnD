@@ -102,6 +102,8 @@ setDevelopperName
 getDevelopperName
 setModule
 getModule
+setIntent
+getIntent
 ```
 
 

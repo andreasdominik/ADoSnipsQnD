@@ -209,3 +209,31 @@ function getModule()
 
     return CURRENT_MODULE
 end
+
+
+
+
+
+"""
+    setIntent(intent)
+
+Set the intent for which the currently running app is working.
+The framework uses this in the background.
+
+## Arguments:
+* intent: name of current intent (without developper name)
+"""
+function setIntent(intent)
+
+    global CURRENT_INTENT = intent
+end
+
+"""
+    getIntent()
+
+Return the intent of the currently running app.
+"""
+function getIntent()
+
+    return CURRENT_INTENT
+end
