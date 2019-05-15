@@ -1,4 +1,4 @@
-# SnipsHermesQnD
+# ADoSnipsQnD
 
 This is a really "Quick-and-Dirty" implementation of an Julia-ecosystem for the
 Snips.ai home assistant.
@@ -26,7 +26,7 @@ Up-to-date documentation is in the source code.
 The full documentation is just work-in-progress!
 Current version can be visited here:
 
- [Documentation under devellopment](https://andreasdominik.github.io/ADoSnipsTemplate/dev)
+ [Documentation under devellopment](https://andreasdominik.github.io/ADoSnipsQnD/dev)
 
 
 # Julia
