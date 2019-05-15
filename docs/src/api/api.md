@@ -92,12 +92,14 @@ publishMQTT
 Little helpers to provide functionality whichis commonly needed
 when develloping a skill.
 
-### Handle siteId from recognised intent
+### Handle background information of recognised intent
 ```@docs
 setSiteId
 getSiteId
 setSessionId
 getSessionId
+setDevelopperName
+getDevelopperName
 ```
 
 

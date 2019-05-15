@@ -18,6 +18,9 @@ include("callback.jl")
 CONFIG_INI = Dict{Symbol, Any}()
 CURRENT_SITE_ID = "default"
 CURRENT_SESSION_ID = "1"
+CURRENT_DEVEL_NAME = "unknown"
+CURRENT_MODULE = Main
+CURRENT_INTENT = "none"
 
 # set default language and texts to en
 #

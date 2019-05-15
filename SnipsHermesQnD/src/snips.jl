@@ -155,3 +155,30 @@ function getSessionId()
 
     return CURRENT_SESSION_ID
 end
+
+
+
+"""
+    setDevelopperName(name)
+
+Set the developper name of the currently running app in the Module SnipsHermesQnD.
+The framework adds the name to MQTT messages in the background.
+
+## Arguments:
+* developperName: Name of the developper of the current app
+                  i.e. the part before the colon of an intent name.
+"""
+function setDevelopperName(name)
+
+    global CURRENT_DEVEL_NAME = name
+end
+
+"""
+    getDevelopperName()
+
+Return the name of the develpper of the currently running app.
+"""
+function getDevelopperName()
+
+    return CURRENT_DEVEL_NAME
+end
