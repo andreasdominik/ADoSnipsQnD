@@ -37,3 +37,24 @@ function getIntentActions()
     global SKILL_INTENT_ACTIONS
     return SKILL_INTENT_ACTIONS
 end
+
+
+
+
+"""
+    setIntentActions(intentActions)
+
+Overwrite the complete list of all intent-function mappings for this app.
+The function is exported to get the mappings
+from the Main context.
+
+## Arguments:
+* intentActions: Array of intent-action mappings as Tuple of
+                 (intent::AbstractString, developer::AbstractString,
+                  inModule::Module, action::Function)
+"""
+function setIntentActions(intentActions)
+
+    global SKILL_INTENT_ACTIONS
+    SKILL_INTENT_ACTIONS = intentActions
+end

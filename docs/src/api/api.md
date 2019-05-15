@@ -33,6 +33,7 @@ publishSay
 ```@docs
 registerIntentAction
 getIntentActions
+setIntentActions
 ```
 
 
