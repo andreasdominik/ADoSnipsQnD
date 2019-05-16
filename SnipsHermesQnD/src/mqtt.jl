@@ -56,7 +56,7 @@ retrieved and return topic as string and payload as Dict
 or as String if JSON parsing is not possible).
 
 ## Arguments
-* `topics`: Abstract String or List of Abtsract Strings to define
+* `topics`: Abstract String or List of Abstract Strings to define
           topics to subscribe
 * `hostname`:
 * `port`:     Hostname and port to listen. If not specified
@@ -103,6 +103,7 @@ function constructMQTTcmd(topics; hostname = nothing, port = nothing,
     if topics isa AbstractString
         cmd = `$cmd -t $topics`
     elseif topics isa Array
+        unique!(topics)
         for topic in topics
             cmd = `$cmd -t $topic`
         end
