@@ -84,11 +84,17 @@ skill:
 
 Optionally, more fine-grained software engineering is possible by
 - separating the user-interaction from the API of controlled devices (latter
-  will go to `api.jl`)
+  will go to `api.jl`).
 - adding multi-language support, by specifying phrases in different languages
   (`languages.jl`) and by using different intents, depending on the language
   defined in `config.ini`.
-
+- the `setup.sh` file has the same function as in every Snips skill: setup
+  the environement for the skill and install dependencies.
+  In case of the QnD framework main purpose of `setup.sh` is to install
+  Julia packages, necessray for a skill. The framework only installs
+  the packages `JSON` and `StatsBase`. Additional packages can be installed
+  by uncommenting the respective line in the file and adding the
+  required dependency.
 
 ## Example with low-level API
 
