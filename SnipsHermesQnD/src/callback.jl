@@ -11,9 +11,17 @@ function mainCallback(topic, payload)
     #         $payload
     #         ************************************************""")
 
-    fullIntent = payload[:intent][:intentName]
-    (developer, intent) = split(fullIntent, ":")
-    println("[QnD framework] Intent $fullIntent recognised")
+    # extract developer name and intent from topic:
+    #
+    m = match(r"([a-zA-Z0-1]+):([a-zA-Z0-1]+)", topic)
+    if match != nothing
+        developer = m.captures[1]
+        intent = m.captures[2]
+    else
+        developer = "unknowndeveloper"
+        intent = topic
+    end
+    println("[QnD framework] Intent $topic recognised")
 
     # get list of matched intents:
     #
