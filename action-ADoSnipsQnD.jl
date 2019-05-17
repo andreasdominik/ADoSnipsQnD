@@ -27,7 +27,7 @@ INTENT_ACTIONS = Tuple{AbstractString, AbstractString, Module, Function}[]
 loaders = AbstractString[]
 for (root, dirs, files) in walkdir(SKILLS_DIR)
 
-    files = filter(f->occursin(r"^loader-.*\.jl", f), files) 
+    files = filter(f->occursin(r"^loader-.*\.jl", f), files)
     paths = root .* "/" .* files
     append!(loaders, paths)
 end
@@ -44,6 +44,6 @@ end
 #
 import Main.SnipsHermesQnD
 
-intents = [i[2]*":"*i[1] for i in INTENT_ACTIONS]
+const intents = [i[2]*":"*i[1] for i in INTENT_ACTIONS]
 SnipsHermesQnD.subscribe2Intents(intents, SnipsHermesQnD.mainCallback)
 end
