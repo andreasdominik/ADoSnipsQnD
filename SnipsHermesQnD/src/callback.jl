@@ -13,7 +13,7 @@ function mainCallback(topic, payload)
 
     # extract developer name and intent from topic:
     #
-    m = match(r"([a-zA-Z0-1]+):([a-zA-Z0-1]+)", topic)
+    m = match(r"hermes/intent/([a-zA-Z0-1]+):([a-zA-Z0-1]+)", topic)
     if match != nothing
         developer = m.captures[1]
         intent = m.captures[2]
