@@ -19,7 +19,6 @@ Snips.setLanguage(Snips.getConfig(:language))
 
 include("api.jl")
 include("skill-actions.jl")
-include("callback.jl")
 include("languages.jl")
 include("config.jl")
 include("exported.jl")
