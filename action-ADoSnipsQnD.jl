@@ -44,6 +44,8 @@ end
 #
 import Main.SnipsHermesQnD
 
-const intents = [i[2]*":"*i[1] for i in INTENT_ACTIONS]
-SnipsHermesQnD.subscribe2Intents(intents, SnipsHermesQnD.mainCallback)
+# const intents = [i[2]*":"*i[1] for i in INTENT_ACTIONS]
+# SnipsHermesQnD.subscribe2Intents(intents, SnipsHermesQnD.mainCallback)
+const topics = [i[3] for i in INTENT_ACTIONS]
+SnipsHermesQnD.subscribe2Topics(topics, SnipsHermesQnD.mainCallback)
 end

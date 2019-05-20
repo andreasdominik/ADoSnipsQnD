@@ -6,6 +6,7 @@ These functions publish and subscribe to Hermes MQTT-topics.
 
 ```@docs
 subscribe2Intents
+subscribe2Topics
 publishStartSessionAction
 publishStartSessionNotification
 publishEndSession

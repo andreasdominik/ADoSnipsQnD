@@ -7,7 +7,7 @@ Each function that shall be executed if Snips recognises
 an intent must be registered with this function.
 The framework will collect all these links, subscribe to all
 needed intents and execute the respectve functions.
-The links nieed not to be unique (in both directions):
+The links need not to be unique (in both directions):
 It is possible to assign several functions to one intent
 (all of them will be executed), or to assing one function to
 more then one intent.
@@ -16,6 +16,8 @@ The variant with only `(intent, action)` as arguments
 applies the variables CURRENT_DEVEL_NAME and CURRENT_MODULE as
 stored in the framework.
 
+The variants registerIntent... create topics with prefix
+`hermes/intent/developer:intent`.
 
 ## Arguments:
 - intent: Name of the intend (without developer name)
@@ -26,7 +28,8 @@ stored in the framework.
 function registerIntentAction(intent, developer, inModule, action)
 
     global SKILL_INTENT_ACTIONS
-    push!(SKILL_INTENT_ACTIONS, (intent, developer, inModule, action))
+    topic = "hermes/intent/$developer:$intent"
+    push!(SKILL_INTENT_ACTIONS, (intent, developer, topic, inModule, action))
 end
 
 
@@ -34,6 +37,34 @@ function registerIntentAction(intent, action)
 
     registerIntentAction(intent, CURRENT_DEVEL_NAME, CURRENT_MODULE, action)
 end
+
+
+
+
+"""
+    registerTriggerAction(intent, developer, inModule, action)
+    registerTriggerAction(intent, action)
+
+Add an intent to the list of intents to be subscribed to.
+Each function that shall be executed if Snips recognises
+The variants registerTrigger... create topics with prefix
+`QnD/trigger/developer:intent`.
+
+See `registerIntentAction()` for details.
+"""
+function registerTriggerAction(intent, developer, inModule, action)
+
+    global SKILL_INTENT_ACTIONS
+    topic = "QnD/trigger/$developer:$intent"
+    push!(SKILL_INTENT_ACTIONS, (intent, developer, topic, inModule, action))
+end
+
+function registerTriggerAction(intent, action)
+
+    registerTriggerAction(intent, CURRENT_DEVEL_NAME, CURRENT_MODULE, action)
+end
+
+
 
 
 

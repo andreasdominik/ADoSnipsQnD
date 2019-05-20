@@ -33,9 +33,27 @@ function subscribe2Intents(intents, callback; moreTopics = nothing)
 
     topics = "hermes/intent/" .* intents
     topics = addStringsToArray!(topics, moreTopics)
-    subscribeMQTT(topics, callback; hostname = nothing, port = nothing)
+    subscribe2Topics(topics, callback)
 end
 
+
+"""
+    subscribe2Topics(topics, callback)
+
+Subscribe to one or a list of topics and listen forever and run the callback
+if a matching intent is recieved.
+
+## Arguments:
+* `topics`: Abstract String or List of Abstract Strings to define
+           topics to subscribe.
+* `callback`: Function to be executed for a incoming message
+
+See `subscribe2Intents()` for details.
+"""
+function subscribe2Topics(topics, callback)
+    
+    subscribeMQTT(topics, callback; hostname = nothing, port = nothing)
+end
 
 
 """

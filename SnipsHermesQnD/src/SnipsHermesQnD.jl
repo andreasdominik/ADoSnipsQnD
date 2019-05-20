@@ -30,8 +30,10 @@ TEXTS = TEXTS_EN
 setLanguage(LANG)
 
 # List of intents to listen to:
+# (intent, developer, complete topic, module, skill-action)
 #
-SKILL_INTENT_ACTIONS = Tuple{AbstractString, AbstractString, Module, Function}[]
+SKILL_INTENT_ACTIONS = Tuple{AbstractString, AbstractString, AbstractString,
+                             Module, Function}[]
 
 export subscribeMQTT, readOneMQTT, publishMQTT,
        subscribe2Intents, listenIntentsOneTime,
