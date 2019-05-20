@@ -28,8 +28,8 @@ function mainCallback(topic, payload)
         else occursin(r"qnd/trigger/", t[3])
             println("[QnD framework]: System trigger $t recognised; execute $(t[5]).")
         end
-        #@spawn skill.callbackRun(fun, topic, payload)
-         skill.callbackRun(fun, topic, payload)
+        @spawn skill.callbackRun(fun, topic, payload)
+        # skill.callbackRun(fun, topic, payload)
     end
 
     println("*********** mainCallback() ended! ****************")
