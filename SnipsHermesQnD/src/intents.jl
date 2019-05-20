@@ -117,8 +117,12 @@ Publish a system trigger with topic and payload.
 """
 function publishSystemTrigger(topic, trigger)
 
-    occursin(r":", topic) || (topic = "$CURRENT_DEVEL_NAME:$topic")
-    occursin(r"^qnd/trigger/", topic) || (topic = "qnd/trigger/$topic")
+    if !occursin(r":", topic)
+        topic = "$CURRENT_DEVEL_NAME:$topic"
+    end
+    if !occursin(r"^qnd/trigger/", topic)
+        topic = "qnd/trigger/$topic"
+    end
 
     payload = Dict( :target => $topic,
                     :origin => "$CURRENT_MODULE",
