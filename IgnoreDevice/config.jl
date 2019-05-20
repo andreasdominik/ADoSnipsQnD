@@ -5,11 +5,13 @@
 # set CONTINUE_WO_HOTWORD to true to be able to chain
 # commands without need of a hotword in between:
 #
-CONTINUE_WO_HOTWORD = true
-DEVELOPER_NAME = "andreasdominik"
 lang = Snips.getConfig(:language)
 const LANG = (lang != nothing) ? lang : "de"
 
+const CONTINUE_WO_HOTWORD = true
+const DEVELOPER_NAME = "andreasdominik"
+Snips.setDeveloperName(DEVELOPER_NAME)
+Snips.setModule(@__MODULE__)
 
 # Slots:
 # Name of slots to be extracted from intents:
