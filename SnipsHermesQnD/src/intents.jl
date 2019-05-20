@@ -101,3 +101,30 @@ function setIntentActions(intentActions)
     global SKILL_INTENT_ACTIONS
     SKILL_INTENT_ACTIONS = intentActions
 end
+
+
+"""
+    publishSystemTrigger(topic, trigger)
+
+Publish a system trigger with topic and payload.
+
+## Arguments:
+* topic: MQTT topic, with or w/o the developername. If no
+         developername is included, CURRENT_DEVEL_NAME will be added.
+         If the topic does not start with `qnd/trigger/`, this
+         will be added.
+* trigger: specific payload for the trigger.
+"""
+function publishSystemTrigger(topic, trigger)
+
+    occursin(r":", topic) || (topic = "$CURRENT_DEVEL_NAME:$topic")
+    occursin(r"^qnd/trigger/", topic) || (topic = "qnd/trigger/$topic")
+
+    payload = Dict( :target => $topic,
+                    :origin => "$CURRENT_MODULE",
+                    :time => "$(now())",
+                    :trigger => trigger
+                  )
+
+    publishMQTT(topic, payload)
+end
