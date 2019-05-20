@@ -215,25 +215,25 @@ end
 
 
 """
-    setIntent(intent)
+    setTopic(topic)
 
-Set the intent for which the currently running app is working.
+Set the topic for which the currently running app is working.
 The framework uses this in the background.
 
 ## Arguments:
-* intent: name of current intent (without developer name)
+* topic: name of current topic
 """
-function setIntent(intent)
+function setIntent(topic)
 
-    global CURRENT_INTENT = intent
+    global CURRENT_TOPIC = topic
 end
 
 """
-    getIntent()
+    getTopic()
 
-Return the intent of the currently running app.
+Return the topic of the currently running app.
 """
-function getIntent()
+function getTopic()
 
-    return CURRENT_INTENT
+    return CURRENT_TOPIC
 end

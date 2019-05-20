@@ -33,6 +33,7 @@ publishSay
 
 ```@docs
 registerIntentAction
+registerTriggerAction
 getIntentActions
 setIntentActions
 ```
@@ -103,8 +104,8 @@ setDeveloperName
 getDeveloperName
 setModule
 getModule
-setIntent
-getIntent
+setTopic
+getTopic
 ```
 
 

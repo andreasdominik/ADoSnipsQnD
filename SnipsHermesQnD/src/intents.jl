@@ -55,7 +55,7 @@ See `registerIntentAction()` for details.
 function registerTriggerAction(intent, developer, inModule, action)
 
     global SKILL_INTENT_ACTIONS
-    topic = "QnD/trigger/$developer:$intent"
+    topic = "qnd/trigger/$developer:$intent"
     push!(SKILL_INTENT_ACTIONS, (intent, developer, topic, inModule, action))
 end
 

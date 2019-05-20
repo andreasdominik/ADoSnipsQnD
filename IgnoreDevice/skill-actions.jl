@@ -16,7 +16,7 @@ function ignoreDevice(topic, payload)
     Ignore (i.e. end session) when unified OnOff-Intent is recognised for
     a unhandled device.
 """
-function ignoreDevice(intent, payload)
+function ignoreDevice(topic, payload)
 
     println("- ADoSnipsOnOff: action ignoreDevice() started.")
     # find the device in payload:

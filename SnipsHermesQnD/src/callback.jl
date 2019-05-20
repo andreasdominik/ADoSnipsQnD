@@ -11,30 +11,24 @@ function mainCallback(topic, payload)
     #         $payload
     #         ************************************************""")
 
-    # extract developer name and intent from topic:
-    #
-    m = match(r"hermes/intent/([a-zA-Z0-1]+):([a-zA-Z0-1]+)", topic)
-    if match != nothing
-        developer = m.captures[1]
-        intent = m.captures[2]
-    else
-        developer = "unknowndeveloper"
-        intent = topic
-    end
-    println("[QnD framework] Intent $topic recognised")
-
-    # get list of matched intents:
-    #
-    matchedIntents = filter(Main.INTENT_ACTIONS) do i
-                        i[1] == intent && i[2] == developer
+    # find the intents or triggers that match the current
+    # message:
+    matchedTopics = filter(Main.INTENT_ACTIONS) do i
+                        i[3] == topic
                     end
 
-    # run the functions of matched intents:
-    #
-    for i in matchedIntents
+    for t in matchedTopics
 
-        f = i[4]   # action function
-        m = i[3]   # module
-        m.callbackRun(f, intent, payload)
+        topic = t[3]
+        fun = t[5]   # action function
+        skill = t[4]   # module
+
+        if occursin(r"hermes/intent/", t[3])
+            println("[QnD framework]: Hermes intent $t recognised")
+        else occursin(r"qnd/trigger/", t[3])
+            println("[QnD framework]: System trigger $t recognised")
+        end
+        # @spawn skill.callbackRun(fun, topic, payload)
+        skill.callbackRun(fun, topic, payload)
     end
 end

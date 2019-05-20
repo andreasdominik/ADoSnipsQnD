@@ -19,7 +19,8 @@ include("$FRAMEWORK_DIR/SnipsHermesQnD/src/SnipsHermesQnD.jl")
 # list of intents and related actions:
 # (name of intent, name of developer, module, function to be executed)
 #
-INTENT_ACTIONS = Tuple{AbstractString, AbstractString, Module, Function}[]
+INTENT_ACTIONS = Tuple{AbstractString, AbstractString, AbstractString,
+                       Module, Function}[]
 
 
 # search all dir-tree for files like loader-<name>.jl
