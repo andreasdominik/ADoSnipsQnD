@@ -29,7 +29,6 @@ function mainCallback(topic, payload)
             println("[QnD framework]: System trigger $(t[3]) recognised; execute $(t[5]).")
         end
         @spawn skill.callbackRun(fun, topic, payload)
-        # skill.callbackRun(fun, topic, payload)
     end
 
     println("*********** mainCallback() ended! ****************")
