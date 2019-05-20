@@ -3,6 +3,7 @@ module SnipsHermesQnD
 import JSON
 import StatsBase
 using Dates
+using Distributed
 
 include("utils.jl")
 include("snips.jl")
