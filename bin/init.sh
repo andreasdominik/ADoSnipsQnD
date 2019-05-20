@@ -51,7 +51,7 @@ fi
 # clone the template skill into the target dir:
 #
 cd $SKILLDIR
-git clone git@github.com:andreasdominik/ADoSnipsTemplate.git
+git clone git@github.com:andreasdominik/ADoSnipsTemplate.git$SKILLNAME
 
 # create the project on GitHub:
 #
@@ -59,7 +59,6 @@ curl -u "$USERNAME" https://api.github.com/user/repos -d "{\"name\":\"$SKILLNAME
 
 # change the remote for the new projekct:
 #
-mv ADoSnipsTemplate $SKILLNAME
 cd $SKILLNAME
 git remote set-url origin git@github.com:${USERNAME}/${SKILLNAME}.git
 
