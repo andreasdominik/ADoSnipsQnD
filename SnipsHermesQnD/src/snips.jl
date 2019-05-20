@@ -223,7 +223,7 @@ The framework uses this in the background.
 ## Arguments:
 * topic: name of current topic
 """
-function setIntent(topic)
+function setTopic(topic)
 
     global CURRENT_TOPIC = topic
 end
