@@ -41,7 +41,7 @@ function subscribeMQTT(topics, callback; hostname = nothing, port = nothing)
         topic, payload = parseMQTT(retrieved)
 
         if topic != nothing && payload != nothing
-            callback(topic, payload)
+            @spawn callback(topic, payload)
         end
     end
 end
@@ -116,7 +116,7 @@ function constructMQTTcmd(topics; hostname = nothing, port = nothing,
     end
 
     cmd = Cmd(cmd, ignorestatus = true)
-    println("Mosquito command is : $cmd")
+    #println("Mosquito command is : $cmd")
 
     return cmd
 end
@@ -129,6 +129,7 @@ Run the cmd return mosquito_sub output.
 """
 function runOneMQTT(cmd)
 
+    println("[SnipsHermesQnD: MQTT]: $cmd")
     return read(cmd, String)
 end
 
