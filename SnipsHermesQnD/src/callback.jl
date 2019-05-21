@@ -23,10 +23,10 @@ function mainCallback(topic, payload)
         fun = t[5]   # action function
         skill = t[4]   # module
 
-        if occursin(r"hermes/intent/", t[3])
-            println("[QnD framework]: Hermes intent $(t[3]) recognised; execute $(t[5]).")
-        else occursin(r"qnd/trigger/", t[3])
-            println("[QnD framework]: System trigger $(t[3]) recognised; execute $(t[5]).")
+        if occursin(r"hermes/intent/", topic)
+            println("[QnD framework]: Hermes intent $topic recognised; execute $fun.")
+        else occursin(r"qnd/trigger/", topic)
+            println("[QnD framework]: System trigger $topic recognised; execute $fun.")
         end
         skill.callbackRun(fun, topic, payload)
     end
