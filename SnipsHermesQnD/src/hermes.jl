@@ -51,7 +51,7 @@ if a matching intent is recieved.
 See `subscribe2Intents()` for details.
 """
 function subscribe2Topics(topics, callback)
-    
+
     subscribeMQTT(topics, callback; hostname = nothing, port = nothing)
 end
 
@@ -306,7 +306,7 @@ end
 
 
 """
-    publishSay(text; sessionId = CURRENT_SESSION_ID,
+    publishSay(text; sessionId = CURRENT_SESSION_ID, siteId = nothing,
                     lang = nothing, id = nothing, wait = true)
 
 Let the TTS say something.
@@ -322,14 +322,15 @@ Let the TTS say something.
         MQTT-topic)
 """
 function publishSay(text; sessionId = CURRENT_SESSION_ID,
-                    siteId = nothing, lang = nothing,
+                    siteId = CURRENT_SITE_ID, lang = LANG,
                     id = nothing, wait = true)
+# TODO: kwargs initialised!
 
-    if siteId == nothing
-        siteId = CURRENT_SITE_ID
-    end
+    # if siteId == nothing
+    #     siteId = CURRENT_SITE_ID
+    # end
 
-    payload = Dict(:text => text, :siteId => CURRENT_SITE_ID)
+    payload = Dict(:text => text, :siteId => siteId)
 
     if lang != nothing
         payload[:lang] = lang

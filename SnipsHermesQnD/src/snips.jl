@@ -97,7 +97,7 @@ function tryParseJSONfile(fname; quiet = false)
     catch
         msg = TEXTS[:error_json]
         if ! quiet
-            publishSay(msg, CURRENT_SITE_ID)
+            publishSay(msg)
         end
         println("$msg : $fname")
     end
