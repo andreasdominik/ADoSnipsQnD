@@ -18,7 +18,7 @@ function ignoreDevice(topic, payload)
 """
 function ignoreDevice(topic, payload)
 
-    println("- ADoSnipsOnOff: action ignoreDevice() started.")
+    println("[ADoSnipsOnOff]: action ignoreDevice() started.")
     # find the device in payload:
     #
     device = Snips.extractSlotValue(payload, SLOT_DEVICE)
@@ -26,14 +26,14 @@ function ignoreDevice(topic, payload)
     # test if is in list of devices to be ignored:
     #
     if !(device isa AbstractString)
-        println("- ADoSnipsOnOff: No device: ignored and session ended.")
+        println("[ADoSnipsOnOff]: No device: ignored and session ended.")
         Snips.publishEndSession("$(TEXTS[:not_handled])")
-        return false     # hotword needed for next command
+        return true     # hotword needed for next command
 
-    elseif Snips.matchConfig(:not_handled, device)
-        println("- ADoSnipsOnOff: device $device ignored and session ended.")
+    elseif !Snips.matchConfig(INI_NAME, device)
+        println("[ADoSnipsOnOff]: device $device ignored and session ended.")
         Snips.publishEndSession("$(TEXTS[:not_handled]) $device")
-        return false     # hotword needed for next command
+        return true     # hotword needed for next command
     else
         return false    # hotword needed for next command
     end

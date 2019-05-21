@@ -22,7 +22,7 @@ SLOT_ON_OFF = "on_or_off"
 
 # name of entry in config.ini:
 #
-INI_NAME = "not_handled"
+INI_NAME = "handled"
 
 
 #
