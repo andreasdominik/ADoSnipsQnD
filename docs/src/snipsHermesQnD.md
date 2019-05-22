@@ -75,7 +75,7 @@ run-time-compiled only once, with consequences:
 The framework is installed, by adding the app `ADoSnipsHermesQnD` to an
 Snips assistant. This will install the library and general `SwitchOnOff` intent.
 
-It is a good idea to install the template skill in addition. The skill
+It is a good idea to install the template skill in addition. The skill is
 fully functional and can be used to explore the framework.
 
 MQTT communication is performed via the `Eclipse modquitto`,
@@ -201,17 +201,24 @@ SnipsHermesQnD tries to work around this issue, by using only one intent
 for all on/off-commands.
 
 All supported devices are listed in the slot `device` of the intent
-`AdoSnipsOnOff<EN/DE>` and defined in the slot type `device_Type`.
+`ADoSnipsOnOff<EN/DE>` and defined in the slot type `device_Type`.
 
 The app `ADoSnipsHermesQnD` has some code behind to handle unrecognised
-devises. The associated `config.ini` defines a list of unhandled devices.
+devises. The associated `config.ini` defines the list of devices handled
+by skills in your assistant.
+Any device that is not in this list, will be ignored; i.e. the framework will
+end the respective ADoSnipsOnOff-session without any action immediately.
+
 If you want to use the intent to swich an additional device on or off
-- firstly look in the config.ini, if the device is already defined and
-  in the list of unhandled devices. In this case just remove it from the list,
-  and the your code will be executed if the command is recognised.
-- secondly, if the new device is not already in the list, you will have to
+- firstly look in the intent `ADoSnipsOnOff<EN/DE>` if the device
+  is already defined in the slot type `device_Type`. If not,
+  you will have to
   create a fork of the intent and add a new device to the values
   of the slot type `device_Type`.
+- secondly the new device must be added to the list of devices in the
+  `config.ini` of the framework (`ADoSnipsHermesQnD_<EN/DE>`). Add the
+  name to the comma-separated list of devices in the parameter
+  `on_off_devices`.
 
 The framework comes with a function `isOnOffMatched(payload, DEVICE_NAME)`
 which can be called with the current payload and the name (and

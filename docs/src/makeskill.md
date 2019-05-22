@@ -53,7 +53,7 @@ git repo and pushed to GitHub.
 All file- and directory names can be left unchanged.
 The skill has no file `action-...` as demanded by the Snips skill server,
 because all SnipsHermesQnD-skills will run in the same Julia process. Only
-teh framework it self has the starter function `action-ADoSnipsQnD.jl`,
+the framework it self has the starter function `action-ADoSnipsQnD.jl`,
 all other skill have a loader function `loader-...` instead, which is
 recognised by the framework and loaded into the running instance.
 
@@ -241,6 +241,15 @@ Returning `false` will disable the *continue without hotword* function; i.e.
 a hotword is necessary before the next command can be uttered.
 This is necessary for the default-case, because probably a different
 app will execute this non-recognised command.
+
+In order to ensure that the framework accepts on-off-commands for the new
+device, it must be added to the list of handled devices in the `config.ini`
+of the framework. The Amazon Fire Stick is already defined as device-type
+in the slot `device` of the intent.
+
+```
+on_off_devices=floor_light,light,amazon_fire
+```
 
 
 ### The skill-action for all other commands
