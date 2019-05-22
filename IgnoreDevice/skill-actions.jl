@@ -35,6 +35,8 @@ function ignoreDevice(topic, payload)
         Snips.publishEndSession("$(TEXTS[:not_handled]) $device")
         return true     # hotword needed for next command
     else
+        # just ignore and let another app deal with the session...
+        #
         return false    # hotword needed for next command
     end
 end
