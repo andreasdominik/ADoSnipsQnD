@@ -15,7 +15,7 @@ publishEndSession
 
 ## Dialogue manager functions
 
-In addition to functions to work with the dialogue manager
+In addition to functions to work with the dialogue manager,
 advanced direct dialogues are provided that can be included
 in the control flow of the program.
 
@@ -80,7 +80,7 @@ Low-level API to MQTT messages (publish and subscribe).
 In the QuickAndDirty framework, these functions are calling
 Eclipse `mosquitto_pub` and `mosquitto_sub`. However
 this first (and preliminary) implementation is surpriningly
-robust and easy to maintain - it seems there is no need to change.
+robust and easy to maintain - there might be no need to change.
 
 ```@docs
 subscribeMQTT
@@ -91,7 +91,7 @@ publishMQTT
 
 ## Utility functions
 
-Little helpers to provide functionality whichis commonly needed
+Little helpers to provide functionality which is commonly needed
 when developing a skill.
 
 ### Handle background information of recognised intent

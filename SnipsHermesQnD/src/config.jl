@@ -117,7 +117,7 @@ end
 Return true if a parameter with name exists.
 
 ## Arguments:
-    * `name`: name of the config parameter as Symbol
+* `name`: name of the config parameter as Symbol
 """
 function isInConfig(name::Symbol)
 

@@ -2,7 +2,7 @@
     registerIntentAction(intent, developer, inModule, action)
     registerIntentAction(intent, action)
 
-Add an intent to the list of intents to be subscribed to.
+Add an intent to the list of intents to subscribe to.
 Each function that shall be executed if Snips recognises
 an intent must be registered with this function.
 The framework will collect all these links, subscribe to all
@@ -15,7 +15,6 @@ more then one intent.
 The variant with only `(intent, action)` as arguments
 applies the variables CURRENT_DEVEL_NAME and CURRENT_MODULE as
 stored in the framework.
-
 The variants registerIntent... create topics with prefix
 `hermes/intent/developer:intent`.
 
@@ -45,7 +44,7 @@ end
     registerTriggerAction(intent, developer, inModule, action)
     registerTriggerAction(intent, action)
 
-Add an intent to the list of intents to be subscribed to.
+Add an intent to the list of intents to subscribe to.
 Each function that shall be executed if Snips recognises
 The variants registerTrigger... create topics with prefix
 `QnD/trigger/developer:intent`.

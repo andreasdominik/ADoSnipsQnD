@@ -7,7 +7,7 @@
     tryParseJSON(text)
 
 parses a JSON and returns a hierarchy of Dicts{Symbol, Any} and Arrays with
-the content or a string (text), if text is not a valid JSON string is
+the content or a string (text), if text is not a valid JSON, the raw string is
 returned.
 """
 function tryParseJSON(text)
@@ -66,7 +66,7 @@ end
     tryMkJSON(payload)
 
 Create a JSON representation of the input (nested Dict or Array)
-and return an empty string if not possible.
+or return an empty string if not possible.
 """
 function tryMkJSON(payload)
 

@@ -8,26 +8,24 @@
 """
     subscribeMQTT(topics, callback; hostname = nothing, port = nothing)
 
-    Listen to one or more topics.
+Listen to one or more topics.
 
 ## Arguments
-* `topics`: Abstract String or List of Abtsract Strings to define
+* `topics`: AbstractString or List of AbtsractString to define
           topics to subscribe
 * `callback`: Function to be executed for a incoming message.
 * `hostname`:
 * `port`:     Hostname and port to listen. If not specified
             mosquitto_sub will be called without hostname/port
-            (use the default configuration of the system).
+            (using the default configuration of the system).
 
 ## Details:
 The callback function has the signature f(topic, payload), where
 topic is a String and payload a Dict{Symbol, Any} with the content
-of the payload (assuming, that the payload is in JSON-formate) or
-a String, if the payload is not valid JSON.
+of the payload (assuming, that the payload is in JSON-format) or
+a String, if the payload is not a valid JSON.
 
-The callback function is not spawned, but executed in the current
-thread. As a result the function is not listening during execution of the
-callback.
+The callback function is spawned.
 """
 function subscribeMQTT(topics, callback; hostname = nothing, port = nothing)
 
@@ -56,12 +54,12 @@ retrieved and return topic as string and payload as Dict
 or as String if JSON parsing is not possible).
 
 ## Arguments
-* `topics`: Abstract String or List of Abstract Strings to define
+* `topics`: AbstractString or List of AbstractString to define
           topics to subscribe
 * `hostname`:
 * `port`:     Hostname and port to listen. If not specified
             mosquitto_sub will be called without hostname/port
-            (use the default configuration of the system).
+            (using the default configuration of the system).
 """
 function readOneMQTT(topics; hostname = nothing, port = nothing)
 
@@ -165,7 +163,7 @@ end
 """
     publishMQTT(topic, payload, hostname = nothing, port = nothing)
 
-Publishe a MQTT message.
+Publish a MQTT message.
 
 ## Arguments
 * `topics`: String with the topic
@@ -173,7 +171,7 @@ Publishe a MQTT message.
 * `hostname`:
 * `port`:     Hostname and port to use. If not specified
             mosquitto_sub will be called without hostname/port
-            (use the default configuration of the system).
+            (using the default configuration of the system).
 """
 function publishMQTT(topic, payload, hostname = nothing, port = nothing)
 

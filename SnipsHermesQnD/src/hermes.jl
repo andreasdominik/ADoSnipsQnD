@@ -9,7 +9,7 @@
 """
     subscribe2Intents(intents, callback; moreTopics = nothing)
 
-Subscribe to one or a list of Intents and listen forever and run the callback
+Subscribe to one or a list of intents and listen forever and run the callback
 if a matching intent is recieved.
 
 ## Arguments:
@@ -25,9 +25,8 @@ The callback function has the signature f(topic, intentMessage), where
 topic is a String and intentMessage a Dict{Symbol, Any} with the content
 of the payload (assuming, that the payload is in JSON-format) or
 a String, if the payload is not valid JSON.
-The callback function is not spawned, but executed in the current
-thread. As a result the function is not listening during execution of the
-callback.
+The callback function is spawned and the function is listening
+to the MQTT server while the callback is executed.
 """
 function subscribe2Intents(intents, callback; moreTopics = nothing)
 
@@ -63,9 +62,9 @@ Subscribe to one or a list of Intents, but listen only until one
 matching intent is recognised.
 
 ## Arguments
-* `intents`: Abstract String or List of Abtsract Strings to define
+* `intents`: AbstractString or List of AbstractString to define
            intents to subscribe or nothing
-* `moreTopics`: keyword arg to provide additional topics to subscribe,
+* `moreTopics`: keyword arg to provide additional topics to subscribe to.
 
 ## Value:
 Return values are topic (as String) and payload (as Dict or as
@@ -161,8 +160,8 @@ end
 MQTT publish end session.
 
 ## Arguments:
-* `sessionId`: ID of the session to be terminated as String
-             If omiited, sessionId of the current will be inserted.
+* `sessionId`: ID of the session to be terminated as String.
+             If omitted, sessionId of the current will be inserted.
 * `text`: text to be said via TTS
 """
 function publishEndSession(text = nothing, sessionId = CURRENT_SESSION_ID)
@@ -185,9 +184,9 @@ end
 MQTT publish continue session.
 
 ## Arguments:
-* `sessionId`: ID of the session to be terminated as String
+* `sessionId`: ID of the current session as String
 * `text`: text to be said via TTS
-* `intentFilter`: Optional Array of String - A list of intents names to
+* `intentFilter`: Optional Array of String - a list of intents names to
                 restrict the NLU resolution on the answer of this query.
 * `customData`: Optional String - an update to the session's custom data.
 * `sendIntentNotRecognized`: Optional Boolean -  Indicates whether the
@@ -226,10 +225,10 @@ end
 MQTT publish start session with init action
 
 ## Arguments:
-* `siteId`: ID of the session to be terminated as String
+* `siteId`: ID of the site in which the session is started
 * `text`: text to be said via TTS
-* `intentFilter`: Optional Array of String - A list of intents names to
-                restrict the NLU resolution on the answer of this query.
+* `intentFilter`: Optional Array of String - a list of intent names to
+                restrict the NLU resolution of the answer of this query.
 * `sendIntentNotRecognized`: Optional Boolean -  Indicates whether the
                 dialogue manager should handle non recognized intents
                 by itself or sent them as an Intent Not Recognized for
@@ -265,7 +264,7 @@ end
 MQTT publish start session with init notification
 
 ## Arguments:
-* `siteId`: ID of the session to be terminated as String
+* `siteId`: siteID
 * `text`: text to be said via TTS
 * `customData`: data to be sent to the service.
 """
@@ -307,16 +306,16 @@ end
 
 """
     publishSay(text; sessionId = CURRENT_SESSION_ID, siteId = nothing,
-                    lang = nothing, id = nothing, wait = true)
+                    lang = LANG, id = nothing, wait = true)
 
 Let the TTS say something.
 
 ## Arguments:
-* `text`: text to be said vie TTS
-* `lang`: Optional language code to use when saying the text.
-        If nothing is provided, `en` will be used
+* `text`: text to be said via TTS
+* `lang`: optional language code to use when saying the text.
+        If not specified, default language will be used
 * `sessionId`: optional ID of the session if there is one
-* `id`: optional A request identifier. If provided, it will be passed back
+* `id`: optional request identifier. If provided, it will be passed back
       in the response on hermes/tts/sayFinished.
 * `wait`: wait until the massege is spoken (i.i. wait for the
         MQTT-topic)
