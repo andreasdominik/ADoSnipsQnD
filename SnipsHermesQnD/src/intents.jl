@@ -109,7 +109,7 @@ Publish a system trigger with topic and payload.
 
 ## Arguments:
 * topic: MQTT topic, with or w/o the developername. If no
-         developername is included, CURRENT_DEVEL_NAME will be added.
+         developername is included, CURRENT\_DEVEL\_NAME will be added.
          If the topic does not start with `qnd/trigger/`, this
          will be added.
 * trigger: specific payload for the trigger.
