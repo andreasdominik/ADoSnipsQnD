@@ -16,7 +16,7 @@ Installation of Julia is simple:
 * just download the tar-ball for
   your architecture (most probably Raspberry-Pi/arm).
 * save it in an appropriate folder (`/opt/Julia/` might be a good idea).
-* unpack it: `tar -xvzf julia-<version>.tar.gz`
+* unpack: `tar -xvzf julia-<version>.tar.gz`
 * make sure, that the julia executable is executable. You find it
   as `/opt/Julia/julia-<version>/bin/julia`.
   If it is not executable run `chmod 755 /opt/Julia/julia-<version>/bin/julia`
@@ -46,8 +46,8 @@ Softwarte development is made comfortable by
 IDEs (Integrated Development Environements). For Julia, best choices
 include:
 
-* My favourite is the [Atom editor](http://atom.io/) with the
-  [Juno package](http://junolab.org) installed.
+* [Atom editor](http://atom.io/) with the
+  [Juno package](http://junolab.org) installed (my favourite).
 * [Visual Studio Code](https://code.visualstudio.com) also
   provides very good support for Julia.
 * Playing around and learning is best done with
@@ -59,27 +59,28 @@ include:
 Julia code looks very much like Python code, except of
 * there are no colons,
 * whitespaces have no meaning; blocks end with an `end`,
-* sometimes types should be given explicitly.
+* sometimes types should be given explicitly (for performance and
+  explicit polymorphism).
 
-However Julia a typed language with all advantages; and code is
+However, Julia is a typed language with all advantages; and code is
 run-time-compiled only once, with consequences:
 * If a function is called for the first time, there is a time lack, because
   the compiler must finish his work before the actual code is executed.
-* Future function calls will use the compiled program, making Julia
-  code execute as fast as compiled C-code!
+* Future function calls will use the compiled machine code, making Julia
+  code execute as fast as compiled c-code!
 
 ## Installation
 
 ### Installation of the framework
 
-The framework is installed, by adding the app `ADoSnipsHermesQnD` to an
+The framework is installed, by adding the app `ADoSnipsHermesQnD` to a
 Snips assistant. This will install the library and general `SwitchOnOff` intent.
 
 It is a good idea to install the template skill in addition. The skill is
 fully functional and can be used to explore the framework.
 
-MQTT communication is performed via the `Eclipse modquitto`,
-therefore this must be installed. On a Raspberry Pi the packages
+MQTT communication is performed via `Eclipse modquitto`,
+therefore this must be installed, too. On a Raspberry Pi the packages
 `mosquitto` and `mosquitto-clients` are needed:
 
 ```sh
@@ -116,11 +117,10 @@ Some things need to be considered to handle this in the Snips environement:
   are visible at the top with 100% CPU load. This is the compiler!
 - The settings for `session_timeout` and `lambda_timeout` in the Snips
   configuration file `snips.toml` should be set to a high value
-  (such as 2 minutes) in order to keep a session alive until the app reacts
+  (such as 1 minute) in order to keep a session alive until the app reacts
   the first time. This is only
-  an issue when a function behind an intent is executed for the first time.
-  Because Julia stores the compiled code, any subsequent call will be very
-  fast.
+  an issue when a function behind an intent is executed for the first time,
+  any subsequent call will be very fast.
 
 
 ## Template skill
@@ -166,24 +166,25 @@ The idea behind the framework is, to put as much as possible in the background
 so that a developer only needs to provide the code for the
 functions executed for an intent.
 
-The MQTT-messages of *Hermes* and the *Dialogue Manager* are wrapped, but
+The MQTT-messages of *Hermes* and the *Dialogue Manager* are wrapped, and
 additional interfaces to *Hermes* are provided to enable direct
 dialogues without using callbacks.
 
 In addion background information, such as current session-ID or
-current site-ID are mostly handled in the background and not exposed to a skill
+current site-ID, are handled in the background and not exposed to a skill
 developer.
 
 Additional utilities are provided to
-- read values from intent slots
-- read values from `config.ini`
-- write apps for more then one language
+- read values from intent slots,
+- read values from `config.ini`,
+- write apps for more then one language,
 - get an answer form the NLU back as function value in the
-  control flow of a function
-- use a global intent for switching a device on or off
-- let Snips ask a question and get "yes" or "no" back as boolean value
-- let Snips continue a conversation without the need to utter the
-  hotword again.
+  control flow of a function,
+- use a global intent for switching a device on or off,
+- let Snips ask a question and get "yes" or "no" back as boolean value,
+- let Snips continue a conversation without the need to utter the,
+  hotword again,
+- execute actions of other skills by submitting system triggers.
 
 
 ### Common intent for on/off
@@ -194,8 +195,7 @@ intent for every device.
 
 Background: All home assistants run into problems when many intents are
 responsible to switch on or off a device. Obviously all these intends
-are very similar and it is not easy to always detect the correct intent
-and device.
+are very similar and reliable detection of the correct intent is not easy.
 
 SnipsHermesQnD tries to work around this issue, by using only one intent
 for all on/off-commands.
@@ -242,14 +242,14 @@ See the following self-exlpaining code as example:
 
 ```Julia
 """
-function destroyAction(topic, payload)
+    destroyAction(topic, payload)
 
-    Initialise self-destruction.
+Initialise self-destruction.
 """
 function destroyAction(topic, payload)
 
   # log message:
-  println("- ADoSnipsDestroyYourself: action destroyAction() started.")
+  println("[ADoSnipsDestroyYourself]: action destroyAction() started.")
 
   if askYesOrNo("Do you really want to initiate self-destruction?")
     Snips.publishEndSession("Self-destruction sequence started!")
@@ -336,19 +336,19 @@ language=en
 
 #### 2) Define the texts in all languages:
 To let Snips speak different languages, all texts must be defined in
-a Dictionary with unique keys. These are defined in the file
+dictionaries for all target languages. These are defined in the file
 `languages.jl`, as shown in the Template:
 
 ```Julia
 TEXTS_DE = Dict(
-:iam => "Ich bin dein Assistent $myName und ich soll sagen $word",
+:iam => "Ich bin dein Assistent",
 :bravo => "Bravo, du hast erfolgreich das Template installiert!",
 :noname => "Ich finde keinen Namen in der config Datei!",
 :dunno => "Ich habe nicht verstanden was ich sagen soll!"
 )
 
 TEXTS_EN = Dict(
-:iam => "I am yor home assistant $myName and you told me to say $word",
+:iam => "I am your home assistant",
 :bravo => "Bravo, you managed to install the template!",
 :noname => "My name is not configured in the config file!",
 :dunno => "I did not catch what you want me to say!"
@@ -374,23 +374,23 @@ const LANG = Snips.getIniLanguage() != nothing ? Snips.getIniLanguage() : "en"
 ...
 
 if LANG == "de"
-    INTENT_ACTIONS = INTENT_ACTIONS_DE
+    Snips.registerIntentAction("myNewIntentDE", myNewSkillfun)
+    Snips.registerIntentAction("myNextIntentDE", myNextSkillfun)
     TEXTS = TEXTS_DE
 elseif LANG == "en"
-    INTENT_ACTIONS = INTENT_ACTIONS_EN
+    Snips.registerIntentAction("myNewIntentEN", myNewSkillfun)
+    Snips.registerIntentAction("myNextIntentEN", myNextSkillfun)
     TEXTS = TEXTS_EN
 else
-    INTENT_ACTIONS = INTENT_ACTIONS_EN
+    Snips.registerIntentAction("myNewIntentEN", myNewSkillfun)
+    Snips.registerIntentAction("myNextIntentEN", myNextSkillfun)
     TEXTS = TEXTS_EN
 end
 ```
 
 The first line tries to read the language from `config.ini` and sets it
 to the default if no definition is found.
-
 The latter part selects the intents and texts to be used.
-A dictionary of texts is necessary for each language and a dictionary of intents
-is necessary for each language.
 
 
 
@@ -407,6 +407,6 @@ compile times (because the libraries must be compiled only once).
 
 It is still possible to add skills in the Snips console
 like all other skills.
-Theonly difference is, that the `action-...` executable of a skill
+The only difference is, that the `action-...` executable of a skill
 is replaced by a `loader-...` script, which is recognised by the
 framework and loaded.
