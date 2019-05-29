@@ -33,12 +33,12 @@ Before strating, prepare to give the init-script some information:
       and must be unique within your GitHub repositories.
       The example below will create a skill to control an Amazon Fire device.
       Therefore in this tutorial the name `MyFire` will be used as example.
-- *your GitHub name:* create a GitHub account in necessary.
+- *your GitHub name:* create a GitHub account if necessary.
 - *your gitHub password:* name and password are needed, because the script will
       initialise a new GitHub repo for the new project.
 
 The script `init.sh` in the directory `/bin` will create
-a skeleton of the new skill. Enter (or stay in) the directory
+the skeleton of a new skill. Enter (or stay in) the directory
 `~/Documents/Snips/` and run the script:
 
 ```bash
@@ -54,7 +54,7 @@ All file- and directory names can be left unchanged.
 The skill has no file `action-...` as demanded by the Snips skill server,
 because all SnipsHermesQnD-skills will run in the same Julia process. Only
 the framework it self has the starter function `action-ADoSnipsQnD.jl`,
-all other skill have a loader function `loader-...` instead, which is
+all other skills have loader functions `loader-...` instead, which are
 recognised by the framework and loaded into the running instance.
 
 
@@ -70,7 +70,7 @@ filename | comment | needs to be adapted
 `setup.sh`         | setup file as default in Snips              | yes
 `api.jl`           | source code of Julia low-level API for a controlled device | optional
 `config.jl`   | global initialisation of a skill                 | yes
-`exported.jl` | geberated exported function of the skill module  | no
+`exported.jl` | generated exported functions of the skill module  | no
 `languages.jl`| text fragments for multi-language support        | optional
 `skill-actions.jl` | functions to be executed, if an intent is recognised | yes
 `MyFire.jl`        | the julia module for the skill              | no
@@ -78,9 +78,9 @@ filename | comment | needs to be adapted
 In a minimum-setup only 2 things need to be adapted for a new
 skill:
 - the action-functions which respond to an intent (the *direct* action, no callback)
-  must be definded and implemented (`skill-actions.jl`)
+  must be definded and implemented (in `skill-actions.jl`)
 - the action-functions must be connected with the corresponding intent names
-  (`config.jl`).
+  (in `config.jl`).
 
 Optionally, more fine-grained software engineering is possible by
 - separating the user-interaction from the API of controlled devices (latter
@@ -114,16 +114,16 @@ included in the framework.
 The low-level API which sends commands to the Amazon fire is borrowed from
 Matt's ADBee project (`git@github.com:mattgyver83/adbee.git`) that provides
 a shell-script to send commands to the Amazon device.
-Please read theer for the steps to prepare the Amazon device for
+Please read there for the steps to prepare the Amazon device for
 the remote control via ADB.
 
 Although Python programmes usually find Python packages for every task, it is
-a very good idea to implement the lowest level af any device-control API
+a very good idea to implement the lowest level of any device-control API
 as a shell script. Advantages:
 - easy to write
 - fast and without any overhead
-- easy to test: the API canbe tested by just running the script
-  from commandline as `controlFire ON` or `controlFire OFF` and see
+- easy to test: the API can be tested by running the script
+  from the commandline as `controlFire ON` or `controlFire OFF` and see
   what happens.
 
  The simplified ADBee-script is:
@@ -171,7 +171,7 @@ In this case only a wrapper is needed, to make the API-commands
 available in the Julia program.
 The framework provide a function `tryrun()` to execute external
 commands safely (i.e. if an error occures, the program will not crash,
-but reading the error message via Hermes text to speech).
+but reading the error message via Hermes text-to-speech).
 
 This API definition splits in the function to execute the ADBee-script and
 functions to be called by the user:
@@ -213,11 +213,14 @@ The functions are defined in the file `skill-actions.jl`.
 On/off is handled via the common on/off-intent, all other actions
 need a specific intent, that must be set up in the Snips console.
 
+The constant `DEVICE_NAME`, used in the example, must be defined
+somewhere (by default constants are defined in `config.jl`):
+
 ```Julia
 """
-function powerOnOff(topic, payload)
+    powerOnOff(topic, payload)
 
-    Power on or of with SnipsHermesQnD mechanism.
+Power on or of with SnipsHermesQnD mechanism.
 """
 function powerOnOff(topic, payload)
 
@@ -265,9 +268,9 @@ To handle this, a second skill-action has to be defined in the file
 
 ```Julia
 """
-function commands(topic, payload)
+    commands(topic, payload)
 
-    Send commands to Amamzon device.
+Send commands to Amamzon device.
 """
 function commands(topic, payload)
 
@@ -291,7 +294,7 @@ end
 
 ### Tying everything together
 
-The last step is to tell the skill the names of intents to listen
+The last step is to tell the skill the names of intents to listen to
 and the names of the slots to extract values from.
 Both is defined in the file `config.jl`:
 
@@ -302,6 +305,7 @@ Both is defined in the file `config.jl`:
 
 ```Julia
 const SLOT_NAME = "Command"
+const DEVICE_NAME = "amazon_fire"
 
 ...
 
