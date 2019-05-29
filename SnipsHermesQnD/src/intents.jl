@@ -6,10 +6,10 @@ Add an intent to the list of intents to be subscribed to.
 Each function that shall be executed if Snips recognises
 an intent must be registered with this function.
 The framework will collect all these links, subscribe to all
-needed intents and execute the respectve functions.
+needed intents and execute the respective functions.
 The links need not to be unique (in both directions):
 It is possible to assign several functions to one intent
-(all of them will be executed), or to assing one function to
+(all of them will be executed), or to assign one function to
 more then one intent.
 
 The variant with only `(intent, action)` as arguments

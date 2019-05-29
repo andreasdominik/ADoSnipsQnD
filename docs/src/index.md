@@ -25,21 +25,21 @@ are returned as function value.
 
 On top of `listenIntentsOneTime()`, SnipsHermesQnD comes with
 a simple question/answer methods to
-ask questions answered by *Yes* or *No*
+ask questions answered with *Yes* or *No*
 (`askYesOrNo()` and `askYesOrNoOrUnknown()`).
 As a result, it is possible to get a quick user-feedback without leaving
 the control flow of a function, like illustrated in this skill action:
 
 ```Julia
 """
-function destroyAction(topic, payload)
+    destroyAction(topic, payload)
 
-    Initialise self-destruction.
+Initialise self-destruction.
 """
 function destroyAction(topic, payload)
 
   # log message:
-  println("- ADoSnipsDestroyYourself: action destroyAction() started.")
+  println("[ADoSnipsDestroyYourself]: action destroyAction() started.")
 
   if askYesOrNo("Do you really want to initiate self-destruction?")
     Snips.publishEndSession("Self-destruction sequence started!")
