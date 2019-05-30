@@ -104,6 +104,8 @@ setDeveloperName
 getDeveloperName
 setModule
 getModule
+setAppDir
+getAppDir
 setTopic
 getTopic
 ```

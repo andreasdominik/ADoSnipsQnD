@@ -22,6 +22,7 @@ CURRENT_SESSION_ID = "1"
 CURRENT_DEVEL_NAME = "unknown"
 CURRENT_MODULE = Main
 CURRENT_INTENT = "none"
+APP_DIR = ""
 
 # set default language and texts to en
 #
