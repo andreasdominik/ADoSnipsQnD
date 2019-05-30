@@ -155,3 +155,25 @@ function setLanguage(lang)
         TEXTS = TEXTS_EN
     end
 end
+
+
+"""
+    setAppDir(appDir)
+
+Store the directory `appDir` as APP_DIR in the
+current session
+"""
+function setAppDir(appDir)
+
+    global APP_DIR = appDir
+end
+
+"""
+    getAppDir()
+
+Return the directory ofthe currently running app
+(i.e. the variable APP_DIR)
+"""
+function getAppDir()
+    return APP_DIR
+end
