@@ -371,22 +371,24 @@ end
 
 
 
-"""
-    langText(key; lang = LANG)
+# """
+#     langText(key; lang = LANG)
+#
+# Return the text specified by the key in the specified language
+# (or the default language if not given).
+# """
+# function langText(key; lang = LANG)
+#
+#     if haskey(LANGUAGE_TEXTS, lang) && haskey(LANGUAGE_TEXTS[lang], key)
+#         text = LANGUAGE_TEXTS[lang][key]
+#     else
+#         text = TEXTS_EN[:error_text]
+#     end
+#
+#     return text
+# end
 
-Return the text specified by the key in the specified language
-(or the default language if not given).
-"""
-function langText(key; lang = LANG)
 
-    if haskey(LANGUAGE_TEXTS, lang) && haskey(LANGUAGE_TEXTS[lang], key)
-        text = LANGUAGE_TEXTS[lang][key]
-    else
-        text = TEXTS_EN[:error_text]
-    end
-
-    return text
-end
 
 #
 # function setLangText(texts, lang)

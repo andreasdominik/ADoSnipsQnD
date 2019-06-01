@@ -15,3 +15,6 @@ TEXTS_EN = Dict(
 :error_read => "Error reading file",
 :ok => "OK"
 )
+
+# LANGUAGE_TEXTS["en"] = TEXTS_EN
+# LANGUAGE_TEXTS["de"] = TEXTS_DE

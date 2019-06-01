@@ -30,6 +30,7 @@ DEFAULT_LANG = "en"
 LANG = DEFAULT_LANG
 TEXTS = TEXTS_EN
 setLanguage(LANG)
+# LANGUAGE_TEXTS = Dict()   # one entry for every language, e.g. "en", "de", ...
 
 # List of intents to listen to:
 # (intent, developer, complete topic, module, skill-action)
