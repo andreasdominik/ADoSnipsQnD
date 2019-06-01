@@ -8,6 +8,7 @@ TEXTS_DE = Dict(
 
 
 TEXTS_EN = Dict(
+:error_text => "I cannot find the text to utter!",
 :error_gpio => "I cannot controll the G P I O",
 :error_json => "Error reading jason file",
 :error_script => "Error executing script",

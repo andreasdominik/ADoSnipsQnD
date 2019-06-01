@@ -310,6 +310,10 @@ end
 
 Let the TTS say something.
 
+The variant with a Symbol as first argument looks up the phrase in the
+dictionary of phrases for the selected language by calling
+`getText()`.
+
 ## Arguments:
 * `text`: text to be said via TTS
 * `lang`: optional language code to use when saying the text.
@@ -323,11 +327,6 @@ Let the TTS say something.
 function publishSay(text::AbstractString; sessionId = CURRENT_SESSION_ID,
                     siteId = CURRENT_SITE_ID, lang = LANG,
                     id = nothing, wait = true)
-# TODO: kwargs initialised!
-
-    # if siteId == nothing
-    #     siteId = CURRENT_SITE_ID
-    # end
 
     payload = Dict(:text => text, :siteId => siteId)
 
@@ -361,6 +360,38 @@ function publishSay(text::AbstractString; sessionId = CURRENT_SESSION_ID,
     end
 end
 
+
+function publishSay(text::Symbol; sessionId = CURRENT_SESSION_ID,
+                    siteId = CURRENT_SITE_ID, lang = LANG,
+                    id = nothing, wait = true)
+
+    strText = langText(text)
+    publishSay(strText, sessionId, siteId,lang, id, wait)
+end
+
+
+
+"""
+    langText(key; lang = LANG)
+
+Return the text specified by the key in the specified language
+(or the default language if not given).
+"""
+function langText(key; lang = LANG)
+
+    if haskey(LANGUAGE_TEXTS, lang) && haskey(LANGUAGE_TEXTS[lang], key)
+        text = LANGUAGE_TEXTS[lang][key]
+    else
+        text = TEXTS_EN[:error_text]
+    end
+
+    return text
+end
+
+#
+# function setLangText(texts, lang)
+#
+#     global LANGUAGE_TEXTS[lang]
 
 """
     isOnOffMatched(payload, deviceName; siteId = CURRENT_SITE_ID)
