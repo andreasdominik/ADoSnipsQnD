@@ -82,12 +82,16 @@ end
 
 
 """
-    tryParseJSONfile(fname)
+    tryParseJSONfile(fname; quiet = false)
 
 Parse a JSON file and return a hierarchy of Dicts with
 the content.
 * keys are changed to Symbol
-* if error, nothing is returned
+* on error, an empty Dict() is returned
+
+## Arguments:
+- fname: filename
+- quiet: if false Snips utters an error message
 """
 function tryParseJSONfile(fname; quiet = false)
 
