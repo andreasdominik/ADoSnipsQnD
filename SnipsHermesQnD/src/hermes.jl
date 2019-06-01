@@ -305,7 +305,7 @@ end
 
 
 """
-    publishSay(text; sessionId = CURRENT_SESSION_ID, siteId = nothing,
+    publishSay(text::AbstractString; sessionId = CURRENT_SESSION_ID, siteId = nothing,
                     lang = LANG, id = nothing, wait = true)
 
 Let the TTS say something.
@@ -320,7 +320,7 @@ Let the TTS say something.
 * `wait`: wait until the massege is spoken (i.i. wait for the
         MQTT-topic)
 """
-function publishSay(text; sessionId = CURRENT_SESSION_ID,
+function publishSay(text::AbstractString; sessionId = CURRENT_SESSION_ID,
                     siteId = CURRENT_SITE_ID, lang = LANG,
                     id = nothing, wait = true)
 # TODO: kwargs initialised!

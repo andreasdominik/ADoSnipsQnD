@@ -95,7 +95,6 @@ the content.
 """
 function tryParseJSONfile(fname; quiet = false)
 
-    json = Dict()
     try
         json = JSON.parsefile( fname)
     catch
@@ -104,6 +103,7 @@ function tryParseJSONfile(fname; quiet = false)
             publishSay(msg)
         end
         println("$msg : $fname")
+        json = Dict()
     end
 
     json = key2symbol(json)
