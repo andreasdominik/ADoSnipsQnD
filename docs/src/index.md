@@ -41,7 +41,7 @@ function destroyAction(topic, payload)
   # log message:
   println("[ADoSnipsDestroyYourself]: action destroyAction() started.")
 
-  if askYesOrNo("Do you really want to initiate self-destruction?")
+  if Snips.askYesOrNo("Do you really want to initiate self-destruction?")
     Snips.publishEndSession("Self-destruction sequence started!")
     boom()
   else
