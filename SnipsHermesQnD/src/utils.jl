@@ -156,6 +156,57 @@ function setLanguage(lang)
     end
 end
 
+"""
+    addText(lang::AbstractString, key::Symbol, text)
+
+Add the text to the dictionary of text sniplets for the language
+`lang` and the key `key`.
+
+## Arguments:
+* lang: String with language code (`"en", "de", ...`)
+* key: Symbol with unique key for the text
+* text: String or array of String with the text(s) to be uttered.
+
+## Details:
+If text is an Array, all texts will be saved and the function `Snips.text()`
+will return a randomly selected text from the list.
+
+If the key already exists, the new text will be added to the the
+Array of texts for a key.
+"""
+function addText(lang::AbstractString, key::Symbol, text)
+
+    if text isa AbstractString
+        text = [text]
+    end
+
+    if !haskey(LANGUAGE_TEXTS, (lang, key))
+        LANGUAGE_TEXTS[(lang, key)] = text
+    else
+        append!(LANGUAGE_TEXTS[(lang, key)], text)
+    end
+end
+
+
+"""
+    text(key::Symbol)
+
+Return the text in the languages dictionary for the key and the
+language set with `setLanguage()`.
+
+If the key does not exists, the text in the default language is returned;
+if this also does not exist, an error message is returned.
+"""
+function text(key::Symbol)
+
+    if haskey(LANGUAGE_TEXTS, (LANG, key))
+        return StatsBase.sample(LANGUAGE_TEXTS[(LANG, key)])
+    elseif haskey(LANGUAGE_TEXTS, (DEFAULT_LANG, key))
+        return StatsBase.sample(LANGUAGE_TEXTS[(DEFAULT_LANG, key)])
+    else
+        return "I don't know what to say!"
+    end
+end
 
 """
     setAppDir(appDir)

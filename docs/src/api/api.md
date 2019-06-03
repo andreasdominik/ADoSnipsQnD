@@ -110,10 +110,15 @@ setTopic
 getTopic
 ```
 
+### Multi-language utilities
+```@doc
+setLanguage
+addText
+text
+```
 
 ### Other Utils
 ```@docs
-setLanguage
 readableDateTime
 tryrun
 tryReadTextfile

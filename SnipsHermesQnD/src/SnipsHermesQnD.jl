@@ -30,7 +30,7 @@ DEFAULT_LANG = "en"
 LANG = DEFAULT_LANG
 TEXTS = TEXTS_EN
 setLanguage(LANG)
-# LANGUAGE_TEXTS = Dict()   # one entry for every language, e.g. "en", "de", ...
+LANGUAGE_TEXTS = Dict{Any, Any}()   # one entry for every language, e.g. "en", "de", ...
 
 # List of intents to listen to:
 # (intent, developer, complete topic, module, skill-action)
@@ -48,7 +48,8 @@ export subscribeMQTT, readOneMQTT, publishMQTT,
        getIntentActions, setIntentActions,
        askYesOrNoOrUnknown, askYesOrNo,
        publishSay,
-       setLanguage, setSiteId, getSiteId,
+       setLanguage, addText, text,
+       setSiteId, getSiteId,
        setSessionId, getSessionId,
        setDeveloperName, getDeveloperName, setModule, getModule,
        setAppDir, getAppDir,

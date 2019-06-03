@@ -335,24 +335,23 @@ language=en
 ```
 
 #### 2) Define the texts in all languages:
-To let Snips speak different languages, all texts must be defined in
-dictionaries for all target languages. These are defined in the file
-`languages.jl`, as shown in the Template:
+To let Snips speak different languages, all texts must be added to a dictionary
+for all target languages. These are defined in the file
+`languages.jl` with help of the helper-function `addText()`.
+`addText()` needds the language (as String) and a key (as Symbol) to identify
+each text sniplet in each language. Texts can be Strings or lists of Strings,
+as shown in the Template:
 
 ```Julia
-TEXTS_DE = Dict(
-:iam => "Ich bin dein Assistent",
-:bravo => "Bravo, du hast erfolgreich das Template installiert!",
-:noname => "Ich finde keinen Namen in der config Datei!",
-:dunno => "Ich habe nicht verstanden was ich sagen soll!"
-)
-
-TEXTS_EN = Dict(
-:iam => "I am your home assistant",
-:bravo => "Bravo, you managed to install the template!",
-:noname => "My name is not configured in the config file!",
-:dunno => "I did not catch what you want me to say!"
-)
+Snips.addText("de", :iam, "Ich bin dein Assistent")
+Snips.addText("de", :isay, ["Ich soll sagen", "Ich sage", "Das Wort ist"])
+Snips.addText("de", :bravo, "Bravo, du hast erfolgreich das Template installiert!")
+...
+Snips.addText("en", :iam, "I am your home assistant")
+Snips.addText("en", :isay, ["You told me to say", "I say"])
+Snips.addText("en", :bravo, "Bravo, you managed to install the template!")
+Snips.addText("en", :bravo, "The template app is running!")
+...
 ```
 
 
@@ -376,7 +375,6 @@ const LANG = Snips.getIniLanguage() != nothing ? Snips.getIniLanguage() : "en"
 if LANG == "de"
     Snips.registerIntentAction("myNewIntentDE", myNewSkillfun)
     Snips.registerIntentAction("myNextIntentDE", myNextSkillfun)
-    TEXTS = TEXTS_DE
 elseif LANG == "en"
     Snips.registerIntentAction("myNewIntentEN", myNewSkillfun)
     Snips.registerIntentAction("myNextIntentEN", myNextSkillfun)
@@ -390,8 +388,20 @@ end
 
 The first line tries to read the language from `config.ini` and sets it
 to the default if no definition is found.
-The latter part selects the intents and texts to be used.
+The latter part selects the intents to be used.
 
+
+#### 5) utter tetxts in the defined language:
+
+In the code, the text sniplets can be accessed with the `text()`-function,
+such as:
+
+```Julia
+Snips.publishEndSession(Snips.text(:bravo))
+```
+
+The framework will deliver the text sniplet in the language specified in
+`config.ini` (or in the default language instead).
 
 
 ### Managing the Julia footprint
