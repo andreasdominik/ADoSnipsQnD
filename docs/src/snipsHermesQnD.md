@@ -391,13 +391,20 @@ to the default if no definition is found.
 The latter part selects the intents to be used.
 
 
-#### 5) utter tetxts in the defined language:
+#### 5) Utter texts in the defined language:
 
-In the code, the text sniplets can be accessed with the `text()`-function,
+In the code, the text sniplets can be accessed with the `langText()`-function,
 such as:
 
 ```Julia
-Snips.publishEndSession(Snips.text(:bravo))
+Snips.publishEndSession(Snips.langText(:bravo))
+```
+
+All framework function also support the shortcut and will expand the
+text fromkey and language:
+
+```Julia
+Snips.publishEndSession(:bravo)
 ```
 
 The framework will deliver the text sniplet in the language specified in

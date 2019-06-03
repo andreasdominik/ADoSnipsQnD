@@ -116,6 +116,7 @@ function askYesOrNoOrUnknown(question)
 
     configureIntent(intentListen, true)
 
+    question = langText(question)
     publishContinueSession(question, sessionId = CURRENT_SESSION_ID,
               intentFilter = intentListen,
               customData = nothing, sendIntentNotRecognized = true)
@@ -166,6 +167,7 @@ MQTT publish end session.
 """
 function publishEndSession(text = nothing, sessionId = CURRENT_SESSION_ID)
 
+    text = langText(text)
     payload = Dict(:sessionId => sessionId)
     if text != nothing
         payload[:text] = text
@@ -198,6 +200,7 @@ function publishContinueSession(text; sessionId = CURRENT_SESSION_ID,
          intentFilter = nothing,
          customData = nothing, sendIntentNotRecognized = false)
 
+    text = langText(text)
     payload = Dict{Symbol, Any}(:sessionId => sessionId, :text => text)
 
     if intentFilter != nothing
@@ -239,6 +242,8 @@ function publishStartSessionAction(text; siteId = CURRENT_SITE_ID,
                 intentFilter = nothing, sendIntentNotRecognized = false,
                 customData = nothing)
 
+    text = langText(text)
+
     if intentFilter != nothing
         if intentFilter isa AbstractString
             intentFilter = [intentFilter]
@@ -271,6 +276,7 @@ MQTT publish start session with init notification
 function publishStartSessionNotification(text; siteId = CURRENT_SITE_ID,
                 customData = nothing)
 
+    text = langText(text)
     init = Dict(:type => "notification",
                 :text => text)
 
@@ -305,7 +311,7 @@ end
 
 
 """
-    publishSay(text::AbstractString; sessionId = CURRENT_SESSION_ID, siteId = nothing,
+    publishSay(text; sessionId = CURRENT_SESSION_ID, siteId = nothing,
                     lang = LANG, id = nothing, wait = true)
 
 Let the TTS say something.
@@ -324,10 +330,11 @@ dictionary of phrases for the selected language by calling
 * `wait`: wait until the massege is spoken (i.i. wait for the
         MQTT-topic)
 """
-function publishSay(text::AbstractString; sessionId = CURRENT_SESSION_ID,
+function publishSay(text; sessionId = CURRENT_SESSION_ID,
                     siteId = CURRENT_SITE_ID, lang = LANG,
                     id = nothing, wait = true)
 
+    text = langText(text)
     payload = Dict(:text => text, :siteId => siteId)
 
     if lang != nothing
@@ -361,16 +368,16 @@ function publishSay(text::AbstractString; sessionId = CURRENT_SESSION_ID,
 end
 
 
-function publishSay(text::Symbol; sessionId = CURRENT_SESSION_ID,
-                    siteId = CURRENT_SITE_ID, lang = LANG,
-                    id = nothing, wait = true)
-
-    strText = langText(text)
-    publishSay(strText, sessionId, siteId,lang, id, wait)
-end
-
-
-
+# function publishSay(text::Symbol; sessionId = CURRENT_SESSION_ID,
+#                     siteId = CURRENT_SITE_ID, lang = LANG,
+#                     id = nothing, wait = true)
+#
+#     strText = langText(text)
+#     publishSay(strText, sessionId, siteId,lang, id, wait)
+# end
+#
+#
+#
 # """
 #     langText(key; lang = LANG)
 #

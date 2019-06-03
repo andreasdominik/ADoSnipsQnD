@@ -90,8 +90,9 @@ end
 Try to run an external command and returns true if successful
 or false if not.
 """
-function tryrun(cmd; wait = true, errorMsg = TEXTS[:error_script])
+function tryrun(cmd; wait = true, errorMsg = :error_script)
 
+    errorMsg = langText(errorMsg)
     result = true
     try
         run(cmd; wait = wait)
@@ -106,14 +107,15 @@ end
 
 
 """
-    tryReadTextfile(fname, errMsg = TEXTS[:error_read])
+    tryReadTextfile(fname, errorMsg = TEXTS[:error_read])
 
 Try to read a text file from file system and
 return the text as `String` or an `String` of length 0, if
 something went wrong.
 """
-function tryReadTextfile(fname, errMsg = TEXTS[:error_read])
+function tryReadTextfile(fname, errorMsg = :error_read)
 
+    errorMsg = langText(errorMsg)
     text = ""
     try
         text = open(fname) do file
@@ -189,15 +191,20 @@ end
 
 
 """
-    text(key::Symbol)
+    langText(key::Symbol)
+    langText(key::Nothing)
+    langText(key::AbstractString)
 
 Return the text in the languages dictionary for the key and the
 language set with `setLanguage()`.
 
 If the key does not exists, the text in the default language is returned;
 if this also does not exist, an error message is returned.
+
+The variants make sure that nothing or the key itself are returned
+if key is nothing or an AbstractString, respectively.
 """
-function text(key::Symbol)
+function langText(key::Symbol)
 
     if haskey(LANGUAGE_TEXTS, (LANG, key))
         return StatsBase.sample(LANGUAGE_TEXTS[(LANG, key)])
@@ -207,6 +214,20 @@ function text(key::Symbol)
         return "I don't know what to say!"
     end
 end
+
+function langText(key::Nothing)
+
+    return nothing
+end
+
+
+function langText(key::AbstractString)
+
+    return key
+end
+
+
+
 
 """
     setAppDir(appDir)

@@ -114,7 +114,7 @@ getTopic
 ```@doc
 setLanguage
 addText
-text
+langText
 ```
 
 ### Other Utils
