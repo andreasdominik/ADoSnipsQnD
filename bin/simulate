@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash 
 #
 # simulate a voice command for Snips.
 #
@@ -7,7 +7,7 @@
 #
 COMMAND="$@"
 
-
+SESS_ID="7dab7a26-84fb-4855-8ad0-acd955408072"
 # send MQTT to NLU:
 #
 sleep 2; mosquitto_pub -t 'hermes/nlu/query' -m "{\"input\": \"$COMMAND\"}" &
@@ -23,9 +23,9 @@ TOPIC="$(echo $JSON_INTENT_NAME | sed s/\"//g)"
 JSON_SLOTS="$(echo $NLU | jq '.slots')"
 
 
-# construct 
+# construct
 #
-INTENT="{ \"sessionId\": \"session0123456789\", 
+INTENT="{ \"sessionId\": \"$SESS_ID\",
           \"siteId\": \"default\",
           \"input\": $JSON_INPUT,
           \"intent\": $JSON_INTENT,
@@ -40,6 +40,4 @@ INTENT="{ \"sessionId\": \"session0123456789\",
 #
 mosquitto_sub -C 1 -t "hermes/intent/#" | jq &
 sleep 2
-mosquitto_pub -t "hermes/intent/$TOPIC" -m "$INTENT" 
-
-
+mosquitto_pub -t "hermes/intent/$TOPIC" -m "$INTENT"
