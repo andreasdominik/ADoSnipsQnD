@@ -22,7 +22,7 @@ SLOT_ON_OFF = "on_or_off"
 
 # name of entry in config.ini:
 #
-INI_NAME = "on_off_devices"
+INI_NAMES = :on_off_devices
 
 
 #
@@ -34,11 +34,9 @@ INI_NAME = "on_off_devices"
 #    desired language as defined in languages.jl:
 #
 if LANG == "de"
-    Snips.registerIntentAction("ADoSnipsOnOffDE", DEVELOPER_NAME,
-                                @__MODULE__, ignoreDevice)
+    Snips.registerIntentAction("ADoSnipsOnOffDE", ignoreDevice)
     TEXTS = TEXTS_DE
 else
-    Snips.registerIntentAction("ADoSnipsOnOffEN", DEVELOPER_NAME,
-                                @__MODULE__, ignoreDevice)
+    Snips.registerIntentAction("ADoSnipsOnOffEN", ignoreDevice)
     TEXTS = TEXTS_EN
 end
