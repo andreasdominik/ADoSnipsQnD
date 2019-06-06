@@ -23,7 +23,7 @@ be done at initialisation of an app (i.e. in `config.jl`).
 Using GPIOs is only possible if the user (here: `_snips-skills`) is
 in the group gpio (`sudo usermod -aG gpio _snips-skills`)
 """
-function exportGPIO(gpio, inout)
+function exportGPIO(gpio, inout::Symbol)
 
     shell = `echo $gpio > /sys/class/gpio/export`
     tryrun(shell, silent = true)
