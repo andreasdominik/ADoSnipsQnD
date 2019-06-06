@@ -170,7 +170,7 @@ Add the text to the dictionary of text sniplets for the language
 * text: String or array of String with the text(s) to be uttered.
 
 ## Details:
-If text is an Array, all texts will be saved and the function `Snips.text()`
+If text is an Array, all texts will be saved and the function `Snips.langText()`
 will return a randomly selected text from the list.
 
 If the key already exists, the new text will be added to the the
