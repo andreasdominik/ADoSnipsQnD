@@ -111,7 +111,7 @@ getTopic
 ```
 
 ### Multi-language utilities
-```@doc
+```@docs
 setLanguage
 addText
 langText
