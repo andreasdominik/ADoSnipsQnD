@@ -89,12 +89,8 @@ publishMQTT
 ```
 
 
-## Utility functions
 
-Little helpers to provide functionality which is commonly needed
-when developing a skill.
-
-### Handle background information of recognised intent
+## Handle background information of recognised intent
 ```@docs
 setSiteId
 getSiteId
@@ -110,14 +106,18 @@ setTopic
 getTopic
 ```
 
-### Multi-language utilities
+## Multi-language utilities
 ```@docs
 setLanguage
 addText
 langText
 ```
 
-### Other Utils
+## Utility functions
+
+Little helpers to provide functionality which is commonly needed
+when developing a skill.
+
 ```@docs
 readableDateTime
 tryrun
