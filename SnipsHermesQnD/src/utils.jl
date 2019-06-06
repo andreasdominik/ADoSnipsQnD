@@ -85,12 +85,19 @@ end
 
 
 """
-    tryrun(cmd; wait = true, errorMsg = TEXTS[:error_script])
+    tryrun(cmd; wait = true, errorMsg = TEXTS[:error_script], silent = flase)
 
 Try to run an external command and returns true if successful
 or false if not.
+
+## Arguments:
+* cmd: command to be executed on the shell
+* wait: if `true`, wait until the command has finished
+* errorMsg: AbstractString or key to multi-language dict with the
+            error message.
+* silent: if `true`, no error is published, if something went wrong.
 """
-function tryrun(cmd; wait = true, errorMsg = :error_script)
+function tryrun(cmd; wait = true, errorMsg = :error_script, silent = false)
 
     errorMsg = langText(errorMsg)
     result = true
