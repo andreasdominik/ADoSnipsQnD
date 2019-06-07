@@ -239,20 +239,20 @@ end
 """
     setAppDir(appDir)
 
-Store the directory `appDir` as APP_DIR in the
+Store the directory `appDir` as CURRENT_APP_DIR in the
 current session
 """
 function setAppDir(appDir)
 
-    global APP_DIR = appDir
+    CURRENT_APP_DIR = appDir
 end
 
 """
     getAppDir()
 
 Return the directory ofthe currently running app
-(i.e. the variable APP_DIR)
+(i.e. the variable CURRENT_APP_DIR)
 """
 function getAppDir()
-    return APP_DIR
+    return CURRENT_APP_DIR
 end

@@ -22,7 +22,8 @@ CURRENT_SESSION_ID = "1"
 CURRENT_DEVEL_NAME = "unknown"
 CURRENT_MODULE = Main
 CURRENT_INTENT = "none"
-APP_DIR = ""
+CURRENT_APP_DIR = ""
+CURRENT_APP_NAME = ""
 
 # set default language and texts to en
 #
@@ -58,6 +59,7 @@ export subscribeMQTT, readOneMQTT, publishMQTT,
        tryrun, tryReadTextfile,
        tryParseJSONfile, tryParseJSON, tryMkJSON,
        extractSlotValue, isInSlot, isOnOffMatched,
-       readableDateTime, setGPIO
+       readableDateTime, setGPIO,
+       @getConfigOrReturn
 
 end # module
