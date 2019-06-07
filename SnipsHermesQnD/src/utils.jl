@@ -250,9 +250,33 @@ end
 """
     getAppDir()
 
-Return the directory ofthe currently running app
+Return the directory of the currently running app
 (i.e. the variable CURRENT_APP_DIR)
 """
 function getAppDir()
     return CURRENT_APP_DIR
+end
+
+
+
+
+"""
+    setAppName(appName)
+
+Store the name of the current app/module as CURRENT_APP_NAME in the
+current session
+"""
+function setAppName(appName)
+
+    CURRENT_APP_NAME = appName
+end
+
+"""
+    getAppName()
+
+Return the name of the currently running app
+(i.e. the variable CURRENT_APP_NAME)
+"""
+function getAppName()
+    return CURRENT_APP_NAME
 end
