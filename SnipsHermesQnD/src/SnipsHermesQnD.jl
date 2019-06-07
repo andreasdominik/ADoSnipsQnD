@@ -55,11 +55,10 @@ export subscribeMQTT, readOneMQTT, publishMQTT,
        setDeveloperName, getDeveloperName, setModule, getModule,
        setAppDir, getAppDir, setAppName, getAppName,
        setTopic, getTopic,
-       readConfig, matchConfig, getConfig, isInConfig, getAllConfig,
+       readConfig, matchConfig, getConfig, isInConfig, getAllConfig, isConfigValid,
        tryrun, tryReadTextfile,
        tryParseJSONfile, tryParseJSON, tryMkJSON,
        extractSlotValue, isInSlot, isOnOffMatched,
-       readableDateTime, setGPIO,
-       @getConfigOrReturn
+       readableDateTime, setGPIO
 
 end # module

@@ -244,7 +244,7 @@ current session
 """
 function setAppDir(appDir)
 
-    CURRENT_APP_DIR = appDir
+    global CURRENT_APP_DIR = appDir
 end
 
 """
@@ -268,7 +268,7 @@ current session
 """
 function setAppName(appName)
 
-    CURRENT_APP_NAME = appName
+    global CURRENT_APP_NAME = appName
 end
 
 """
