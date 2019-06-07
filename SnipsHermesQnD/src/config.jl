@@ -127,15 +127,31 @@ end
 
 
 """
-    isConfigValid(name; regex = r".", errorMsg = TEXTS[:error_config])
+    isConfigValid(name; regex = r".", elem = 1, errorMsg = TEXTS[:error_config])
 
-Return `true`, if the parameter `name` have been read correctly from the 
+Return `true`, if the parameter `name` have been read correctly from the
 `config.ini` file and `false` otherwise. By default "correct" means: it is aString with
 length > 0. For a meire specific test, a regex can be provided.
-"""
-function isConfigValid(name; regex = r".", errorMsg = TEXTS[:error_config])
 
-    if occursin(regex, getConfig(name))
+## Arguments:
+* name: name of parameter as AbstractString or Symbol
+* regex: optional regex for the test
+* elem: element to be tested, if the parameter returns an array
+* errorMsg: alternative error message.
+"""
+function isConfigValid(name; regex = r".", elem = 1, errorMsg = TEXTS[:error_config])
+
+    if getConfig(name) == nothing
+        param = ""
+    elseif getConfig(name) isa AbstractString
+        param = getConfig(name)
+    elseif getConfig(name) isa AbstractArray
+        param = getConfig(name)[elem]
+    else
+        param = ""
+    end
+
+    if occursin(regex, param)
         return true
     else
         publishSay("$errMsg : $name")
