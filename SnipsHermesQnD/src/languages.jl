@@ -3,6 +3,7 @@ TEXTS_DE = Dict(
 :error_json => "Ich kann die Jason Datei nicht lesen",
 :error_script => "Das Skript konnte nicht ausgeführt werden.",
 :error_read => "Ich kann die Datei nicht lesen!",
+:error_config => "Folgender config Eintrag ist nicht gültig",
 :ok => "OK"
 )
 
@@ -13,6 +14,7 @@ TEXTS_EN = Dict(
 :error_json => "Error reading jason file",
 :error_script => "Error executing script",
 :error_read => "Error reading file",
+:error_config => "Error reading config value",
 :ok => "OK"
 )
 

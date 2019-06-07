@@ -55,11 +55,12 @@ one extension:
 
 
 ```@docs
+getConfig
+getAllConfig
 readConfig
 matchConfig
-getConfig
 isInConfig
-getAllConfig
+isConfigValid
 ```
 
 
@@ -102,6 +103,8 @@ setModule
 getModule
 setAppDir
 getAppDir
+setAppName
+getAppName
 setTopic
 getTopic
 ```

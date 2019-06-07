@@ -124,3 +124,22 @@ function isInConfig(name::Symbol)
     global CONFIG_INI
     return haskey(CONFIG_INI, name)
 end
+
+
+"""
+    isConfigValid(name; regex = r".", errorMsg = TEXTS[:error_config])
+
+Return `true`, if the parameter `name` have been read correctly from the 
+`config.ini` file and `false` otherwise. By default "correct" means: it is aString with
+length > 0. For a meire specific test, a regex can be provided.
+"""
+function isConfigValid(name; regex = r".", errorMsg = TEXTS[:error_config])
+
+    if occursin(regex, getConfig(name))
+        return true
+    else
+        publishSay("$errMsg : $name")
+        println("[$CURRENT_APP_NAME]: $errorMsg : $name")
+        return false
+    end
+end
