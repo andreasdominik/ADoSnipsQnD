@@ -25,11 +25,13 @@ in the group gpio (`sudo usermod -aG gpio _snips-skills`)
 """
 function exportGPIO(gpio, inout::Symbol)
 
-    shell = `echo $gpio > /sys/class/gpio/export`
-    tryrun(shell, silent = true)
-
-    shell = `echo $(String(inout)) > /sys/class/gpio/gpio$(gpio)/direction`
-    tryrun(shell, silent = true)
+    # shell = `echo $gpio > /sys/class/gpio/export`
+    # tryrun(shell, silent = true)
+    #
+    # shell = `echo $(String(inout)) > /sys/class/gpio/gpio$(gpio)/direction`
+    # tryrun(shell, silent = true)
+    write("/sys/class/gpio/export", "$gpio")
+    write("/sys/class/gpio/gpio$(gpio)/direction", "$inout")
 end
 
 
@@ -52,6 +54,7 @@ function setGPIO(gpio, onoff::Symbol)
         value = 0
     end
 
-    shell = `echo $value > /sys/class/gpio/gpio$(gpio)/value`
-    tryrun(shell, errorMsg = TEXTS[:error_gpio])
+    # shell = `echo $value > /sys/class/gpio/gpio$(gpio)/value`
+    # tryrun(shell, errorMsg = TEXTS[:error_gpio])
+    write("/sys/class/gpio/gpio$(gpio)/value", "$value")
 end
