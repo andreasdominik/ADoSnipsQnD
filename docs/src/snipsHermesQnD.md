@@ -410,6 +410,40 @@ Snips.publishEndSession(:bravo)
 The framework will deliver the text sniplet in the language specified in
 `config.ini` (or in the default language instead).
 
+#### System triggers
+
+Triggers extend the concept of sending MQTT-messages between Snips
+components to communication between apps or the system or timers and apps.
+A trigger is a MQTT with a topic like
+
+```
+qnd/trigger/andreasdominik:ADoSnipsLights
+```
+
+and a payload in JSON format:
+
+```
+    {
+      "target" : "qnd/trigger/andreasdominik:ADoSnipsLights",
+      "origin" : "ADoSnipsScheduler",
+      "time" : timeString,
+      "trigger" : {
+        "room" : "default",
+        "device" : "floor_lamp",
+        "onOrOff" : "ON",
+        "settings" : "undefined"
+      }
+    }
+```
+
+Skills can subscribe to triggers as to normal Snips intents with the
+function `registerTriggerAction()` as well as publish triggers
+with `publishTriggerAction()`. This way it is possible to
+
+* execute actions in other skills (by publishing the respective trigger)
+* execute action with a time (by letting publish the trigger
+  by the linux `at` command).
+  
 
 ### Managing the Julia footprint
 
