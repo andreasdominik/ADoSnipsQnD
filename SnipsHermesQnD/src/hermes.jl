@@ -469,3 +469,36 @@ function configureIntent(intent, on)
 
     publishMQTT(topic, payload)
 end
+
+
+
+"""
+    isValidOrEnd(param; errorMsg = "parameter is nothing")
+
+End the session, with the message, if the param is `nothing`
+and returns false or true otherwise.
+
+Function is a shortcut:
+```Julia
+if param == nothing
+    Snips.publishEndSession(:error)
+    return true
+end
+```Julia
+Snips.isValidOrEnd(param, :error) || return true
+```
+
+## Arguments:
+* param: any value (from slot or config.ini) that may be `nothing`
+* errorMsg: Error as string or key of a text in the
+  languages Dict (::Symbol).
+"""
+function isValidOrEnd(param; errorMsg)
+
+    if param == nothing
+        publishEndSession( errorMsg)
+        return false
+    else
+        return true
+    end
+end

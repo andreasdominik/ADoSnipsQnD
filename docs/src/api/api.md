@@ -72,6 +72,7 @@ Functions to read values from slots of recognised intents.
 extractSlotValue
 isInSlot
 isOnOffMatched
+isValidOrEnd
 ```
 
 
