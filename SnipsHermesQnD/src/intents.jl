@@ -127,6 +127,7 @@ function publishSystemTrigger(topic, trigger)
                     :origin => "$CURRENT_MODULE",
                     :time => "$(now())",
                     :sessioId => CURRENT_SESSION_ID,
+                    :siteId => CURRENT_SITE_ID,
                     :trigger => trigger
                   )
 
