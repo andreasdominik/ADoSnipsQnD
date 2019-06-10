@@ -36,6 +36,7 @@ registerIntentAction
 registerTriggerAction
 getIntentActions
 setIntentActions
+publishSystemTrigger
 ```
 
 
