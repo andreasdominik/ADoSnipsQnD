@@ -39,7 +39,7 @@ function subscribeMQTT(topics, callback; hostname = nothing, port = nothing)
         topic, payload = parseMQTT(retrieved)
 
         if topic != nothing && payload != nothing
-            ### callback(topic, payload)
+            #### callback(topic, payload)
             @spawn callback(topic, payload)
         end
     end

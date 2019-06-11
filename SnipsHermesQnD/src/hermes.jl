@@ -484,6 +484,8 @@ if param == nothing
     Snips.publishEndSession(:error)
     return true
 end
+```
+is:
 ```Julia
 Snips.isValidOrEnd(param, :error) || return true
 ```
@@ -495,7 +497,7 @@ Snips.isValidOrEnd(param, :error) || return true
 """
 function isValidOrEnd(param; errorMsg)
 
-    if param == nothing
+    if param == nothing || length(param) < 1
         publishEndSession( errorMsg)
         return false
     else
