@@ -60,6 +60,7 @@ export subscribeMQTT, readOneMQTT, publishMQTT,
        tryrun, tryReadTextfile,
        tryParseJSONfile, tryParseJSON, tryMkJSON,
        extractSlotValue, isInSlot, isOnOffMatched,
-       readableDateTime, setGPIO
+       readableDateTime,
+       setGPIO
 
 end # module

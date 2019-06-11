@@ -126,7 +126,7 @@ function publishSystemTrigger(topic, trigger)
     payload = Dict( :target => topic,
                     :origin => "$CURRENT_MODULE",
                     :time => "$(now())",
-                    :sessioId => CURRENT_SESSION_ID,
+                    :sessionId => CURRENT_SESSION_ID,
                     :siteId => CURRENT_SITE_ID,
                     :trigger => trigger
                   )
