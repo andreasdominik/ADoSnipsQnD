@@ -113,6 +113,30 @@ function tryrun(cmd; wait = true, errorMsg = :error_script, silent = false)
 end
 
 
+
+"""
+    ping(ip; c = 1, W = 1)
+
+Return true, if a ping to the ip-address (or name) is
+successful.
+
+## Arguments:
+* c: number of pings to send (default: 1)
+* W: timeout (default 1 sec)
+"""
+function ping(ip; c = 1, W = 1)
+
+    try
+        run(`ping -c $c -W $W $ip`)
+        return true
+    catch
+        return false
+    end
+end
+
+
+
+
 """
     tryReadTextfile(fname, errorMsg = TEXTS[:error_read])
 
