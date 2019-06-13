@@ -105,7 +105,7 @@ function tryrun(cmd; wait = true, errorMsg = :error_script, silent = false)
         run(cmd; wait = wait)
     catch
         result = false
-        publishSay(errorMsg, lang = LANG)
+        silent || publishSay(errorMsg, lang = LANG)
         println("Error running script $cmd")
     end
 
