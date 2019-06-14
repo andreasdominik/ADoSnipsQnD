@@ -97,7 +97,7 @@ or false if not.
             error message.
 * silent: if `true`, no error is published, if something went wrong.
 """
-function tryrun(cmd; wait = true, errorMsg = :error_script, silent = false)
+function tryrun(cmd; wait = true, errorMsg = TEXTS_EN[:error_script], silent = false)
 
     errorMsg = langText(errorMsg)
     result = true
@@ -105,7 +105,7 @@ function tryrun(cmd; wait = true, errorMsg = :error_script, silent = false)
         run(cmd; wait = wait)
     catch
         result = false
-        silent || publishSay(errorMsg, lang = LANG)
+        silent || publishSay(errorMsg)
         println("Error running script $cmd")
     end
 
@@ -237,12 +237,13 @@ if key is nothing or an AbstractString, respectively.
 """
 function langText(key::Symbol)
 
+    println("*** $key")
     if haskey(LANGUAGE_TEXTS, (LANG, key))
         return StatsBase.sample(LANGUAGE_TEXTS[(LANG, key)])
     elseif haskey(LANGUAGE_TEXTS, (DEFAULT_LANG, key))
         return StatsBase.sample(LANGUAGE_TEXTS[(DEFAULT_LANG, key)])
     else
-        return "I don't know what to say!"
+        return "I don't know what to say! I got $key"
     end
 end
 
