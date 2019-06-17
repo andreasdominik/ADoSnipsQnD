@@ -126,6 +126,7 @@ when developing a skill.
 ```@docs
 readableDateTime
 tryrun
+ping
 tryReadTextfile
 tryParseJSONfile
 tryParseJSON
