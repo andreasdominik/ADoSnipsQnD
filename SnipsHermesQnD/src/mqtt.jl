@@ -39,8 +39,11 @@ function subscribeMQTT(topics, callback; hostname = nothing, port = nothing)
         topic, payload = parseMQTT(retrieved)
 
         if topic != nothing && payload != nothing
-            #### callback(topic, payload)
-            @spawn callback(topic, payload)
+            if matchConfig(:debug, "true")
+                callback(topic, payload)
+            else
+                @spawn callback(topic, payload)
+            end
         end
     end
 end
