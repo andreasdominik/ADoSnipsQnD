@@ -132,6 +132,7 @@ tryParseJSONfile
 tryParseJSON
 tryMkJSON
 setGPIO
+printDebug
 ```
 
 ## Index

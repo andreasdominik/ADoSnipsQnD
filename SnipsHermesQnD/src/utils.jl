@@ -305,3 +305,17 @@ Return the name of the currently running app
 function getAppName()
     return CURRENT_APP_NAME
 end
+
+
+"""
+    printDebug(...)
+
+Print the message only, if debug-mode is true.
+Current App-name is printed as prefix.
+"""
+function printDebug(s)
+
+    if matchConfig(:debug, "true")
+        println("DEBUG -> [$(GetAppName())]: $s")
+    end
+end
