@@ -237,7 +237,6 @@ if key is nothing or an AbstractString, respectively.
 """
 function langText(key::Symbol)
 
-    println("*** $key")
     if haskey(LANGUAGE_TEXTS, (LANG, key))
         return StatsBase.sample(LANGUAGE_TEXTS[(LANG, key)])
     elseif haskey(LANGUAGE_TEXTS, (DEFAULT_LANG, key))
