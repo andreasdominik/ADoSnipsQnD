@@ -310,12 +310,18 @@ end
 """
     printDebug(...)
 
-Print the message only, if debug-mode is true.
+Print the message only, if debug-mode is on.
+Debog-modes include
+* `none`: no debugging
+* `logging`: only printDebug() will print
+* `no_parallel`: logging is on and skill actions will
+                 will not be spawned (as a result, the listener is
+                 off-line while a skill-action is running).
 Current App-name is printed as prefix.
 """
 function printDebug(s)
 
-    if matchConfig(:debug, "true")
+    if !matchConfig(:debug, "none")
         println("DEBUG -> [$(GetAppName())]: $s")
     end
 end
