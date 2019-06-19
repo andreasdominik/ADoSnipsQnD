@@ -34,6 +34,9 @@ function subscribeMQTT(topics, callback; hostname = nothing, port = nothing)
     # listen forever:
     #
     while true
+        # printDebug(getAllConfig())
+        # printDebug(getConfig(:debug))
+        # printDebug(matchConfig(:debug))
 
         retrieved = runOneMQTT(cmd)
         topic, payload = parseMQTT(retrieved)

@@ -54,7 +54,11 @@ val or one element of the list as the value val.
 * `name`: name of the config parameter as Symbol
 * `val`: desired value
 """
-function matchConfig(name::Symbol, val::String)
+function matchConfig(name, val::String)
+
+    if !(name isa Symbol)
+        name = Symbol(name)
+    end
 
     global CONFIG_INI
 

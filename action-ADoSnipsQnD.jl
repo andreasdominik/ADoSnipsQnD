@@ -44,6 +44,7 @@ end
 # start listening to MQTT with main callback
 #
 import Main.SnipsHermesQnD
+SnipsHermesQnD.readConfig(FRAMEWORK_DIR)
 
 # const intents = [i[2]*":"*i[1] for i in INTENT_ACTIONS]
 # SnipsHermesQnD.subscribe2Intents(intents, SnipsHermesQnD.mainCallback)

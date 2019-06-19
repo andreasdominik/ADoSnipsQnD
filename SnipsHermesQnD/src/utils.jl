@@ -322,6 +322,6 @@ Current App-name is printed as prefix.
 function printDebug(s)
 
     if !matchConfig(:debug, "none")
-        println("DEBUG -> [$(GetAppName())]: $s")
+        println("DEBUG -> [$(getAppName())]: $s")
     end
 end

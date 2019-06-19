@@ -23,7 +23,7 @@ CURRENT_DEVEL_NAME = "unknown"
 CURRENT_MODULE = Main
 CURRENT_INTENT = "none"
 CURRENT_APP_DIR = ""
-CURRENT_APP_NAME = ""
+CURRENT_APP_NAME = "QnD framework"
 
 # set default language and texts to en
 #
