@@ -31,21 +31,45 @@ function subscribeMQTT(topics, callback; hostname = nothing, port = nothing)
 
     cmd = constructMQTTcmd(topics, hostname = hostname, port = port)
 
-    # listen forever:
+    # # listen forever:
+    # #
+    # while true
+    #     # printDebug(getAllConfig())
+    #     # printDebug(getConfig(:debug))
+    #     # printDebug(matchConfig(:debug))
+    #
+    #     retrieved = runOneMQTT(cmd)
+    #     topic, payload = parseMQTT(retrieved)
+    #
+    #     if topic != nothing && payload != nothing
+    #         if matchConfig(:debug, "no_parallel")
+    #             callback(topic, payload)
+    #         else
+    #             @spawn callback(topic, payload)
+    #         end
+    #     end
+    # end
+
+    # MQTT listen and write to channel:
+    #
+    intents = Channel(32)
+    @async while true
+        retrieved = runOneMQTT(cmd)
+        put!(intents, retrieved)
+    end
+
+
+    # process intents from channel:
     #
     while true
-        # printDebug(getAllConfig())
-        # printDebug(getConfig(:debug))
-        # printDebug(matchConfig(:debug))
-
-        retrieved = runOneMQTT(cmd)
-        topic, payload = parseMQTT(retrieved)
+        retrieved = take!(intents)
+        (topic, payload) = parseMQTT(retrieved)
 
         if topic != nothing && payload != nothing
             if matchConfig(:debug, "no_parallel")
                 callback(topic, payload)
             else
-                @spawn callback(topic, payload)
+                @async callback(topic, payload)
             end
         end
     end
