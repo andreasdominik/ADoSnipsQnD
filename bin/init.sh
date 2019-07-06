@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -xv
 #
 # Create a new Snips skill from the template!
 #
@@ -51,10 +51,11 @@ fi
 # clone the template skill into the target dir:
 #
 cd $SKILLDIR
-git clone git@github.com:andreasdominik/ADoSnipsTemplate.git$SKILLNAME
+git clone git@github.com:andreasdominik/ADoSnipsTemplate.git $SKILLNAME
 
 # create the project on GitHub:
 #
+echo "Please enter your Github password:"
 curl -u "$USERNAME" https://api.github.com/user/repos -d "{\"name\":\"$SKILLNAME\"}"
 
 # change the remote for the new projekct:
