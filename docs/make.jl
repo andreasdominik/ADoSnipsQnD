@@ -15,6 +15,7 @@ makedocs(#modules=[SOM],
                   "Introduction" => "index.md",
                   "SnipsHermesQnD" => "snipsHermesQnD.md",
                   "New skill tutorial" => "makeskill.md",
+                  "Some Details" => "details.md",
                   "API Documentation" => "api/api.md",
                   "License" => "LICENSE.md"
                   ],

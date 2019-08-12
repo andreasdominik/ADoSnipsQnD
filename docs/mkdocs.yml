@@ -24,5 +24,6 @@ pages:
   - Introduction: index.md
   - SnipsHermesQnD: snipsHermesQnD.md
   - Skills: makeskill.md
+  - Details: details.md
   - API documemntation: api/api.md
   - License: LICENSE.md

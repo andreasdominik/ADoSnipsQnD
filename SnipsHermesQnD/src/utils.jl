@@ -393,7 +393,7 @@ command (i.e. false positive).
 - `payload`: Dictionary with the payload of a recognised intent.
 
 ## Details:
-All lines of the `config.ini` with intent match expressions:
+All lines of the `config.ini` are analysed, witch match expressions:
 - `<intentname>:must_include:<description>=<list of words>
 
 An example would be:
@@ -401,7 +401,7 @@ An example would be:
 - `switchOnOff:must_include:rev=light,on`
 
 The command must include all words in the correct order
-of at least one parameter line.
+of at least one parameter lines.
 Several lines are possible; the last part of the parameter name
 is used as description and to make the parameter names unique.
 """

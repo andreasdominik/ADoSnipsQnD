@@ -26,6 +26,7 @@ configureIntent
 askYesOrNoOrUnknown
 askYesOrNo
 publishSay
+isFalseDetection
 ```
 
 
@@ -37,6 +38,7 @@ registerTriggerAction
 getIntentActions
 setIntentActions
 publishSystemTrigger
+isFalseDetection
 ```
 
 
@@ -109,6 +111,8 @@ setAppName
 getAppName
 setTopic
 getTopic
+setIntent
+getIntent
 ```
 
 ## Multi-language utilities
