@@ -327,22 +327,38 @@ end
 
 
 """
-    allOccuresin(needles, haystack)
+    allOccursin(needles, haystack)
 
 Return true if all words in the list needles occures in haystack.
-needles can be an AbstractString or regular expression.
+`needles` can be an AbstractStrings or regular expression.
 """
-function allOccuresin(needles, haystack)
+function allOccursin(needles, haystack)
 
     match = true
     for needle in needles
-        if ! occuresin(needle, haystack)
+        if ! occursin(needle, haystack)
             match = false
         end
     end
     return match
 end
-#
+
+
+"""
+    allOccursinOrder(needles, haystack)
+
+Return true if all words in the list needles occures in haystack
+in the given order.
+`needles` can be an AbstractStrings or regular expressions.
+The match ic case insensitive.
+"""
+function allOccursinOrder(needles, haystack)
+
+    # create an regex to match all in one:
+    #
+    rg = Regex("$(join(needles, ".*"))", "i")
+    return occursin(rg, haystack)
+end
 # """
 #     isFalseDetection(payload)
 #
@@ -353,10 +369,16 @@ end
 # - `payload`: Dictionary with the payload of a recognised intent.
 #
 # ## Details:
-# All lines of the `config.ini`, starting with `command_must_include:`
+# All lines of the `config.ini` with intent match expressions:
+# - `<intentname>:words:<description>:on,light`
+# - `<intentname>:exact:<description>:on,light`
+# -
 # are read as list of strings.
 # The command must include all words of at least one parameter line.
 # """
 # function isFalseDetection(payload)
 #
-# 
+#     # make list of all config.ini keys which hold lists
+#     # of must-words:
+#     #
+#     config = filter(p->occursin(r"bla:",String(p)), getAllConfig())
