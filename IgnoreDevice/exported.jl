@@ -21,6 +21,7 @@ function callbackRun(fun, topic, payload)
     # set topic in framework:
     #
     Snips.setTopic(topic)
+    Snips.setIntent(topic)
     result = fun(topic, payload)
 
     # fix, if the action does not return true or false:

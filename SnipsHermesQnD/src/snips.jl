@@ -241,3 +241,33 @@ function getTopic()
 
     return CURRENT_TOPIC
 end
+
+
+"""
+    setIntent(topic)
+
+Set the intent for which the currently running app is working.
+The framework uses this in the background.
+
+## Arguments:
+* topic: name of current topic
+"""
+function setIntent(topic)
+
+    m = match(r"hermes/intent/\w+:(?<intent>\w+)", topic)
+    if m != nothing
+        global CURRENT_INTENT = m[:intent]
+    else
+        global CURRENT_INTENT = "unkown_intent"
+    end
+end
+
+"""
+    getIntent()
+
+Return the intent name of the currently running app.
+"""
+function getIntent()
+
+    return CURRENT_INTENT
+end
