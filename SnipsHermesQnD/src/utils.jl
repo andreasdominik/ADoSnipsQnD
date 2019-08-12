@@ -371,6 +371,10 @@ The match ic case insensitive.
 """
 function allOccursinOrder(needles, haystack)
 
+    if needles isa AbstractString
+        needles = [needles]
+    end
+
     # create an regex to match all in one:
     #
     rg = Regex("$(join(needles, ".*"))", "i")
@@ -406,5 +410,18 @@ function isFalseDetection(payload)
     # make list of all config.ini keys which hold lists
     # of must-words:
     #
-    rgx = Regex("$CURRENT_INTENT:must_include:")
-    config = filter(p->occursin(rgx), String(p.first)), getAllConfig())
+    rgx = Regex("$(getIntent()):must_include:")
+    config = filter(p->occursin(rgx, String(p.first)), getAllConfig())
+    println(config)
+
+    # let true, if none of the word lists is matched:
+    #
+    falseActivation = true
+    for needle in values(config)
+        if allOccursinOrder(needle, payload[:input])
+            falseActivation = false
+        end
+    end
+
+    return falseActivation
+end

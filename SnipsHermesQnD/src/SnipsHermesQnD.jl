@@ -63,6 +63,7 @@ export subscribeMQTT, readOneMQTT, publishMQTT,
        extractSlotValue, isInSlot, isOnOffMatched,
        readableDateTime,
        setGPIO, printDebug,
-       allOccuresin, oneOccursin, allOccursinOrder
+       allOccuresin, oneOccursin, allOccursinOrder,
+       isFalseDetection
 
 end # module
