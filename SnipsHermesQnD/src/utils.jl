@@ -324,3 +324,39 @@ function printDebug(s)
         println("DEBUG -> [$(getAppName())]: $s")
     end
 end
+
+
+"""
+    allOccuresin(needles, haystack)
+
+Return true if all words in the list needles occures in haystack.
+needles can be an AbstractString or regular expression.
+"""
+function allOccuresin(needles, haystack)
+
+    match = true
+    for needle in needles
+        if ! occuresin(needle, haystack)
+            match = false
+        end
+    end
+    return match
+end
+#
+# """
+#     isFalseDetection(payload)
+#
+# Return true, if the current intent is **not** correct for the uttered
+# command (i.e. false positive).
+#
+# ## Arguments:
+# - `payload`: Dictionary with the payload of a recognised intent.
+#
+# ## Details:
+# All lines of the `config.ini`, starting with `command_must_include:`
+# are read as list of strings.
+# The command must include all words of at least one parameter line.
+# """
+# function isFalseDetection(payload)
+#
+# 
