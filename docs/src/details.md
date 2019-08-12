@@ -73,6 +73,40 @@ The tutorial shows a simple example how to use this functionality.
 
 
 
+## Reduce false activations of intents
+
+Intents with simple commands or without slots are sometimes recognised
+by Snips with high confidence, even if only parts of the command
+matches. This is because Snips tries to find the best matching
+intent for every uttered command.
+
+The QnD-framework provides a mechanism to cancel intents, recognised
+by the NLU, by double-checking against ordered lists of words that
+must be present in a command to be valid.
+
+This is configured in the `config.ini` with parameters of the form:
+
+- `<intentname>:must_include:<description>=<list of words>`
+
+An example would be:
+- `switchOnOff:must_include:1=on,light`
+- `switchOnOff:must_include:rev=light,on`
+
+Several lines of colon-separated parts are possible:
+- the first part is the intent name (because a `config.ini` is responsible for
+  several intents)
+- the second part must be exactly the phrase `must_include`
+- the last part of the parameter name can be used as a description and
+  is necessary to make all parameter lines unique
+- the parameter value is a comma-separated list of words.
+
+Each uttered command must include all words in the correct order
+of at least one parameter lines.
+
+the framework performs this doublecheck before an action is started. If the
+check fails the session is ended silently.
+
+
 ## Ask and answer Yes-or-No
 
 An often needed functionality is a quick confirmation feedback
