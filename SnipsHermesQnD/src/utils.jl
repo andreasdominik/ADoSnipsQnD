@@ -412,14 +412,18 @@ function isFalseDetection(payload)
     #
     rgx = Regex("$(getIntent()):must_include:")
     config = filter(p->occursin(rgx, String(p.first)), getAllConfig())
-    println(config)
+    printDebug("Config false detection lines: $config")
 
-    # let true, if none of the word lists is matched:
-    #
-    falseActivation = true
-    for needle in values(config)
-        if allOccursinOrder(needle, payload[:input])
-            falseActivation = false
+    if length(config) == 0
+        falseActivation = false
+    else
+        # let true, if none of the word lists is matched:
+        #
+        falseActivation = true
+        for needle in values(config)
+            if allOccursinOrder(needle, payload[:input])
+                falseActivation = false
+            end
         end
     end
 
