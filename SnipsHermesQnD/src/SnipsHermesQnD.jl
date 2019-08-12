@@ -32,6 +32,7 @@ LANG = DEFAULT_LANG
 TEXTS = TEXTS_EN
 setLanguage(LANG)
 LANGUAGE_TEXTS = Dict{Any, Any}()   # one entry for every language, e.g. "en", "de", ...
+INI_MATCH = "must_include"
 
 # List of intents to listen to:
 # (intent, developer, complete topic, module, skill-action)
@@ -62,6 +63,6 @@ export subscribeMQTT, readOneMQTT, publishMQTT,
        extractSlotValue, isInSlot, isOnOffMatched,
        readableDateTime,
        setGPIO, printDebug,
-       allOccuresin, allOccursinOrder
+       allOccuresin, oneOccursin, allOccursinOrder
 
 end # module

@@ -345,6 +345,23 @@ end
 
 
 """
+    oneOccursin(needles, haystack)
+
+Return true if one of the words in the list needles occures in haystack.
+`needles` can be an AbstractStrings or regular expression.
+"""
+function oneOccursin(needles, haystack)
+
+    match = false
+    for needle in needles
+        if occursin(needle, haystack)
+            match = true
+        end
+    end
+    return match
+end
+
+"""
     allOccursinOrder(needles, haystack)
 
 Return true if all words in the list needles occures in haystack
@@ -359,26 +376,35 @@ function allOccursinOrder(needles, haystack)
     rg = Regex("$(join(needles, ".*"))", "i")
     return occursin(rg, haystack)
 end
-# """
-#     isFalseDetection(payload)
-#
-# Return true, if the current intent is **not** correct for the uttered
-# command (i.e. false positive).
-#
-# ## Arguments:
-# - `payload`: Dictionary with the payload of a recognised intent.
-#
-# ## Details:
-# All lines of the `config.ini` with intent match expressions:
-# - `<intentname>:words:<description>:on,light`
-# - `<intentname>:exact:<description>:on,light`
-# -
-# are read as list of strings.
-# The command must include all words of at least one parameter line.
-# """
-# function isFalseDetection(payload)
-#
-#     # make list of all config.ini keys which hold lists
-#     # of must-words:
-#     #
-#     config = filter(p->occursin(r"bla:",String(p)), getAllConfig())
+
+
+
+"""
+    isFalseDetection(payload)
+
+Return true, if the current intent is **not** correct for the uttered
+command (i.e. false positive).
+
+## Arguments:
+- `payload`: Dictionary with the payload of a recognised intent.
+
+## Details:
+All lines of the `config.ini` with intent match expressions:
+- `<intentname>:must_include:<description>=<list of words>
+
+An example would be:
+- `switchOnOff:must_include:1=on,light`
+- `switchOnOff:must_include:rev=light,on`
+
+The command must include all words in the correct order
+of at least one parameter line.
+Several lines are possible; the last part of the parameter name
+is used as description and to make the parameter names unique.
+"""
+function isFalseDetection(payload)
+
+    # make list of all config.ini keys which hold lists
+    # of must-words:
+    #
+    rgx = Regex("$CURRENT_INTENT:must_include:")
+    config = filter(p->occursin(rgx), String(p.first)), getAllConfig())
