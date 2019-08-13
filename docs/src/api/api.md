@@ -38,6 +38,7 @@ registerTriggerAction
 getIntentActions
 setIntentActions
 publishSystemTrigger
+publishListenTrigger
 isFalseDetection
 ```
 

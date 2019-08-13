@@ -27,7 +27,7 @@ Additional utilities are provided to
 - execute actions of other skills by submitting system triggers.
 
 
-## Common intent for on/off
+## Reduce false activations of intents by using the same intent for on/off
 
 The on/off-intent, integrated with the SnipsHermesQnD framework, allows for
 writing apps to power up or down devices, without the need to create a new
@@ -73,7 +73,7 @@ The tutorial shows a simple example how to use this functionality.
 
 
 
-## Reduce false activations of intents
+## Reduce false activations of intents by doublechecking commands
 
 Intents with simple commands or without slots are sometimes recognised
 by Snips with high confidence, even if only parts of the command
@@ -105,6 +105,23 @@ of at least one parameter lines.
 
 the framework performs this doublecheck before an action is started. If the
 check fails the session is ended silently.
+
+## Reduce false activations of intents by disabling intents
+
+The skill `AdoSnipsDoNotListen` with the intents `DoNotListenDE/EN` and
+`ListenAgainDE/EN` can be used to temporarily disable intents that
+are accidently activated.
+
+The intents themself use strict doublechecking (see section above) to
+make sure, that only very specific commands are recognised.
+
+In addition, the skill listens to a QnD-System-trigger which can be
+published by the QnD-API-function `Snips.publishListenTrigger(:stop)`
+and `Snips.publishListenTrigger(:start)` by other apps.
+This way it is possible to programically disable intents as part of a
+intent that starts to make *background noise* (like `watchTVshow`) and
+enable them again later.
+
 
 
 ## Ask and answer Yes-or-No

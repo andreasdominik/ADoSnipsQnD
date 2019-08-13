@@ -113,7 +113,7 @@ is executed for the first time.
 Some things need to be considered to handle this in the Snips environement:
 - When the Snips skill manager starts an assistant, the Julia apps
   will need up to 1 minute on a Rsapberry Pi until they are ready.
-  When whatching the processes with `top` or `htop`, the Julia-processes
+  When watching the processes with `top` or `htop`, the Julia-processes
   are visible at the top with 100% CPU load. This is the compiler!
 - The settings for `session_timeout` and `lambda_timeout` in the Snips
   configuration file `snips.toml` should be set to a high value
@@ -443,7 +443,7 @@ with `publishTriggerAction()`. This way it is possible to
 * execute actions in other skills (by publishing the respective trigger)
 * execute action with a time (by letting publish the trigger
   by the linux `at` command).
-  
+
 
 ### Managing the Julia footprint
 
