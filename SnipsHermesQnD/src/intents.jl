@@ -147,9 +147,9 @@ the assistant stop listening to voice commands.
 The Skill `AdoSnipsDoNotListen` must be installed in order to respond to the
 trigger,otherwise the trigger will be ignored.
 
-The trigger can be used to avoid false activation while whatching TV or
+The trigger can be used to avoid false activation while watching TV or
 listening to the radio. Just publish the trigger as part of the
-"whatch-TV-command".
+"watch-TV-command".
 The trigger will disable all intents, listed in the `config.ini` and
 enable the `listen-again` intent only. The `listen-again` intent is
 double-checking any voice activation, so that only exact matches of commands
