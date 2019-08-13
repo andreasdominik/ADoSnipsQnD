@@ -362,14 +362,20 @@ function oneOccursin(needles, haystack)
 end
 
 """
-    allOccursinOrder(needles, haystack)
+    allOccursinOrder(needles, haystack; complete = true)
 
 Return true if all words in the list needles occures in haystack
 in the given order.
 `needles` can be an AbstractStrings or regular expressions.
 The match ic case insensitive.
+
+## Arguments:
+`needles`: AbstractString or list of Strings to be matched
+`haystack`: target string
+`complete`: if `true`, the target string must start with the first
+            word and end with the last word of the list.
 """
-function allOccursinOrder(needles, haystack)
+function allOccursinOrder(needles, haystack; complete=true)
 
     if needles isa AbstractString
         needles = [needles]
@@ -377,7 +383,11 @@ function allOccursinOrder(needles, haystack)
 
     # create an regex to match all in one:
     #
-    rg = Regex("$(join(needles, ".*"))", "i")
+    if complete
+        rg = Regex("\$$(join(needles, ".*"))^", "i")
+    else
+        rg = Regex("$(join(needles, ".*"))", "i")
+    end
     return occursin(rg, haystack)
 end
 
@@ -421,7 +431,7 @@ function isFalseDetection(payload)
         #
         falseActivation = true
         for needle in values(config)
-            if allOccursinOrder(needle, payload[:input])
+            if allOccursinOrder(needle, payload[:input], complete=true)
                 falseActivation = false
             end
         end
