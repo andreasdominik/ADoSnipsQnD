@@ -411,7 +411,10 @@ An example would be:
 - `switchOnOff:must_include:rev=light,on`
 
 The command must include all words in the correct order
-of at least one parameter lines.
+of at least one parameter lines and the words must span the complete line
+(i.e. the command starts with first word and ends with the last word
+of the list).
+
 Several lines are possible; the last part of the parameter name
 is used as description and to make the parameter names unique.
 """
