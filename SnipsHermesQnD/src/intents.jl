@@ -173,4 +173,5 @@ function publishListenTrigger(mode)
     if mode in [:start, :stop]
         trigger = Dict( :command => mode)
         publishSystemTrigger("ADoSnipsListen", trigger)
+    end
 end
