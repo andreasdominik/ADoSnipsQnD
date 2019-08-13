@@ -116,9 +116,9 @@ The intents themself use strict doublechecking (see section above) to
 make sure, that only very specific commands are recognised.
 
 In addition, the skill listens to a QnD-System-trigger which can be
-published by the QnD-API-function `Snips.publishListenTrigger(:stop)`
+published by the QnD-API-functions `Snips.publishListenTrigger(:stop)`
 and `Snips.publishListenTrigger(:start)` by other apps.
-This way it is possible to programically disable intents as part of a
+This way it is possible to programically disable intents as part of an
 intent that starts to make *background noise* (like `watchTVshow`) and
 enable them again later.
 
