@@ -103,7 +103,7 @@ end
 
 
 """
-    publishSystemTrigger(topic, trigger)
+    publishSystemTrigger(topic, trigger; develName = CURRENT_DEVEL_NAME)
 
 Publish a system trigger with topic and payload.
 
@@ -114,10 +114,10 @@ Publish a system trigger with topic and payload.
          will be added.
 * trigger: specific payload for the trigger.
 """
-function publishSystemTrigger(topic, trigger)
+function publishSystemTrigger(topic, trigger; develName = CURRENT_DEVEL_NAME)
 
     if !occursin(r":", topic)
-        topic = "$CURRENT_DEVEL_NAME:$topic"
+        topic = "$develName:$topic"
     end
     if !occursin(r"^qnd/trigger/", topic)
         topic = "qnd/trigger/$topic"
@@ -132,4 +132,45 @@ function publishSystemTrigger(topic, trigger)
                   )
 
     publishMQTT(topic, payload)
+end
+
+"""
+    publishListenTrigger(mode)
+
+Publish a stop-listen or start-listen trigger to make
+the assistant stop listening to voice commands.
+
+## Arguments:
+`mode`: one of `:stop` or `:start`
+
+## Details:
+The Skill `AdoSnipsDoNotListen` must be installed in order to respond to the
+trigger,otherwise the trigger will be ignored.
+
+The trigger can be used to avoid false activation while whatching TV or
+listening to the radio. Just publish the trigger as part of the
+"whatch-TV-command".
+The trigger will disable all intents, listed in the `config.ini` and
+enable the `listen-again` intent only. The `listen-again` intent is
+double-checking any voice activation, so that only exact matches of commands
+(like "hör wieder zu" in German or "listen again" in English)
+will activate the intent.
+
+The trigger must have the following JSON format:
+    {
+      "target" : "qnd/trigger/andreasdominik:ADoSnipsListen",
+      "origin" : "ADoSnipsScheduler",
+      "sessionId": "1234567890abcdef",
+      "siteId" : "default",
+      "time" : "timeString",
+      "trigger" : {
+          "command" : "stop"   // or "start"
+          }
+    }
+"""
+function publishListenTrigger(mode)
+
+    if mode in [:start, :stop]
+        trigger = Dict( :command => mode)
+        publishSystemTrigger("ADoSnipsListen", trigger)
 end
