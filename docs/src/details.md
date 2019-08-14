@@ -87,6 +87,8 @@ must be present in a command to be valid.
 This is configured in the `config.ini` with parameters of the form:
 
 - `<intentname>:must_include:<description>=<list of words>`
+- `<intentname>:must_chain:<description>=<list of words>`
+- `<intentname>:must_span:<description>=<list of words>`
 
 An example would be:
 - `switchOnOff:must_include:1=on,light`
@@ -95,16 +97,26 @@ An example would be:
 Several lines of colon-separated parts are possible:
 - the first part is the intent name (because a `config.ini` is responsible for
   several intents)
-- the second part must be exactly the phrase `must_include`
+- the second part must be exactly one of the phrases `must_include`,
+  `mist_chain` or `must_span`.
 - the last part of the parameter name can be used as a description and
   is necessary to make all parameter lines unique
-- the parameter value is a comma-separated list of words.
+- the parameter value is a comma-separated list of words or regular expressions.
 
-Each uttered command must include all words in the correct order
+For `must_include` each uttered command must include all words
 of at least one parameter lines.
 
-the framework performs this doublecheck before an action is started. If the
+For `must_chain` each uttered command must include all words
+and the words must be in the correct order.
+
+For `must_span` each uttered command must include all words
+and the words must be in the correct order
+and they must span the complete command; i.e. the first word in the list
+must be the first word of the command and the last must be the last.
+
+The framework performs this doublecheck before an action is started. If the
 check fails the session is ended silently.
+
 
 ## Reduce false activations of intents by disabling intents
 
