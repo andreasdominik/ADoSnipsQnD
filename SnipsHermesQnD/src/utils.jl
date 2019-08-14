@@ -384,10 +384,11 @@ function allOccursinOrder(needles, haystack; complete=true)
     # create an regex to match all in one:
     #
     if complete
-        rg = Regex("\$$(join(needles, ".*"))^", "i")
+        rg = Regex("^$(join(needles, ".*"))\$", "i")
     else
         rg = Regex("$(join(needles, ".*"))", "i")
     end
+    printDebug("RegEx: >$rg<, command: >$haystack<")
     return occursin(rg, haystack)
 end
 
@@ -425,10 +426,13 @@ function isFalseDetection(payload)
     INCLUDE = ":must_include:"
     CHAIN = ":must_chain:"
     SPAN = ":must_span:"
+
+    command = strip(payload[:input])
+
     # make list of all config.ini keys which hold lists
     # of must-words:
     #
-    rgx = Regex("$(getIntent())$INCLUDE|$(getIntent())$CHAIN|$(getIntent())$SPAN"))
+    rgx = Regex("$(getIntent())$INCLUDE|$(getIntent())$CHAIN|$(getIntent())$SPAN")
     config = filter(p->occursin(rgx, String(p.first)), getAllConfig())
     printDebug("Config false detection lines: $config")
 
@@ -439,12 +443,12 @@ function isFalseDetection(payload)
         #
         falseActivation = true
         for (name,needle) in config
-            if occursin($INCLUDE, name)
-                allOccursin(needle, payload[:input]) && falseActivation = false
-            elseif occursin($CHAIN, name)
-                allOccursinOrder(needle, payload[:input], complete=false) && falseActivation = false
-            elseif occursin($SPAN, name)
-                allOccursinOrder(needle, payload[:input], complete=true) && falseActivation = false
+            if occursin(INCLUDE, "$name") && allOccursin(needle, command)
+                  falseActivation = false
+            elseif occursin(CHAIN, "$name") && allOccursinOrder(needle, command, complete=false)
+                falseActivation = false
+            elseif occursin(SPAN, "$name") && allOccursinOrder(needle, command, complete=true)
+                falseActivation = false
             end
         end
     end
