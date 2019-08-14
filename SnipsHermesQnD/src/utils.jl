@@ -407,8 +407,10 @@ All lines of the `config.ini` are analysed, witch match expressions:
 - `<intentname>:must_include:<description>=<list of words>
 
 An example would be:
-- `switchOnOff:must_include:1=on,light`
-- `switchOnOff:must_include:rev=light,on`
+- `switchOnOff:must_include:just_words1=on,light`
+- `switchOnOff:must_chain:in_order=light,on`
+- `switchOnOff:must_span:start_to_end=switch,light,on`
+- `switchOnOff:must_span:start_to_end=switch,on`
 
 The command must include all words in the correct order
 of at least one parameter lines and the words must span the complete line
@@ -420,10 +422,13 @@ is used as description and to make the parameter names unique.
 """
 function isFalseDetection(payload)
 
+    INCLUDE = ":must_include:"
+    CHAIN = ":must_chain:"
+    SPAN = ":must_span:"
     # make list of all config.ini keys which hold lists
     # of must-words:
     #
-    rgx = Regex("$(getIntent()):must_include:")
+    rgx = Regex("$(getIntent())$INCLUDE|$(getIntent())$CHAIN|$(getIntent())$SPAN"))
     config = filter(p->occursin(rgx, String(p.first)), getAllConfig())
     printDebug("Config false detection lines: $config")
 
@@ -433,9 +438,13 @@ function isFalseDetection(payload)
         # let true, if none of the word lists is matched:
         #
         falseActivation = true
-        for needle in values(config)
-            if allOccursinOrder(needle, payload[:input], complete=true)
-                falseActivation = false
+        for (name,needle) in config
+            if occursin($INCLUDE, name)
+                allOccursin(needle, payload[:input]) && falseActivation = false
+            elseif occursin($CHAIN, name)
+                allOccursinOrder(needle, payload[:input], complete=false) && falseActivation = false
+            elseif occursin($SPAN, name)
+                allOccursinOrder(needle, payload[:input], complete=true) && falseActivation = false
             end
         end
     end
