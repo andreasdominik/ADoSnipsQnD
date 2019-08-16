@@ -428,11 +428,12 @@ function isFalseDetection(payload)
     SPAN = ":must_span:"
 
     command = strip(payload[:input])
+    intent = getIntent()
 
     # make list of all config.ini keys which hold lists
     # of must-words:
     #
-    rgx = Regex("$(getIntent())$INCLUDE|$(getIntent())$CHAIN|$(getIntent())$SPAN")
+    rgx = Regex("$intent$INCLUDE|$intent$CHAIN|$intent$SPAN")
     config = filter(p->occursin(rgx, String(p.first)), getAllConfig())
     printDebug("Config false detection lines: $config")
 
@@ -451,6 +452,10 @@ function isFalseDetection(payload)
                 falseActivation = false
             end
         end
+    end
+    if falseActivation
+        print(  """[$intent]: Intent "$intent" aborted. """)
+        println("""False detection recognised for command: "$command".""")
     end
 
     return falseActivation
