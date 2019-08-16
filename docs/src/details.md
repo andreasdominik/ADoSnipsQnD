@@ -90,12 +90,13 @@ This is configured in the `config.ini` with parameters of the form:
 - `<intentname>:must_chain:<description>=<list of words>`
 - `<intentname>:must_span:<description>=<list of words>`
 
-An example would be:
+Examples:
 - `switchOnOff:must_include:1=on,light`
 - `switchOnOff:must_include:rev=light,on`
+- `switchOnOff:must_include:with_regex=(light|bulb),on`
 
 Several lines of colon-separated parts are possible:
-- the first part is the intent name (because a `config.ini` is responsible for
+- the first part is the intent name (because one `config.ini` is responsible for
   several intents)
 - the second part must be exactly one of the phrases `must_include`,
   `mist_chain` or `must_span`.
@@ -112,7 +113,7 @@ and the words must be in the correct order.
 For `must_span` each uttered command must include all words
 and the words must be in the correct order
 and they must span the complete command; i.e. the first word in the list
-must be the first word of the command and the last must be the last.
+must be the first word of the command and the last must be the last one.
 
 The framework performs this doublecheck before an action is started. If the
 check fails the session is ended silently.
