@@ -351,15 +351,12 @@ function allOccursin(needles, haystack)
         needles = [needles]
     end
 
-    printDebug("command = $haystack, must_include = $needles")
     match = true
     for needle in needles
-        printDebug("needle: $needle")
         if ! occursin(Regex(needle), haystack)
             match = false
         end
     end
-    printDebug("match = $match")
     return match
 end
 
@@ -457,7 +454,7 @@ function isFalseDetection(payload)
     # make list of all config.ini keys which hold lists
     # of must-words:
     #
-    rgx = Regex("$intent$INCLUDE|$intent$CHAIN|$intent$SPAN")
+    rgx = Regex("^$intent$INCLUDE|^$intent$CHAIN|^$intent$SPAN")
     config = filter(p->occursin(rgx, String(p.first)), getAllConfig())
     printDebug("Config false detection lines: $config")
 
@@ -471,13 +468,13 @@ function isFalseDetection(payload)
             printDebug("""name = $name; needle = "$needle".""")
 
             if occursin(INCLUDE, "$name") && allOccursin(needle, command)
-                printDebug("match INCLUDE: $command, $needle")
+                # printDebug("match INCLUDE: $command, $needle")
                 falseActivation = false
             elseif occursin(CHAIN, "$name") && allOccursinOrder(needle, command, complete=false)
-                printDebug("match CHAIN: $command, $needle")
+                # printDebug("match CHAIN: $command, $needle")
                 falseActivation = false
             elseif occursin(SPAN, "$name") && allOccursinOrder(needle, command, complete=true)
-                printDebug("match SPAN: $command, $needle")
+                # printDebug("match SPAN: $command, $needle")
                 falseActivation = false
             end
         end
