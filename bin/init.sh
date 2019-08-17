@@ -1,4 +1,4 @@
-#!/bin/bash -xv
+#!/bin/bash 
 #
 # Create a new Snips skill from the template!
 #
