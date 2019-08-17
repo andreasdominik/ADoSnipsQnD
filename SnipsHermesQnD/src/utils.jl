@@ -353,7 +353,7 @@ function allOccursin(needles, haystack)
 
     match = true
     for needle in needles
-        if ! occursin(Regex(needle), haystack)
+        if ! occursin(Regex(needle, "i"), haystack)
             match = false
         end
     end
@@ -375,7 +375,7 @@ function oneOccursin(needles, haystack)
 
     match = false
     for needle in needles
-        if occursin(needle, haystack)
+        if occursin(Regex(needle, "i"), haystack)
             match = true
         end
     end
