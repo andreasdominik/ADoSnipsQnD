@@ -307,6 +307,19 @@ end
 
 
 """
+    printLog(...)
+
+Print the message
+Current App-name is printed as prefix.
+"""
+function printLog(s)
+
+    logtime = Dates.format(Dates.now(), "e, dd u yyyy HH:MM:SS")
+    println("$logtime [$(getAppName())]: $s")
+end
+
+
+"""
     printDebug(...)
 
 Print the message only, if debug-mode is on.
@@ -334,12 +347,19 @@ Return true if all words in the list needles occures in haystack.
 """
 function allOccursin(needles, haystack)
 
+    if needles isa AbstractString
+        needles = [needles]
+    end
+
+    printDebug("command = $haystack, must_include = $needles")
     match = true
     for needle in needles
-        if ! occursin(needle, haystack)
+        printDebug("needle: $needle")
+        if ! occursin(Regex(needle), haystack)
             match = false
         end
     end
+    printDebug("match = $match")
     return match
 end
 
@@ -351,6 +371,10 @@ Return true if one of the words in the list needles occures in haystack.
 `needles` can be an AbstractStrings or regular expression.
 """
 function oneOccursin(needles, haystack)
+
+    if needles isa AbstractString
+        needles = [needles]
+    end
 
     match = false
     for needle in needles
@@ -444,18 +468,22 @@ function isFalseDetection(payload)
         #
         falseActivation = true
         for (name,needle) in config
+            printDebug("""name = $name; needle = "$needle".""")
+
             if occursin(INCLUDE, "$name") && allOccursin(needle, command)
-                  falseActivation = false
+                printDebug("match INCLUDE: $command, $needle")
+                falseActivation = false
             elseif occursin(CHAIN, "$name") && allOccursinOrder(needle, command, complete=false)
+                printDebug("match CHAIN: $command, $needle")
                 falseActivation = false
             elseif occursin(SPAN, "$name") && allOccursinOrder(needle, command, complete=true)
+                printDebug("match SPAN: $command, $needle")
                 falseActivation = false
             end
         end
     end
     if falseActivation
-        print(  """[$intent]: Intent "$intent" aborted. """)
-        println("""False detection recognised for command: "$command".""")
+        printLog(  """[$intent]: Intent "$intent" aborted. False detection recognised for command: "$command".""")
     end
 
     return falseActivation
