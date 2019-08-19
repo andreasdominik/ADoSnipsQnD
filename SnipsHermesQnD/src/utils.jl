@@ -316,6 +316,7 @@ function printLog(s)
 
     logtime = Dates.format(Dates.now(), "e, dd u yyyy HH:MM:SS")
     println("$logtime [$(getAppName())]: $s")
+    flush(stdout)
 end
 
 
@@ -335,6 +336,7 @@ function printDebug(s)
 
     if !matchConfig(:debug, "none")
         println("DEBUG -> [$(getAppName())]: $s")
+        flush(stdout)
     end
 end
 
