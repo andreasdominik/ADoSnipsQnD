@@ -316,7 +316,7 @@ function printLog(s)
 
     logtime = Dates.format(Dates.now(), "e, dd u yyyy HH:MM:SS")
     prefix =getAppName()
-    println("$logtime [$prefix]: $s")
+    println("***> $logtime [$prefix]: $s")
     flush(stdout)
 end
 
