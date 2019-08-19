@@ -310,12 +310,13 @@ end
     printLog(...)
 
 Print the message
-Current App-name is printed as prefix.
+The current App-name is printed as prefix.
 """
 function printLog(s)
 
     logtime = Dates.format(Dates.now(), "e, dd u yyyy HH:MM:SS")
-    println("$logtime [$(getAppName())]: $s")
+    prefix =getAppName()
+    println("$logtime [$prefix]: $s")
     flush(stdout)
 end
 
@@ -335,8 +336,7 @@ Current App-name is printed as prefix.
 function printDebug(s)
 
     if !matchConfig(:debug, "none")
-        println("DEBUG -> [$(getAppName())]: $s")
-        flush(stdout)
+        printLog("<<< DEBUG >>> $s")
     end
 end
 
