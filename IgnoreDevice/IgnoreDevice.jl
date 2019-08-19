@@ -19,6 +19,7 @@ Snips.readConfig("$APP_DIR")
 Snips.setLanguage(Snips.getConfig(:language))
 Snips.setAppDir(APP_DIR)
 Snips.setAppName(APP_DIR)
+Snips.printDebug("APP_DIR(ignoreDevice) = $APP_DIR")
 
 include("api.jl")
 include("skill-actions.jl")
