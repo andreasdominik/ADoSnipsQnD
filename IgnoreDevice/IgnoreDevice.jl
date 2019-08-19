@@ -18,8 +18,8 @@ Snips = SnipsHermesQnD
 Snips.readConfig("$APP_DIR")
 Snips.setLanguage(Snips.getConfig(:language))
 Snips.setAppDir(APP_DIR)
-Snips.setAppName(APP_DIR)
-Snips.printDebug("APP_DIR(ignoreDevice) = $APP_DIR")
+Snips.setAppName("IgnoreDevice")
+Snips.printDebug("APP_NAME(ignoreDevice) = $(Snips.getAppName())")
 
 include("api.jl")
 include("skill-actions.jl")
