@@ -158,7 +158,7 @@ Run the cmd return mosquito_sub output.
 """
 function runOneMQTT(cmd)
 
-    println("[SnipsHermesQnD: MQTT]: $cmd")
+    printLog("MQTT-command: $cmd")
     return read(cmd, String)
 end
 
@@ -179,7 +179,7 @@ function parseMQTT(message)
         topic = strip(m[:topic])
         payload = tryParseJSON(strip(m[:payload]))
     else
-        println("ERROR: Unable to parse MQTT message!")
+        printLog("ERROR: Unable to parse MQTT message!")
         topic = nothing
         payload = Dict()
     end
@@ -228,6 +228,6 @@ function publishMQTT(topic, payload, hostname = nothing, port = nothing)
 
     cmd = Cmd(cmd, ignorestatus = true)
 
-    println(cmd)
+    printLog(cmd)
     run(cmd, wait = true)  # false maybe possible?
 end

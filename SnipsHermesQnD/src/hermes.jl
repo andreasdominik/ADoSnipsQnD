@@ -427,8 +427,8 @@ function isOnOffMatched(payload, deviceName; siteId = CURRENT_SITE_ID)
         commandSiteId = payload[:siteId]
     end
 
-    println("siteId, payload[:siteId]: $siteId, $(payload[:siteId])")
-    println("deviceName: $deviceName")
+    printDebug("siteId, payload[:siteId]: $siteId, $(payload[:siteId])")
+    printDebug("deviceName: $deviceName")
 
     if commandSiteId == siteId
 

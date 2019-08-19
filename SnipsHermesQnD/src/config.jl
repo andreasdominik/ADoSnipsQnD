@@ -38,7 +38,7 @@ function readConfig(appDir)
             end
         end
     catch
-        println("Warning: no config file found!")
+        printLog("Warning: no config file found!")
     end
 
 end
@@ -159,7 +159,7 @@ function isConfigValid(name; regex = r".", elem = 1, errorMsg = TEXTS[:error_con
         return true
     else
         publishSay("$errMsg : $name")
-        println("[$CURRENT_APP_NAME]: $errorMsg : $name")
+        printLog("[$CURRENT_APP_NAME]: $errorMsg : $name")
         return false
     end
 end

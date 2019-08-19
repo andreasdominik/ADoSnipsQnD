@@ -33,11 +33,11 @@ for (root, dirs, files) in walkdir(SKILLS_DIR)
     append!(loaders, paths)
 end
 
-println("[ADoSnipsQnD]: $(length(loaders)) skills found to load.")
+println("[ADoSnipsQnD loader]: $(length(loaders)) skills found to load.")
 
 for loader in loaders
     global INTENT_ACTIONS
-    println("[ADoSnipsQnD]: loading Julia app $loader.")
+    println("[ADoSnipsQnD loader]: loading Julia app $loader.")
     include(loader)
 end
 

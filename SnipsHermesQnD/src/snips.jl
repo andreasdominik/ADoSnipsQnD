@@ -102,7 +102,7 @@ function tryParseJSONfile(fname; quiet = false)
         if ! quiet
             publishSay(msg)
         end
-        println("$msg : $fname")
+        printDebug("tryParseJSONfile: $msg : $fname")
         json = Dict()
     end
 
