@@ -125,13 +125,19 @@ langText
 
 ## Hardware control
 
-Some devices can be directly controlled by the framework:
+Some devices can be directly controlled by the framework.
+In order to stay in the style of Snips, it is possible to
+run Shelly WiFi-switches without any cloud accounts and
+services.
+The Shelly-devices come with an own WiFi network. After installing the
+device just connect to Shelly's access point (somthing like `shelly1-35FA58`)
+and configure the switch for DHCP in your network with  teh selft-explaining
+the web-interface of the device. At no point it's necessary to create an account 
+or use a cloud service (although the Shelly1 documentation recommends).
 
 ```@docs
 setGPIO
-shelly1on
-shelly1off
-shelly1onoff
+switchShelly1
 ```
 
 

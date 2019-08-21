@@ -64,7 +64,7 @@ export subscribeMQTT, readOneMQTT, publishMQTT,
        extractSlotValue, isInSlot, isOnOffMatched,
        readableDateTime,
        setGPIO, printDebug,
-       shelly1on, shelly1off, shelly1onoff,
+       switchShelly1,
        allOccuresin, oneOccursin, allOccursinOrder,
        isFalseDetection
 
