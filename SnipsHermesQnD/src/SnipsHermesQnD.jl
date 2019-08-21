@@ -13,6 +13,7 @@ include("intents.jl")
 include("config.jl")
 include("dates.jl")
 include("gpio.jl")
+include("shelly.jl")
 include("languages.jl")
 include("callback.jl")
 
@@ -63,6 +64,7 @@ export subscribeMQTT, readOneMQTT, publishMQTT,
        extractSlotValue, isInSlot, isOnOffMatched,
        readableDateTime,
        setGPIO, printDebug,
+       shelly1on, shelly1off, shelly1onoff,
        allOccuresin, oneOccursin, allOccursinOrder,
        isFalseDetection
 
