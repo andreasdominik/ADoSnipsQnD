@@ -158,8 +158,9 @@ function isConfigValid(name; regex = r".", elem = 1, errorMsg = TEXTS[:error_con
     if occursin(regex, param)
         return true
     else
-        publishSay("$errMsg : $name")
+        publishSay("$errorMsg : $name")
         printLog("[$CURRENT_APP_NAME]: $errorMsg : $name")
+        printLog("    Regex: $regex, parameter: $param")
         return false
     end
 end
