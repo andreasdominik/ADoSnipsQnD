@@ -123,6 +123,18 @@ addText
 langText
 ```
 
+## Hardware control
+
+Some devices can be directly controlled by the framework:
+
+```@docs
+setGPIO
+shelly1on
+shelly1off
+shelly1onoff
+```
+
+
 ## Utility functions
 
 Little helpers to provide functionality which is commonly needed
@@ -136,7 +148,6 @@ tryReadTextfile
 tryParseJSONfile
 tryParseJSON
 tryMkJSON
-setGPIO
 printLog
 printDebug
 ```
