@@ -416,19 +416,25 @@ Depending on the payload the function returns:
 ## Arguments:
 * `payload`: payload of intent
 * `siteId`: siteId of the device to be matched with the payload of intent
+            if `siteId == "any"`, the device will be matched w/o caring
+            about siteId or room.
 * `deviceName` : name of device to be matched with the payload of intent
 """
 function isOnOffMatched(payload, deviceName; siteId = CURRENT_SITE_ID)
 
     result = :unmatched
 
-    commandSiteId = extractSlotValue(payload, "room")
-    if commandSiteId == nothing
-        commandSiteId = payload[:siteId]
-    end
+    if siteId == "any"
+        commandSiteId = siteId
+    else
+        commandSiteId = extractSlotValue(payload, "room")
+        if commandSiteId == nothing
+            commandSiteId = payload[:siteId]
+        end
 
-    printDebug("siteId, payload[:siteId]: $siteId, $(payload[:siteId])")
-    printDebug("deviceName: $deviceName")
+        printDebug("siteId, payload[:siteId]: $siteId, $(payload[:siteId])")
+        printDebug("deviceName: $deviceName")
+    end
 
     if commandSiteId == siteId
 
