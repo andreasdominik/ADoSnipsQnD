@@ -51,7 +51,7 @@ Return true if the parameter with name `name` of the config.ini has the value
 val or one element of the list as the value val.
 
 ## Arguments:
-* `name`: name of the config parameter as Symbol
+* `name`: name of the config parameter as Symbol or String
 * `val`: desired value
 """
 function matchConfig(name, val::String)
