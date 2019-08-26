@@ -8,8 +8,8 @@
 #
 
 APP_DIR = @__DIR__
-include("$APP_DIR/IgnoreDevice/IgnoreDevice.jl")
-import Main.IgnoreDevice
+include("$APP_DIR/QnDintents/QnDintents.jl")
+import Main.QnDintents
 
 global INTENT_ACTIONS
-append!(INTENT_ACTIONS, IgnoreDevice.getIntentActions())
+append!(INTENT_ACTIONS, QnDintents.getIntentActions())

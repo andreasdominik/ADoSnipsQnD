@@ -4,7 +4,7 @@
 # Normally, it is NOT necessary to change anything in this file,
 # unless you know what you are doing!
 #
-module IgnoreDevice
+module QnDintents
 
 const MODULE_DIR = @__DIR__
 const APP_DIR = replace(MODULE_DIR, r"/[^/]*/?$"=>"")
@@ -20,7 +20,7 @@ Snips.readConfig("$FRAMEWORK_DIR")
 Snips.setLanguage(Snips.getConfig(:language))
 Snips.setAppDir(APP_DIR)
 Snips.setAppName("IgnoreDevice")
-Snips.printDebug("APP_NAME(ignoreDevice) = $(Snips.getAppName())")
+Snips.printDebug("APP_NAME(QnDintents) = $(Snips.getAppName())")
 
 include("api.jl")
 include("skill-actions.jl")
