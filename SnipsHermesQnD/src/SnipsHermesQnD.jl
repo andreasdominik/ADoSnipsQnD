@@ -68,6 +68,6 @@ export subscribeMQTT, readOneMQTT, publishMQTT,
        switchShelly1,
        allOccuresin, oneOccursin, allOccursinOrder,
        isFalseDetection,
-       dbWritePayload, dbWriteValue
+       dbWritePayload, dbWriteValue, dbReadEntry, dbReadValue
 
 end # module

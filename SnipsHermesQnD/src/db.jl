@@ -17,11 +17,18 @@
 #
 
 """
-    dbWritePayload(entry, payload)
+    dbWritePayload(key, payload)
 
 Write a complete payload to a database entry.
 The payload is overwitten if the entry already exists,
 or created otherwise.
+
+## Arguments
+- `key`: unique key of the database entry of
+         type `AbstractString` or `Symbol`
+- `payload`: payload of the entry with key `key`
+         to be written.
+- `value`: value to be stored in the field.
 """
 function dbWritePayload(key, payload)
 
@@ -51,11 +58,18 @@ function dbWritePayload(key, payload)
 end
 
 """
-    dbWriteValue(entry, field, value)
+    dbWriteValue(key, field, value)
 
 Write a field=>value pair to the payload of a database entry.
 The field is overwitten if the entry already exists,
 or created elsewise.
+
+## Arguments
+- `key`: unique key of the database entry of
+         type `AbstractString` or `Symbol`
+- `field`: database field of the payload of the entry with key `key`
+         to be written (`AbstractString` or `Symbol`).
+- `value`: value to be stored in the field.
 """
 function dbWriteValue(key, field, value)
 
@@ -89,6 +103,69 @@ function dbWriteValue(key, field, value)
     dbWrite(db)
     dbUnlock()
 end
+
+
+"""
+    dbReadEntry(key)
+
+Read the complete entry with the key `key` from the
+status database
+and return the entry as `Dict()` or nothing if not in the database.
+
+## Arguments
+- `key`: unique key of the database entry of
+         type `AbstractString` or `Symbol`
+"""
+function dbReadEntry(key)
+
+    if ! (key isa Symbol)
+        key = Symbol(key)
+    end
+
+    db = dbRead()
+    if haskey(db, key)
+        return db[key]
+    else
+        printLog("Try to read entry for unknown key $key from status database.")
+        return nothing
+    end
+end
+
+
+"""
+    dbReadValue(key, field)
+
+Read the field `field` of the  entry with the key `key` from the
+status database
+and return the value or nothing if not in the database.
+
+## Arguments
+- `key`: unique key of the database entry of
+         type `AbstractString` or `Symbol`
+- `field`: database field of the payload of the entry with key `key`
+         (`AbstractString` or `Symbol`).
+"""
+function dbReadValue(key, field)
+
+    if ! (key isa Symbol)
+        key = Symbol(key)
+    end
+    if ! (field isa Symbol)
+        field = Symbol(field)
+    end
+
+    db = dbRead()
+    if haskey(db, key) &&
+       haskey(db[key],:payload) &&
+       haskey(db[key][:payload],field)
+        return db[key][:payload][field]
+    else
+        printLog("Try to read value for unknown key/value $key/$value from status database.")
+        return nothing
+    end
+end
+
+
 
 
 
