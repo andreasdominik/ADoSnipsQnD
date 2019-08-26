@@ -41,3 +41,59 @@ function ignoreDevice(topic, payload)
         return false    # hotword needed for next command
     end
 end
+
+
+"""
+    schedulerAction(topic, payload)
+
+Trigger action for the scheduler. Each schedulerTrigger must
+contain a trigger and an execution time for the trigger.
+
+## Details
+
+A scheduler trigger addresses the scheduler (as target) and must
+include a complete trigger object as payload (i.e. trigger):
+
+```
+{
+  "topic" : "qnd/trigger/andreasdominik:ADoSnipsScheduler",
+  "origin" : "ADoSnipsPlanLights",
+  "time" : "2019-08-26T10:12:13.177",
+  "trigger" :
+  {
+    "origin" : "ADoSnipsPlanLights",
+    "time" : "2019-08-26T10:12:13.177",
+    "topic" : "qnd/trigger/andreasdominik:ADoSnipsLights",
+    "execute_time" : "2019-08-12T08:12:33.329"
+    "trigger" :
+    {
+      "room" : "default",
+      "device" : "floor_lamp",
+      "onOrOff" : "ON",
+      "settings" : "undefined"
+    }
+  }
+}
+```
+"""
+function schedulerAction(topic, payload)
+
+    if !haskey(payload, :trigger)
+        Snips.printLog("ERROR: Trigger for ADoSnipsScheduler has not payload trigger!")
+        return false
+    end
+
+    if !haskey(payload[:trigger], :topic) ||
+       !haskey(payload[:trigger], :execute_time) ||
+       !haskey(payload[:trigger], :trigger)
+        Snips.printLog("ERROR: Trigger for ADoSnipsScheduler is incomplete")!
+        return false
+    end
+
+    global actionChannel
+
+    action = payload[:trigger]
+    put!(actionChannel, action)
+
+    return false
+end

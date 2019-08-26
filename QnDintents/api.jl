@@ -9,9 +9,9 @@
 # The db looks like:
 # [
 #   {
+#     "topic" : "qnd/trigger/andreasdominik:ADoSnipsLights",
 #     "create_time" : "2019-08-25T10:01:35.399"
 #     "execute_time" : "2019-08-26T10:12:13.177"
-#     "topic" : "qnd/trigger/andreasdominik:ADoSnipsLights",
 #     "trigger" :
 #     {
 #       "room" : "default",
