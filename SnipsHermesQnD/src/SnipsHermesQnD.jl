@@ -12,6 +12,7 @@ include("hermes.jl")
 include("intents.jl")
 include("config.jl")
 include("dates.jl")
+include("db.jl")
 include("gpio.jl")
 include("shelly.jl")
 include("languages.jl")
@@ -66,6 +67,7 @@ export subscribeMQTT, readOneMQTT, publishMQTT,
        setGPIO, printDebug,
        switchShelly1,
        allOccuresin, oneOccursin, allOccursinOrder,
-       isFalseDetection
+       isFalseDetection#,
+       # dbWritePayload, dbWriteValue
 
 end # module
