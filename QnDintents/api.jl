@@ -44,6 +44,13 @@ function addAction!(db, action)
 
     push!(db, action)
     sort!(db, by = x->x[:execute_time])
+    Snips.dbWriteValue(:scheduler, :db, db)
+end
+
+function rmAction!(db, action)
+
+    db = db[2:end]
+    Snips.dbWriteValue(:scheduler, :db, db)
 end
 
 """
