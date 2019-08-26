@@ -61,9 +61,16 @@ and return `true` or `false` if not.
 """
 function isDue(action)
 
-    if haskey(action, :exec_time)
-        return DateTime(action) < Dates.now()
+    if haskey(action, :execute_time)
+        return DateTime(action[:execute_time]) < Dates.now()
     else
         return false
     end
+end
+
+
+function runAction(action)
+
+    Snips.printLog("SystemTrigger $(action[:topic]) published by scheduler.")
+    Snips.publishSystemTrigger(action[:topic], action[:trigger])
 end
