@@ -123,7 +123,7 @@ function publishSystemTrigger(topic, trigger; develName = CURRENT_DEVEL_NAME)
         topic = "qnd/trigger/$topic"
     end
 
-    payload = Dict( :target => topic,
+    payload = Dict( :topc => topic,
                     :origin => "$CURRENT_MODULE",
                     :time => "$(now())",
                     :sessionId => CURRENT_SESSION_ID,
