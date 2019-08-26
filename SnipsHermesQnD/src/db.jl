@@ -202,9 +202,7 @@ function dbWrite(db)
         mkpath( dbPath())
     end
 
-    printDebug("write db: $db")
     fname = dbName()
-    printDebug("db file: $fname")
     open(fname, "w") do f
         JSON.print(f, db, 2)
     end
@@ -255,7 +253,6 @@ function dbName()
     else
         name = "$(dbPath())/$name"
     end
-    printDebug("dbName = $name")
     return name
 end
 
@@ -269,6 +266,5 @@ function dbPath()
     else
         path = "$path/ADoSnipsQnD"
     end
-    printDebug("dbPath = $path")
     return path
 end
