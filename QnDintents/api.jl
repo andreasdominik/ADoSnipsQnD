@@ -45,8 +45,6 @@ function addAction!(db, action)
     action[:create_time] = Dates.now()
     push!(db, action)
     sort!(db, by = x->x[:execute_time])
-    Snips.printDebug("vor write, action: $action")
-    Snips.printDebug("vor write, db: $db")
     Snips.dbWriteValue(:scheduler, :db, db)
 end
 
@@ -70,8 +68,6 @@ and return `true` or `false` if not.
 function isDue(action)
 
     if haskey(action, :execute_time)
-        Snips.printDebug("isDue")
-        Snips.printDebug("$(Dates.DateTime(action[:execute_time]))")
         return Dates.DateTime(action[:execute_time]) < Dates.now()
     else
         return false

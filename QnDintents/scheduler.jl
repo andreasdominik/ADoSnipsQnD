@@ -6,8 +6,6 @@ function startScheduler()
         return
     end
 
-    Snips.printLog("scheduler running ......................")
-
     db = readScheduleDb()
 
     # loop forever
@@ -33,9 +31,7 @@ function startScheduler()
         #
         if length(db) > 0 && isDue(db[1])
             nextAction = deepcopy(db[1])
-            Snips.printDebug("nextAction: $nextAction")
             db = rm1stAction(db)
-            Snips.printDebug("smaller db: $db")
             runAction(nextAction)
         end
 
