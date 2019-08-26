@@ -14,25 +14,23 @@ function startScheduler()
 
         global actionChannel
 
-        # exec action since last iteration
-        #
-        # nextAction = checkSchedules()
-        # if nextAction != nothing
-        #     removeAction(nextAction, db)
-        #     writeDB(db)
-        #     runAction(nextAction)
-        # end
-
         # add actions to db:
         # read from channel, until empty:
         #
         while isready(actionChannel)
             action = take!(actionChannel)
-            Snips.printDebug("action: $action")
-            addAction(action,db)
-            writeDB(db)
+            Snips.printDebug("action from Channel: $action")
+            addAction!(db, action)
         end
-        Snips.printDebug("db: $db")
+        Snips.printDebug("scheduler db: $db")
+
+        # exec action since last iteration
+        #
+        if length(db) > 0 && isDue(db[1])
+            removeAction(nextAction, db)
+            runAction(nextAction)
+        end
+
 
         # TODO: use a 2nd channel to delete actions!
         #
