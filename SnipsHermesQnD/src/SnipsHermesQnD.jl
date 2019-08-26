@@ -67,7 +67,7 @@ export subscribeMQTT, readOneMQTT, publishMQTT,
        setGPIO, printDebug,
        switchShelly1,
        allOccuresin, oneOccursin, allOccursinOrder,
-       isFalseDetection#,
-       # dbWritePayload, dbWriteValue
+       isFalseDetection,
+       dbWritePayload, dbWriteValue
 
 end # module

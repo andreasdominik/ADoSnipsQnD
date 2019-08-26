@@ -23,27 +23,30 @@ Write a complete payload to a database entry.
 The payload is overwitten if the entry already exists,
 or created otherwise.
 """
-function dbWritePayload(entry, payload)
+function dbWritePayload(key, payload)
 
-    if ! (entry isa Symbol)
-        entry = Symbol(entry)
+    if ! (key isa Symbol)
+        key = Symbol(key)
     end
 
-    dbLock()
+    if !dbLock()
+        return false
+    end
+
     db = dbRead()
 
-    if haskey(db, entry)
-        record = db[entry]
+    if haskey(db, key)
+        entry = db[key]
     else
-        record = Dict()
-        db[entry] = record
+        entry = Dict()
+        db[key] = entry
     end
 
-    record[:time] = Dates.now()
-    record[:writer] = CURRENT_APP_NAME
-    record[:payload] = payload
+    entry[:time] = Dates.now()
+    entry[:writer] = CURRENT_APP_NAME
+    entry[:payload] = payload
 
-    dbWrite()
+    dbWrite(db)
     dbUnlock()
 end
 
@@ -54,34 +57,36 @@ Write a field=>value pair to the payload of a database entry.
 The field is overwitten if the entry already exists,
 or created elsewise.
 """
-function dbWriteValue(entry, field, value)
+function dbWriteValue(key, field, value)
 
-    if ! (entry isa Symbol)
-        entry = Symbol(entry)
-    end
     if ! (key isa Symbol)
-        key = Symbol(entry)
+        key = Symbol(key)
+    end
+    if ! (field isa Symbol)
+        field = Symbol(field)
     end
 
-    dbLock()
+    if !dbLock()
+        return false
+    end
+
     db = dbRead()
-
-    if haskey(db, entry)
-        record = db[entry]
+    if haskey(db, key)
+        entry = db[key]
     else
-        record = Dict()
-        db[entry] = record
+        entry = Dict()
+        db[key] = entry
     end
 
-    if !haskey(record, :payload)
-        record[:payload] = Dict()
+    if !haskey(entry, :payload)
+        entry[:payload] = Dict()
     end
 
-    record[:payload][field] = value
-    record[:time] = Dates.now()
-    record[:writer] = CURRENT_APP_NAME
+    entry[:payload][field] = value
+    entry[:time] = Dates.now()
+    entry[:writer] = CURRENT_APP_NAME
 
-    dbWrite()
+    dbWrite(db)
     dbUnlock()
 end
 
@@ -97,10 +102,10 @@ Path is constructed from `config.ini` values
 """
 function dbRead()
 
-    db = Snips.tryParseJSONfile(dbName(), quiet = true)
+    db = tryParseJSONfile(dbName(), quiet = true)
     if length(db) == 0
-        Snips.printLog("Empty status DB read: $(dbName()).")
-        db = Dict{}[]
+        printLog("Empty status DB read: $(dbName()).")
+        db = Dict()
     end
 
     return db
@@ -120,9 +125,9 @@ function dbWrite(db)
         mkpath( dbPath())
     end
 
-    Snips.printDebug("write db: $db")
+    printDebug("write db: $db")
     fname = dbName()
-    Snips.printDebug("db file: $fName")
+    printDebug("db file: $fname")
     open(fname, "w") do f
         JSON.print(f, db, 2)
     end
@@ -133,9 +138,27 @@ end
 
 function dbLock()
 
+    if !ispath( dbPath())
+        mkpath( dbPath())
+    end
     lockName = dbName() * ".lock"
-    open(lockName, "w") do f
-        println(f, "database is locked"
+
+    # wait until unlocked:
+    #
+    waitSecs = 10
+    while isfile(lockName) && waitSecs > 0
+        waitSecs -= 1
+        sleep(1)
+    end
+
+    if waitSecs == 0
+        printLog("ERROR: unable to lock home database file: $dbName")
+        return false
+    else
+        open(lockName, "w") do f
+            println(f, "database is locked")
+        end
+        return true
     end
 end
 
@@ -149,9 +172,26 @@ end
 
 function dbName()
 
-    return "$(dbPath())/$(getConfig(:database)))"
+    name = getConfig(:database_file)
+    if name ==  nothing
+        name = "$(dbPath())/home.json"
+    else
+        name = "$(dbPath())/$name"
+    end
+    printDebug("dbName = $name")
+    return name
 end
+
+
+
 function dbPath()
 
-    return "$(getConfig(:application_dir))/ADoSnipsQnD"
+    path = getConfig(:application_data_dir)
+    if path ==  nothing
+        path = "./ADoSnipsQnD"
+    else
+        path = "$path/ADoSnipsQnD"
+    end
+    printDebug("dbPath = $path")
+    return path
 end
