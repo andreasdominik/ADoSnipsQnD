@@ -50,10 +50,15 @@ function addAction!(db, action)
     Snips.dbWriteValue(:scheduler, :db, db)
 end
 
-function rmAction!(db, action)
+function rm1stAction(db)
 
-    db = db[2:end]
-    Snips.dbWriteValue(:scheduler, :db, db)
+    if length(db)  < 2
+        dbSmall = Dict[]
+    else
+        dbSmall = db[2:end]
+    end
+    Snips.dbWriteValue(:scheduler, :db, dbSmall)
+    return dbSmall
 end
 
 """
@@ -65,7 +70,9 @@ and return `true` or `false` if not.
 function isDue(action)
 
     if haskey(action, :execute_time)
-        return DateTime(action[:execute_time]) < Dates.now()
+        Snips.printDebug("isDue")
+        Snips.printDebug("$(Dates.DateTime(action[:execute_time]))")
+        return Dates.DateTime(action[:execute_time]) < Dates.now()
     else
         return false
     end

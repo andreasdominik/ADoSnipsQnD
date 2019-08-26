@@ -13,7 +13,7 @@ function startScheduler()
     # loop forever
     # and execute one trigger per loop, if one is due
     #
-    interval = 5  # 60 sec = 1 minute
+    interval = 5  # sec
     while true
 
         global actionChannel
@@ -27,12 +27,15 @@ function startScheduler()
             Snips.printDebug("action from Channel: $action")
             addAction!(db, action)
         end
-        Snips.printDebug("scheduler db: $db")
+        Snips.printDebug("length: $(length(db)), scheduler db: $db")
 
         # exec action since last iteration
         #
         if length(db) > 0 && isDue(db[1])
-            rmAction!(nextAction, db)
+            nextAction = deepcopy(db[1])
+            Snips.printDebug("nextAction: $nextAction")
+            db = rm1stAction(db)
+            Snips.printDebug("smaller db: $db")
             runAction(nextAction)
         end
 
