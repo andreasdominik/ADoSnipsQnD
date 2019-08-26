@@ -25,6 +25,10 @@ SLOT_ON_OFF = "on_or_off"
 INI_NAMES = :on_off_devices
 
 
+# channel for transfer of new schedules to the scheduler task:
+#
+actionChannel = Channel(64)
+
 #
 # link between actions and intents:
 #
@@ -40,3 +44,4 @@ else
     Snips.registerIntentAction("ADoSnipsOnOffEN", ignoreDevice)
     TEXTS = TEXTS_EN
 end
+    Snips.registerTriggerAction("", templateAction)
