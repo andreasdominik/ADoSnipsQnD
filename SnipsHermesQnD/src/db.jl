@@ -89,7 +89,6 @@ function dbWriteValue(key, field, value)
         entry = db[key]
     else
         entry = Dict()
-        db[key] = entry
     end
 
     if !haskey(entry, :payload)
@@ -100,6 +99,7 @@ function dbWriteValue(key, field, value)
     entry[:time] = Dates.now()
     entry[:writer] = CURRENT_APP_NAME
 
+    db[key] = entry
     dbWrite(db)
     dbUnlock()
 end
@@ -160,7 +160,7 @@ function dbReadValue(key, field)
        haskey(db[key][:payload],field)
         return db[key][:payload][field]
     else
-        printLog("Try to read value for unknown key/value $key/$value from status database.")
+        printLog("Try to read value for unknown key $key from status database.")
         return nothing
     end
 end

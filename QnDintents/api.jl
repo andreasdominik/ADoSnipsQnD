@@ -34,7 +34,7 @@ function readScheduleDb()
 
     db = Snips.dbReadValue(:scheduler, :db)
     if db == nothing
-        return Dict()
+        return Dict[]
     else
         return db
     end
@@ -42,8 +42,11 @@ end
 
 function addAction!(db, action)
 
+    action[:create_time] = Dates.now()
     push!(db, action)
     sort!(db, by = x->x[:execute_time])
+    Snips.printDebug("vor write, action: $action")
+    Snips.printDebug("vor write, db: $db")
     Snips.dbWriteValue(:scheduler, :db, db)
 end
 

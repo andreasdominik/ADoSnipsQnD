@@ -78,6 +78,10 @@ include a complete trigger object as payload (i.e. trigger):
 """
 function schedulerAction(topic, payload)
 
+    global actionChannel
+
+    Snips.printLog("trigger action schedulerAction() started.")
+
     if !haskey(payload, :trigger)
         Snips.printLog("ERROR: Trigger for ADoSnipsScheduler has not payload trigger!")
         return false
@@ -86,13 +90,14 @@ function schedulerAction(topic, payload)
     if !haskey(payload[:trigger], :topic) ||
        !haskey(payload[:trigger], :execute_time) ||
        !haskey(payload[:trigger], :trigger)
-        Snips.printLog("ERROR: Trigger for ADoSnipsScheduler is incomplete")!
+        Snips.printLog("ERROR: Trigger for ADoSnipsScheduler is incomplete!")
         return false
     end
 
     global actionChannel
 
     action = payload[:trigger]
+    Snips.printDebug("new action found. $action")
     put!(actionChannel, action)
 
     return false

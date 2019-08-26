@@ -6,6 +6,8 @@ function startScheduler()
         return
     end
 
+    Snips.printLog("scheduler running ......................")
+
     db = readScheduleDb()
 
     # loop forever
@@ -16,6 +18,7 @@ function startScheduler()
 
         global actionChannel
 
+
         # add actions to db:
         # read from channel, until empty:
         #
@@ -24,7 +27,6 @@ function startScheduler()
             Snips.printDebug("action from Channel: $action")
             addAction!(db, action)
         end
-
         Snips.printDebug("scheduler db: $db")
 
         # exec action since last iteration
