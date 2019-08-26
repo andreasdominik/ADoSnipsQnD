@@ -132,7 +132,7 @@ services.
 The Shelly-devices come with an own WiFi network. After installing the
 device just connect to Shelly's access point (somthing like `shelly1-35FA58`)
 and configure the switch for DHCP in your network with  teh selft-explaining
-the web-interface of the device. At no point it's necessary to create an account 
+the web-interface of the device. At no point it's necessary to create an account
 or use a cloud service (although the Shelly1 documentation recommends).
 
 ```@docs
@@ -140,6 +140,44 @@ setGPIO
 switchShelly1
 ```
 
+## Status database
+
+The framework handles a database to save status about
+house and devices, controlled by the assistant.
+The database is stored on disk in order to persist in case
+of a system crash or restart.
+
+Every skill can store and read Dicts() as entries with a unique key
+or values as field-value-pairs as part of an entry.
+
+The db looks somehow like:
+```
+{
+    "irrigation" :
+    {
+        "time" : "2019-08-26T10:12:13.177"
+        "writer" : "ADoSnipsIrrigation",
+        "payload" :
+        {
+            "status" : "on",
+            "next_status" : "off"
+        }
+    }
+}
+```
+
+
+Location of the database file is
+`<application_data_dir>/ADoSnipsQnD/<database_file>`
+where `application_data_dir` and `database_file>` are parameters in the
+`config.ini` of the framework.
+
+```@docs
+dbWritePayload
+dbWriteValue
+dbReadEntry
+dbReadValue
+```
 
 ## Utility functions
 
