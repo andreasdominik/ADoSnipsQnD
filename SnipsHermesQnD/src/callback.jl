@@ -11,6 +11,16 @@ function mainCallback(topic, payload)
     #         $payload
     #         ************************************************""")
 
+    if !(payload isa Dict) ||
+       !(haskey(payload, :siteId)) ||
+       !(haskey(payload, :sessionId))
+
+        printLog("Corrupted payload detected for topic $topic")
+        printLog("payload: $payload")
+        printLog("intent or trigger aborted!")
+        return
+    end
+
     # find the intents or triggers that match the current
     # message:
     matchedTopics = filter(Main.INTENT_ACTIONS) do i
