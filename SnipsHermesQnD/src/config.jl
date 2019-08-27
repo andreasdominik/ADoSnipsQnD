@@ -27,7 +27,7 @@ function readConfig(appDir)
             m = match(rgx, line)
             if m != nothing
                 name = Symbol(m[:name])
-                rawVals = split(chomp(m[:val]), r"[,; ]")
+                rawVals = split(chomp(m[:val]), r"[,]")
                 vals = [strip(rv) for rv in rawVals if length(strip(rv)) > 0]
 
                 if length(vals) == 1
