@@ -25,9 +25,6 @@ function startScheduler()
             Snips.printDebug("action from Channel: $action")
             addAction!(db, action)
         end
-        Snips.printDebug("actionChannel")
-        Snips.printDebug("length: $(length(db)), scheduler db: $db")
-
         # listen to delete signals:
         # read from channel, until empty:
         #
@@ -36,8 +33,8 @@ function startScheduler()
             Snips.printDebug("deletion from Channel: $deletion")
             rmActions!(db, deletion)
         end
-        Snips.printDebug("deleteChannel")
-        Snips.printDebug("length: $(length(db)), scheduler db: $db")
+        Snips.printDebug("length: $(length(db))")
+        # Snips.printDebug("length: $(length(db)), scheduler db: $db")
 
         # exec action since last iteration
         #

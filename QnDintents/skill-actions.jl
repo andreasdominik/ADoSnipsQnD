@@ -115,18 +115,28 @@ function schedulerAction(topic, payload)
         return false
     end
 
-    # if mode == add new schedule:
+    # if mode == add new schedules:
     #
-    if trigger[:mode] == "add schedule"
-        if !haskey(trigger, :topic) ||
-           !haskey(trigger, :execute_time) ||
-           !haskey(trigger, :trigger)
-            Snips.printLog("ERROR: Trigger for ADoSnipsScheduler is incomplete!")
+    if trigger[:mode] == "add schedules"
+        if !haskey(trigger, :actions) || !(trigger[:actions] isa AbstractArray)
+            Snips.printLog("ERROR: Trigger for ADoSnipsScheduler has no actions!")
             return false
         end
 
-        Snips.printDebug("new action found. $trigger")
-        put!(actionChannel, trigger)
+        for action in trigger[:actions]
+            if !haskey(action, :topic) ||
+               !haskey(action, :execute_time) ||
+               !haskey(action, :trigger)
+                Snips.printLog("ERROR: Trigger for ADoSnipsScheduler is incomplete!")
+                return false
+            end
+            if !haskey(action, :origin)
+                action[:origin] = trigger[:origin]
+            end
+
+            Snips.printDebug("new action found. $action")
+            put!(actionChannel, action)
+        end
 
     # else delete ...
     #
