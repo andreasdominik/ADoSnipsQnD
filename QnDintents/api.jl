@@ -81,10 +81,7 @@ function rmActions!(db, deletion)
         mask = [false for x in db]
     end
 
-    Snips.printDebug("mask = $mask")
-
     deleteat!(db, mask)
-    Snips.printDebug("Length db = $(length(db))")
     Snips.dbWriteValue(:scheduler, :db, db)
     return db
 end

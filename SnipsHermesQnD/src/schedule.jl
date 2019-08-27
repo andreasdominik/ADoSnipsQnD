@@ -125,6 +125,47 @@ function schedulerDeleteAll()
         :sessionId => CURRENT_SESSION_ID,
         :siteId => CURRENT_SITE_ID,
         :topic => "dummy",
+        :origin => "dummy",
+        :time => "$(Dates.now())"
+        )
+    publishSystemTrigger("ADoSnipsScheduler", trigger)
+end
+
+
+"""
+    schedulerDeleteTopic(topic)
+
+Delete all scheduled action triggers with the given topic.
+"""
+function schedulerDeleteTopic(topic)
+
+    topic = expandTopic(topic)
+    trigger = Dict(
+        :mode => "delete by topic",
+        :sessionId => CURRENT_SESSION_ID,
+        :siteId => CURRENT_SITE_ID,
+        :topic => topic,
+        :origin => "dummy",
+        :time => "$(Dates.now())"
+        )
+    publishSystemTrigger("ADoSnipsScheduler", trigger)
+end
+
+
+"""
+    schedulerDeleteOrigin(topic)
+
+Delete all scheduled action triggers with the given origin
+(i.e. name of the app which cerated the scheduled action).
+"""
+function schedulerDeleteOrigin(origin)
+
+    trigger = Dict(
+        :mode => "delete by origin",
+        :sessionId => CURRENT_SESSION_ID,
+        :siteId => CURRENT_SITE_ID,
+        :topic => "dummy",
+        :origin => origin,
         :time => "$(Dates.now())"
         )
     publishSystemTrigger("ADoSnipsScheduler", trigger)

@@ -31,7 +31,7 @@ function ignoreDevice(topic, payload)
         return true     # no hotword needed for next command
 
     elseif !Snips.matchConfig(INI_NAMES, device)
-        Snips.printDebug("Device: $device, List: $(Snips.getConfig(INI_NAMES))")
+        # Snips.printDebug("Device: $device, List: $(Snips.getConfig(INI_NAMES))")
         Snips.printLog("device $device ignored and session ended.")
         Snips.publishEndSession("$(TEXTS[:not_handled]) $device")
         return true     # no hotword needed for next command
@@ -52,26 +52,43 @@ contain a trigger and an execution time for the trigger.
 ## Trigger: add new schedule
 
 A scheduler trigger addresses the scheduler (as target) and must
-include a complete trigger object as payload (i.e. trigger):
+include a list of complete trigger objects as payload (i.e. trigger):
 ```
 {
-  "topic" : "qnd/trigger/andreasdominik:ADoSnipsScheduler",
-  "origin" : "ADoSnipsPlanLights",
-  "time" : "2019-08-26T10:12:13.177",
-  "trigger" :
-  {
-    "origin" : "ADoSnipsPlanLights",
-    "mode" : "add schedule",
-    "time" : "2019-08-26T10:12:13.177",
-    "topic" : "qnd/trigger/andreasdominik:ADoSnipsLights",
-    "execute_time" : "2019-08-12T08:12:33.329"
-    "trigger" :
-    {
-      "room" : "default",
-      "device" : "floor_lamp",
-      "onOrOff" : "ON",
-      "settings" : "undefined"
-    }
+  "origin": "Main.ADoSnipsAuto",
+  "topic": "qnd/trigger/andreasdominik:ADoSnipsSchedule",
+  "siteId": "default",
+  "sessionId": "7dab7a26-84fb-4855-8ad0-acd955408072",
+  "trigger": {
+    "mode": "add schedules",
+    "sessionId": "7dab7a26-84fb-4855-8ad0-acd955408072",
+    "siteId": "default",
+    "time": "2019-08-26T14:07:55.623",
+    "origin": "ADoSnipsAuto",
+    "actions": [
+      {
+        "topic": "qnd/trigger/andreasdominik:ADoSnipsLights",
+        "origin": "ADoSnipsAuto",
+        "execute_time": "2019-08-28T10:00:20.534",
+        "trigger": {
+          "settings": "undefined",
+          "device": "floor_light",
+          "onOrOff": "OFF1",
+          "room": "default"
+        }
+      },
+      {
+        "topic": "qnd/trigger/andreasdominik:ADoSnipsLights",
+        "origin": "ADoSnipsAuto",
+        "execute_time": "2019-08-28T10:00:20.534",
+        "trigger": {
+          "settings": "undefined",
+          "device": "floor_light",
+          "onOrOff": "OFF2",
+          "room": "default"
+        }
+      }
+    ]
   }
 }
 ```
@@ -82,14 +99,17 @@ The trigger can delete **all** schedules or all schedules
 for a specific trigger. The field `topic` is ignored for `mode == all`:
 ```
 {
-  "topic" : "qnd/trigger/andreasdominik:ADoSnipsScheduler",
-  "time" : "2019-08-26T10:12:13.177",
-  "trigger" :
-  {
-    "origin" : "ADoSnipsPlanLights",
-    "mode" : "delete all",              // or "delete topic"
-    "time" : "2019-08-26T10:12:13.177",
-    "topic" : "qnd/trigger/andreasdominik:ADoSnipsLights",
+  "origin": "Main.ADoSnipsTemplate",
+  "topic": "qnd/trigger/andreasdominik:ADoSnipsSchedule",
+  "siteId": "default",
+  "sessionId": "7dab7a26-84fb-4855-8ad0-acd955408072",
+  "trigger": {
+    "mode": "delete all",
+    "sessionId": "7dab7a26-84fb-4855-8ad0-acd955408072",
+    "siteId": "default",
+    "topic": "dummy",
+    "origin": "dummy",
+    "time": "2019-08-26T14:07:55.623"
   }
 }
 ```
@@ -145,7 +165,7 @@ function schedulerAction(topic, payload)
             Snips.printLog("ERROR: ADoSnipsScheduler delete by topic but no topic in trigger!")
             return false
         end
-        Snips.printDebug("New delete schedule by topic trigger found: $trigger)")
+        Snips.printLog("New delete schedule by topic trigger found: $trigger)")
         put!(deleteChannel, trigger)
 
     elseif trigger[:mode] == "delete by origin"
@@ -153,15 +173,15 @@ function schedulerAction(topic, payload)
             Snips.printLog("ERROR: ADoSnipsScheduler delete by origin but no origin in trigger!")
             return false
         end
-        Snips.printDebug("New delete schedule by origin trigger found: $trigger)")
+        Snips.printLog("New delete schedule by origin trigger found: $trigger)")
         put!(deleteChannel, trigger)
 
     elseif trigger[:mode] == "delete all"
-        Snips.printDebug("New delete all schedules: $trigger)")
+        Snips.printLog("New delete all schedules: $trigger)")
         put!(deleteChannel, trigger)
 
     else
-        Snips.printDebug("Trigger has no valid mode: $trigger)")
+        Snips.printLog("Trigger has no valid mode: $trigger)")
     end
     return false
 end
