@@ -179,6 +179,87 @@ dbReadEntry
 dbReadValue
 ```
 
+## Scheduler
+
+The QnD framework provides a scheduler which allows to execute
+system triggers at a specified time in the future.
+
+Schedules are added by sending a trigger with the
+following format to the scheduler. A list of triggers
+can be scheduled with one trigger:
+
+```
+{
+  "origin": "ADoSnipsAuto",
+  "topic": "qnd/trigger/andreasdominik:ADoSnipsSchedule",
+  "siteId": "default",
+  "sessionId": "7dab7a26-84fb-4855-8ad0-acd955408072",
+  "trigger": {
+    "mode": "add schedules",
+    "sessionId": "7dab7a26-84fb-4855-8ad0-acd955408072",
+    "siteId": "default",
+    "time": "2019-08-26T14:07:55.623",
+    "origin": "ADoSnipsAuto",
+    "actions": [
+      {
+        "topic": "qnd/trigger/andreasdominik:ADoSnipsLights",
+        "origin": "ADoSnipsAuto",
+        "execute_time": "2019-08-28T10:00:20.534",
+        "trigger": {
+          "settings": "undefined",
+          "device": "main_light",
+          "onOrOff": "ON",
+          "room": "default"
+        }
+      },
+      {
+        "topic": "qnd/trigger/andreasdominik:ADoSnipsLights",
+        "origin": "ADoSnipsAuto",
+        "execute_time": "2019-08-28T10:00:30.534",
+        "trigger": {
+          "settings": "undefined",
+          "device": "main_light",
+          "onOrOff": "OFF",
+          "room": "default"
+        }
+      }
+    ]
+  }
+}
+```
+
+A trigger with a `mode` od `"delete all"`, `"delete by topic"` or
+`"delete by origin"` will delete the matching schedules:
+
+```
+{
+  "origin": "Main.ADoSnipsTemplate",
+  "topic": "qnd/trigger/andreasdominik:ADoSnipsSchedule",
+  "siteId": "default",
+  "sessionId": "7dab7a26-84fb-4855-8ad0-acd955408072",
+  "trigger": {
+    "mode": "delete all",
+    "sessionId": "7dab7a26-84fb-4855-8ad0-acd955408072",
+    "siteId": "default",
+    "topic": "dummy",
+    "origin": "dummy",
+    "time": "2019-08-26T14:07:55.623"
+  }
+}
+```
+
+However, it is normally not necessary to set up these triggers manually;
+the following API functions provide an interface:
+
+```@docs
+schedulerAddAction
+schedulerAddActions
+schedulerMakeAction
+schedulerDeleteAll
+schedulerDeleteTopic
+schedulerDeleteOrigin
+```
+
 ## Utility functions
 
 Little helpers to provide functionality which is commonly needed

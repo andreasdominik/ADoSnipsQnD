@@ -20,6 +20,7 @@ execution at `executeTime`.
            missing in the argument.
 - `trigger`: The system trigger to be published as Dict(). Format of the
            trigger is defined by the target skill.
+
 `sessionId`, `origin` and `siteId` defaults to the current
 values, if not given. SessionId and origin can be used to select
 scheduled actions for deletion.
@@ -52,13 +53,14 @@ end
             origin = CURRENT_APP_NAME,
             siteId = CURRENT_SITE_ID)
 
-Add all actions is the list of action objects to the database of
+Add all actions in the list of action objects to the database of
 scheduled actions for execution.
 The elements of `actions` can be created by `schedulerMakeAction()` and must
 include executeTime, topic and the trigger to be published.
 
 - `actions`: List of actions to be published. Format of the
            trigger is defined by the target skill.
+           
 `sessionId`, `origin` and `siteId` defaults to the current
 values, if not given. SessionId and origin can be used to select
 scheduled actions for deletion.
