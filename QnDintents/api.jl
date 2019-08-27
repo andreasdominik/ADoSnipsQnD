@@ -52,28 +52,41 @@ function addAction!(db, action)
     push!(db, action)
     sort!(db, by = x->x[:execute_time])
     Snips.dbWriteValue(:scheduler, :db, db)
+    return db
 end
+
 
 function rm1stAction!(db)
 
-    if length(db)  < 2
-        db = Dict[]
-    else
-        db = db[2:end]
+    if length(db) > 0
+        deleteat!(db, 1)
     end
     Snips.dbWriteValue(:scheduler, :db, db)
+    return db
 end
+
 
 function rmActions!(db, deletion)
 
     if deletion[:mode] == "delete all"
-        db = Dict[]
+        mask = [true for x in db]
+
     elseif deletion[:mode] == "delete by topic"
-        db = filter(x -> x[:topic] != deletion[:topic], db)
+        mask = [x[:topic] == deletion[:topic] for x in db]
+
     elseif deletion[:mode] == "delete by origin"
-        db = filter(x -> x[:origin] != deletion[:origin], db)
+        mask = [x[:origin] == deletion[:origin] for x in db]
+
+    else
+        mask = [false for x in db]
     end
+
+    Snips.printDebug("mask = $mask")
+
+    deleteat!(db, mask)
+    Snips.printDebug("Length db = $(length(db))")
     Snips.dbWriteValue(:scheduler, :db, db)
+    return db
 end
 
 """
@@ -85,7 +98,6 @@ and return `true` or `false` if not.
 function isDue(action)
 
     if haskey(action, :execute_time)
-        Snips.printDebug("isDue")
         return Dates.DateTime(action[:execute_time]) < Dates.now()
     else
         return false

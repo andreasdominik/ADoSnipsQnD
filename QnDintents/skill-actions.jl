@@ -105,17 +105,18 @@ function schedulerAction(topic, payload)
         Snips.printLog("ERROR: Trigger for ADoSnipsScheduler has no payload trigger!")
         return false
     end
-    if !haskey(payload[:trigger], :mode) ||
-       !(payload[:trigger][:mode] in ["add", "delete all", "delete topic"])
-        Snips.printLog("ERROR: Trigger for ADoSnipsScheduler has no or no valid mode!")
+    trigger = payload[:trigger]
+    if !haskey(trigger, :origin)
+        trigger[:origin] = payload[:origin]
+    end
+
+    if !haskey(trigger, :mode)
+        Snips.printLog("ERROR: Trigger for ADoSnipsScheduler has no mode!")
         return false
     end
 
-    global actionChannel
-
     # if mode == add new schedule:
     #
-    trigger = payload[:trigger]
     if trigger[:mode] == "add schedule"
         if !haskey(trigger, :topic) ||
            !haskey(trigger, :execute_time) ||
@@ -144,6 +145,13 @@ function schedulerAction(topic, payload)
         end
         Snips.printDebug("New delete schedule by origin trigger found: $trigger)")
         put!(deleteChannel, trigger)
+
+    elseif trigger[:mode] == "delete all"
+        Snips.printDebug("New delete all schedules: $trigger)")
+        put!(deleteChannel, trigger)
+
+    else
+        Snips.printDebug("Trigger has no valid mode: $trigger)")
     end
     return false
 end

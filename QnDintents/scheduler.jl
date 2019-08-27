@@ -17,7 +17,6 @@ function startScheduler()
         global actionChannel
         global deleteChannel
 
-
         # add actions to db:
         # read from channel, until empty:
         #
@@ -26,6 +25,18 @@ function startScheduler()
             Snips.printDebug("action from Channel: $action")
             addAction!(db, action)
         end
+        Snips.printDebug("actionChannel")
+        Snips.printDebug("length: $(length(db)), scheduler db: $db")
+
+        # listen to delete signals:
+        # read from channel, until empty:
+        #
+        while isready(deleteChannel)
+            deletion = take!(deleteChannel)
+            Snips.printDebug("deletion from Channel: $deletion")
+            rmActions!(db, deletion)
+        end
+        Snips.printDebug("deleteChannel")
         Snips.printDebug("length: $(length(db)), scheduler db: $db")
 
         # exec action since last iteration
@@ -34,15 +45,6 @@ function startScheduler()
             nextAction = deepcopy(db[1])
             rm1stAction!(db)
             runAction(nextAction)
-        end
-
-
-        # listen to delete signals:
-        #
-        while isready(deleteChannel)
-            deletion = take!(deleteChannel)
-            Snips.printDebug("deletion from Channel: $deletion")
-            rmActions!(db, deletion)
         end
 
         sleep(interval)
