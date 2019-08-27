@@ -13,6 +13,7 @@ include("intents.jl")
 include("config.jl")
 include("dates.jl")
 include("db.jl")
+include("schedule.jl")
 include("gpio.jl")
 include("shelly.jl")
 include("languages.jl")
@@ -68,6 +69,8 @@ export subscribeMQTT, readOneMQTT, publishMQTT,
        switchShelly1,
        allOccuresin, oneOccursin, allOccursinOrder,
        isFalseDetection,
-       dbWritePayload, dbWriteValue, dbReadEntry, dbReadValue
+       dbWritePayload, dbWriteValue, dbReadEntry, dbReadValue,
+       schedulerAddAction, schedulerAddActions, schedulerMakeAction,
+       schedulerDeleteAll
 
 end # module

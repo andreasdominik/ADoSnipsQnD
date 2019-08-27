@@ -116,7 +116,7 @@ Publish a system trigger with topic and payload.
 """
 function publishSystemTrigger(topic, trigger; develName = CURRENT_DEVEL_NAME)
 
-    topic = expandTopic(topic)
+    topic = expandTopic(topic, develName)
 
     payload = Dict( :topic => topic,
                     :origin => "$CURRENT_MODULE",
@@ -130,7 +130,7 @@ function publishSystemTrigger(topic, trigger; develName = CURRENT_DEVEL_NAME)
 end
 
 
-function expandTopic(topic)
+function expandTopic(topic, develName = CURRENT_DEVEL_NAME)
 
     if !occursin(r":", topic)
         topic = "$develName:$topic"
