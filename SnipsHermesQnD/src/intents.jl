@@ -116,12 +116,7 @@ Publish a system trigger with topic and payload.
 """
 function publishSystemTrigger(topic, trigger; develName = CURRENT_DEVEL_NAME)
 
-    if !occursin(r":", topic)
-        topic = "$develName:$topic"
-    end
-    if !occursin(r"^qnd/trigger/", topic)
-        topic = "qnd/trigger/$topic"
-    end
+    topic = expandTopic(topic)
 
     payload = Dict( :topic => topic,
                     :origin => "$CURRENT_MODULE",
@@ -134,6 +129,17 @@ function publishSystemTrigger(topic, trigger; develName = CURRENT_DEVEL_NAME)
     publishMQTT(topic, payload)
 end
 
+
+function expandTopic(topic)
+
+    if !occursin(r":", topic)
+        topic = "$develName:$topic"
+    end
+    if !occursin(r"^qnd/trigger/", topic)
+        topic = "qnd/trigger/$topic"
+    end
+    return topic
+end
 """
     publishListenTrigger(mode)
 
