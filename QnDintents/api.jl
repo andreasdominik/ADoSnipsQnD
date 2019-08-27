@@ -43,20 +43,37 @@ end
 function addAction!(db, action)
 
     action[:create_time] = Dates.now()
+    if !haskey(action, :topic)
+        action[:topic] = "qnd/trigger/andreasdominik:ADoSnipsScheduler"
+    end
+    if !haskey(action, :origin)
+        action[:origin] = "ADoSnipsScheduler"
+    end
     push!(db, action)
     sort!(db, by = x->x[:execute_time])
     Snips.dbWriteValue(:scheduler, :db, db)
 end
 
-function rm1stAction(db)
+function rm1stAction!(db)
 
     if length(db)  < 2
-        dbSmall = Dict[]
+        db = Dict[]
     else
-        dbSmall = db[2:end]
+        db = db[2:end]
     end
-    Snips.dbWriteValue(:scheduler, :db, dbSmall)
-    return dbSmall
+    Snips.dbWriteValue(:scheduler, :db, db)
+end
+
+function rmActions!(db, deletion)
+
+    if deletion[:mode] == "delete all"
+        db = Dict[]
+    elseif deletion[:mode] == "delete by topic"
+        db = filter(x -> x[:topic] != deletion[:topic], db)
+    elseif deletion[:mode] == "delete by origin"
+        db = filter(x -> x[:origin] != deletion[:origin], db)
+    end
+    Snips.dbWriteValue(:scheduler, :db, db)
 end
 
 """
@@ -68,6 +85,7 @@ and return `true` or `false` if not.
 function isDue(action)
 
     if haskey(action, :execute_time)
+        Snips.printDebug("isDue")
         return Dates.DateTime(action[:execute_time]) < Dates.now()
     else
         return false

@@ -36,6 +36,7 @@ include("exported.jl")
 # and run the scheduler task:
 #
 actionChannel = Channel(64)
+deleteChannel = Channel(64)
 @async startScheduler()
 
 export getIntentActions, callBackrun

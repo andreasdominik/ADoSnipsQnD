@@ -15,6 +15,7 @@ function startScheduler()
     while true
 
         global actionChannel
+        global deleteChannel
 
 
         # add actions to db:
@@ -31,15 +32,19 @@ function startScheduler()
         #
         if length(db) > 0 && isDue(db[1])
             nextAction = deepcopy(db[1])
-            db = rm1stAction(db)
+            rm1stAction!(db)
             runAction(nextAction)
         end
 
 
-        # TODO: use a 2nd channel to delete actions!
+        # listen to delete signals:
         #
-        #
-        #
+        while isready(deleteChannel)
+            deletion = take!(deleteChannel)
+            Snips.printDebug("deletion from Channel: $deletion")
+            rmActions!(db, deletion)
+        end
+
         sleep(interval)
     end
 end
