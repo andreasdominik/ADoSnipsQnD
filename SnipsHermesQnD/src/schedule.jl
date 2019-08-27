@@ -77,12 +77,8 @@ function schedulerAddActions(actions;
         :time => "$(Dates.now())",
         :actions => actions
         )
-    action = schedulerMakeAction(executeTime, topic, trigger,
-                            sessionId = sessionId, origin = origin,
-                            siteId = siteId)
 
-    actions = [action]
-    publishSystemTrigger("ADoSnipsScheduler", actions)
+    publishSystemTrigger("ADoSnipsScheduler", scheduleTrigger)
 end
 
 
