@@ -26,7 +26,6 @@ configureIntent
 askYesOrNoOrUnknown
 askYesOrNo
 publishSay
-isFalseDetection
 ```
 
 

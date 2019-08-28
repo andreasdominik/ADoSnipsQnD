@@ -47,7 +47,7 @@ export subscribeMQTT, readOneMQTT, publishMQTT,
        subscribe2Intents, subscribe2Topics, listenIntentsOneTime,
        publishEndSession, publishContinueSession,
        publishStartSessionAction, publishStartSessionNotification,
-       publishSystemTrigger,
+       publishSystemTrigger,publishListenTrigger,
        configureIntent,
        registerIntentAction, registerTriggerAction,
        getIntentActions, setIntentActions,
@@ -65,12 +65,12 @@ export subscribeMQTT, readOneMQTT, publishMQTT,
        tryParseJSONfile, tryParseJSON, tryMkJSON,
        extractSlotValue, isInSlot, isOnOffMatched,
        readableDateTime,
-       setGPIO, printDebug,
+       setGPIO, printDebug, printLog,
        switchShelly1,
        allOccuresin, oneOccursin, allOccursinOrder,
        isFalseDetection,
        dbWritePayload, dbWriteValue, dbReadEntry, dbReadValue,
        schedulerAddAction, schedulerAddActions, schedulerMakeAction,
-       schedulerDeleteAll
+       schedulerDeleteAll, schedulerDeleteTopic, schedulerDeleteOrigin
 
 end # module
