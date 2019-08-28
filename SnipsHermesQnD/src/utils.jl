@@ -307,12 +307,12 @@ end
 
 
 """
-    printLog(...)
+    printLog(s)
 
 Print the message
 The current App-name is printed as prefix.
 """
-function printLog(...)
+function printLog(s)
 
     logtime = Dates.format(Dates.now(), "e, dd u yyyy HH:MM:SS")
     prefix =getAppName()
@@ -322,7 +322,7 @@ end
 
 
 """
-    printDebug(...)
+    printDebug(s)
 
 Print the message only, if debug-mode is on.
 Debog-modes include
@@ -333,7 +333,7 @@ Debog-modes include
                  off-line while a skill-action is running).
 Current App-name is printed as prefix.
 """
-function printDebug(...)
+function printDebug(s)
 
     if !matchConfig(:debug, "none")
         printLog("<<< DEBUG >>> $s")
