@@ -24,11 +24,11 @@ function switchShelly1(ip, action; timer = 10)
 
     timeout = 10
     if action == :on
-        cmd = `curl -v -m $timeout http://$ip/relay/0?turn=on`
+        cmd = `curl -v -m $timeout "http://$ip/relay/0?turn=on"`
     elseif action == :timer
-        cmd = `curl -v -m $timeout http://$ip/relay/0?turn=on&timer=$timer`
+        cmd = `curl -v -m $timeout "http://$ip/relay/0?turn=on&timer=$timer"`
     elseif action == :off
-        cmd = `curl -v -m $timeout http://$ip/relay/0?turn=off`
+        cmd = `curl -v -m $timeout "http://$ip/relay/0?turn=off"`
     else
         printLog("ERROR in switchShelly1: action $action is not supported")
         publishSay("Try to switch a Shelly-one with an unsuppored command!")
