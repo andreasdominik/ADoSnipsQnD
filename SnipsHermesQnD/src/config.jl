@@ -27,7 +27,7 @@ function readConfig(appDir)
             m = match(rgx, line)
             if m != nothing
                 name = Symbol(m[:name])
-                rawVals = split(chomp(m[:val]), r"[,]")
+                rawVals = split(chomp(m[:val]), r",")
                 vals = [strip(rv) for rv in rawVals if length(strip(rv)) > 0]
 
                 if length(vals) == 1
@@ -76,7 +76,7 @@ end
 
 
 """
-    getConfig(name)
+    getConfig(name; multiple = false)
 
 Return the parameter value of the config.ini with
 name or nothing if the param does not exist.
@@ -86,21 +86,27 @@ values is read.
 
 ## Arguments:
 * `name`: name of the config parameter as Symbol or String
+* `multiple`: if `true` an array of values is returned, even if
+              only a single value have been read.
 """
-function getConfig(name::Symbol)
+function getConfig(name::Symbol; multiple = false)
 
     global CONFIG_INI
 
     if haskey(CONFIG_INI, name)
-        return CONFIG_INI[name]
+        if multiple && (CONFIG_INI[name] isa AbstractString)
+            return [CONFIG_INI[name]]
+        else
+            return CONFIG_INI[name]
+        end
     else
         return nothing
     end
 end
 
-function getConfig(name::Any)
+function getConfig(name::Any; multiple = false)
 
-    return getConfig(Symbol(name))
+    return getConfig(Symbol(name), multiple = multiple)
 end
 
 
