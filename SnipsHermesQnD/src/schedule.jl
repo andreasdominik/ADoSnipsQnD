@@ -60,7 +60,7 @@ include executeTime, topic and the trigger to be published.
 
 - `actions`: List of actions to be published. Format of the
            trigger is defined by the target skill.
-           
+
 `sessionId`, `origin` and `siteId` defaults to the current
 values, if not given. SessionId and origin can be used to select
 scheduled actions for deletion.
@@ -155,7 +155,7 @@ end
 
 
 """
-    schedulerDeleteOrigin(topic)
+    schedulerDeleteOrigin(origin)
 
 Delete all scheduled action triggers with the given origin
 (i.e. name of the app which cerated the scheduled action).
