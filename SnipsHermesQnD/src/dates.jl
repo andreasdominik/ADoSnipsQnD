@@ -36,7 +36,10 @@ Dates.LOCALES["german"] = Dates.DateLocale(german_months, german_monts_abbrev,
 
 """
     function readableDateTime(datetime::AbstractString; lang = LANG)
-    function readableDateTime(datetime::DateTime; lang = LANG)
+                              wholeDay = false, onlyDay = false)
+    function readableDateTime(datetime::DateTime; lang = LANG,
+                              wholeDay = false, onlyDay = false)
+    function readableDate(datetime::Date; lang = LANG)
 
 Return human readable date and time, like
 "Friday, 1. January 2018",  "9 15"
@@ -47,11 +50,13 @@ Supported languages: "en", "de", "fr".
 * datetime: date and optional time as ISO string or as DateTime object.
 * lang: Language code (e.g. "en" or "de")
 * wholeDay: boolean, if true, no time is returned, instead "whole day"
+* onlyDay: just tell the day, not the time.
 
 ## Value:
 String value with readable date and time.
 """
-function readableDateTime(datetime::AbstractString; lang = LANG, wholeDay = false)
+function readableDateTime(datetime::AbstractString; lang = LANG,
+                          wholeDay = false, onlyDay = false)
 
     # remove time zone and make DateTime object:
     #
@@ -66,12 +71,18 @@ function readableDateTime(datetime::AbstractString; lang = LANG, wholeDay = fals
 
     # make date String:
     #
-    return readableDateTime(d, lang = lang, wholeDay = wholeDay)
+    return readableDateTime(d, lang = lang, wholeDay = wholeDay, onlyDay = onlyDay)
 end
 
 
+function readableDate(datetime::Date; lang = LANG)
 
-function readableDateTime(datetime::DateTime; lang = LANG, wholeDay = false)
+    return readableDateTime(Dates.DateTime(datetime), lang = lang, wholeDay = false, onlyDay = true)
+end
+
+
+function readableDateTime(datetime::DateTime; lang = LANG,
+            wholeDay = false, onlyDay = true)
 
     # set locale:
     #
@@ -91,7 +102,9 @@ function readableDateTime(datetime::DateTime; lang = LANG, wholeDay = false)
     y =  Dates.year(datetime)
     textDate = "$dname, $d. $mname $y"
 
-    if wholeDay
+    if onlyDay
+        textTime = ""
+    elseif wholeDay
         if locale == "german"
             textTime = "den ganzen Tag"
         elseif locale == "french"
