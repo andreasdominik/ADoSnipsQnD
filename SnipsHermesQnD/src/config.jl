@@ -116,14 +116,18 @@ end
 
 
 """
-    isInConfig(name::Symbol)
+    isInConfig(name)
 
 Return true if a parameter with name exists.
 
 ## Arguments:
-* `name`: name of the config parameter as Symbol
+* `name`: name of the config parameter as Symbol or String
 """
-function isInConfig(name::Symbol)
+function isInConfig(name)
+
+    if !(name isa Symbol)
+        name = Symbol(name)
+    end
 
     global CONFIG_INI
     return haskey(CONFIG_INI, name)
