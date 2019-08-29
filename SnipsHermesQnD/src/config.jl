@@ -155,6 +155,10 @@ length > 0. For a meire specific test, a regex can be provided.
 """
 function isConfigValid(name; regex = r".", elem = 1, errorMsg = TEXTS[:error_config])
 
+    if !isInConfig(name)
+        return false
+    end
+    
     if getConfig(name) == nothing
         param = ""
     elseif getConfig(name) isa AbstractString
