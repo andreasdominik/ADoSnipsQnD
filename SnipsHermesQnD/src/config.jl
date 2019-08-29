@@ -134,7 +134,7 @@ function isInConfig(name)
     if !(name isa Symbol)
         name = Symbol(name)
     end
-
+    
     global CONFIG_INI
     return haskey(CONFIG_INI, name)
 end
@@ -158,7 +158,7 @@ function isConfigValid(name; regex = r".", elem = 1, errorMsg = TEXTS[:error_con
     if !isInConfig(name)
         return false
     end
-    
+
     if getConfig(name) == nothing
         param = ""
     elseif getConfig(name) isa AbstractString

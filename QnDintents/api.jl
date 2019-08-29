@@ -105,5 +105,5 @@ end
 function runAction(action)
 
     Snips.printLog("SystemTrigger $(action[:topic]) published by scheduler.")
-    Snips.publishSystemTrigger(action[:topic], action[:trigger])
+    Snips.publishSystemTrigger(action[:topic], action[:trigger][:trigger])
 end
