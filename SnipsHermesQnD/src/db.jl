@@ -106,6 +106,28 @@ end
 
 
 """
+    dbHasEntry(key)
+
+Check if the database has an entry with the key `key`
+and return `true` or `false` otherwise.
+
+## Arguments
+- `key`: unique key of the database entry of
+         type `AbstractString` or `Symbol`
+"""
+function dbHasEntry(key)
+
+    if ! (key isa Symbol)
+        key = Symbol(key)
+    end
+
+    db = dbRead()
+    return haskey(db, key)
+end
+
+
+
+"""
     dbReadEntry(key)
 
 Read the complete entry with the key `key` from the

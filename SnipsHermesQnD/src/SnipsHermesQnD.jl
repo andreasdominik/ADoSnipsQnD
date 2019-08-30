@@ -69,7 +69,7 @@ export subscribeMQTT, readOneMQTT, publishMQTT,
        switchShelly1,
        allOccuresin, oneOccursin, allOccursinOrder,
        isFalseDetection,
-       dbWritePayload, dbWriteValue, dbReadEntry, dbReadValue,
+       dbWritePayload, dbWriteValue, dbReadEntry, dbReadValue, dbHasEntry,
        schedulerAddAction, schedulerAddActions, schedulerMakeAction,
        schedulerDeleteAll, schedulerDeleteTopic, schedulerDeleteOrigin
 
