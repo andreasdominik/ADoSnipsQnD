@@ -32,6 +32,10 @@
 
 function readScheduleDb()
 
+    if !Snips.dbHasEntry(:scheduler)
+        return Dict[]
+    end
+
     db = Snips.dbReadValue(:scheduler, :db)
     if db == nothing
         return Dict[]
