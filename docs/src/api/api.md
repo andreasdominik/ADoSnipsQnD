@@ -174,6 +174,7 @@ where `application_data_dir` and `database_file>` are parameters in the
 ```@docs
 dbWritePayload
 dbWriteValue
+dbHasEntry
 dbReadEntry
 dbReadValue
 ```
