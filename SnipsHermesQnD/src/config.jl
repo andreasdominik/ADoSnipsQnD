@@ -1,9 +1,6 @@
 #
 # helpers to work with config.ini
 
-# prefix for parameter names:
-#
-prefix = nothing
 
 """
     readConfig(appDir)
@@ -64,9 +61,10 @@ val or one element of the list as the value val.
 """
 function matchConfig(name, val::String)
 
-    if !(name isa Symbol)
-        name = Symbol(name)
-    end
+    name = addPrefix(name)
+    # if !(name isa Symbol)
+    #     name = Symbol(name)
+    # end
 
     global CONFIG_INI
 
@@ -84,7 +82,7 @@ end
 
 
 """
-    getConfig(name; multiple = false)
+    getConfig(name; multiple = false, onePrefix = nothing)
 
 Return the parameter value of the config.ini with
 name or nothing if the param does not exist.
@@ -96,10 +94,24 @@ values is read.
 * `name`: name of the config parameter as Symbol or String
 * `multiple`: if `true` an array of values is returned, even if
               only a single value have been read.
+* `onePrefix`: if defined, the prefix will be used only for this
+              single call instead of the stored prefix.
+
+## Details:
+If name is of type `Symbol`, it is treated as key in the
+Dirctionary of parameter values.
+If name is an `AbstractString`, the prefix is added if a
+prefix is defined (as `<prefix>:<name>`).
 """
-function getConfig(name::Symbol; multiple = false)
+function getConfig(namel; multiple = false, onePrefix = nothing)
 
     global CONFIG_INI
+
+    if onePrefix == nothing
+        name = addPrefix(name)
+    else
+        name = Symbol("$oncePrefix:$name")
+    end
 
     if haskey(CONFIG_INI, name)
         if multiple && (CONFIG_INI[name] isa AbstractString)
@@ -112,10 +124,6 @@ function getConfig(name::Symbol; multiple = false)
     end
 end
 
-function getConfig(name::Any; multiple = false)
-
-    return getConfig(Symbol(name), multiple = multiple)
-end
 
 
 """
@@ -139,9 +147,10 @@ Return true if a parameter with name exists.
 """
 function isInConfig(name)
 
-    if !(name isa Symbol)
-        name = Symbol(name)
-    end
+    name = addPrefix(name)
+    # if !(name isa Symbol)
+    #     name = Symbol(name)
+    # end
 
     global CONFIG_INI
     return haskey(CONFIG_INI, name)
@@ -163,6 +172,7 @@ length > 0. For a meire specific test, a regex can be provided.
 """
 function isConfigValid(name; regex = r".", elem = 1, errorMsg = TEXTS[:error_config])
 
+    name = addPrefix(name)
     if !isInConfig(name)
         return false
     end
@@ -185,4 +195,33 @@ function isConfigValid(name; regex = r".", elem = 1, errorMsg = TEXTS[:error_con
         printLog("    Regex: $regex, parameter: $param")
         return false
     end
+end
+
+
+function addPrefix(name)
+
+    global prefix
+
+    # do nothing if name is a Symbol:
+    #
+    if name isa Symbol
+        return name
+    elseif prefix == nothing
+        return Symbol(name)
+    else
+        return Symbol("$prefix:$name")
+    end
+end
+
+
+"""
+    setConfigPrefix(newPrefix)
+
+Set the prefix for all following calls to a parameter from
+`config.ini`. All parameter names, gives as `Strings` will be
+modified as `<prefix>:<name>`.
+"""
+function setConfigPrefix(newPrefix)
+
+    global prefix = newPrefix
 end

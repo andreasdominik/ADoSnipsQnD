@@ -59,6 +59,7 @@ one extension:
 
 ```@docs
 getConfig
+setConfigPrefix
 getAllConfig
 readConfig
 matchConfig

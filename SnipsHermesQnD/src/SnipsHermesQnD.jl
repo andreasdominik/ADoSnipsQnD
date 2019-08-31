@@ -20,6 +20,7 @@ include("languages.jl")
 include("callback.jl")
 
 CONFIG_INI = Dict{Symbol, Any}()
+prefix = nothing    # prefix for parameter names
 CURRENT_SITE_ID = "default"
 CURRENT_SESSION_ID = "1"
 CURRENT_DEVEL_NAME = "unknown"
@@ -60,7 +61,7 @@ export subscribeMQTT, readOneMQTT, publishMQTT,
        setAppDir, getAppDir, setAppName, getAppName,
        setTopic, getTopic, setIntent, getIntent,
        readConfig, matchConfig, getConfig, isInConfig, getAllConfig,
-       isConfigValid, isValidOrEnd,
+       isConfigValid, isValidOrEnd, setConfigPrefix,
        tryrun, tryReadTextfile, ping,
        tryParseJSONfile, tryParseJSON, tryMkJSON,
        extractSlotValue, isInSlot, isOnOffMatched,
