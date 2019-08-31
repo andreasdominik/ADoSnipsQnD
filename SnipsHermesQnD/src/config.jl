@@ -1,6 +1,10 @@
 #
 # helpers to work with config.ini
 
+# prefix for parameter names:
+#
+prefix = nothing
+
 """
     readConfig(appDir)
 
@@ -24,16 +28,20 @@ function readConfig(appDir)
         #
         rgx = r"^(?<name>[^[:space:]]+)=(?<val>.+)$"
         for line in configLines
-            m = match(rgx, line)
-            if m != nothing
-                name = Symbol(m[:name])
-                rawVals = split(chomp(m[:val]), r",")
-                vals = [strip(rv) for rv in rawVals if length(strip(rv)) > 0]
+            # skip comments.
+            #
+            if !occursin(r"^#", line)
+                m = match(rgx, line)
+                if m != nothing
+                    name = Symbol(m[:name])
+                    rawVals = split(chomp(m[:val]), r",")
+                    vals = [strip(rv) for rv in rawVals if length(strip(rv)) > 0]
 
-                if length(vals) == 1
-                    CONFIG_INI[name] = vals[1]
-                elseif length(vals) > 1
-                    CONFIG_INI[name] = vals
+                    if length(vals) == 1
+                        CONFIG_INI[name] = vals[1]
+                    elseif length(vals) > 1
+                        CONFIG_INI[name] = vals
+                    end
                 end
             end
         end
@@ -134,7 +142,7 @@ function isInConfig(name)
     if !(name isa Symbol)
         name = Symbol(name)
     end
-    
+
     global CONFIG_INI
     return haskey(CONFIG_INI, name)
 end
