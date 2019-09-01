@@ -48,13 +48,41 @@ isFalseDetection
 Helper functions for read values from the file `config.ini`.
 
 `config.ini` files follow the normal rules as for all Snips apps, with
-one extension:
+some extensions:
 
-- no spaces around the `=`
-- if value of the parameter (right side) includes commas,
+- as for standard Snips, no spaces are allowed around the `=`
+- the parameter value may contain whitespace; i.e.
+  `light=my light`
+  returns one parameter with value: `my light`.
+- if the value of the parameter (right side) includes commas,
   the value can be interpreted as a comma-separated list of values.
   In this case, the reader-function will return an array of Strings
   with the values (which an be accessed by their index).
+- parameter names may have a prefix (set by the function `setConfigPrefix()`).
+  If set, all config-functions will try to find parameter names with prefix.
+  Example: If the config.ini includes the lines:
+  ```
+  main_light:ip=192.168.0.15
+  wall_light:ip=192.168.0.16
+  ```
+  the following code returns `192.168.0.15` in the first call
+  and `192.168.0.16` in the second. This makes it easy to delegate config-reads
+  to sub-functions:
+
+  ```
+  Snips.setConfigPrefix("main_light")
+  main_ip = Snips.getConfig("ip")
+
+  Snips.setConfigPrefix("wall_light")
+  wall_ip = Snips.getConfig("ip")
+  ```
+
+  Obviously is possible to access the parameters directly via
+  `Snips.setConfigPrefix("main_light:ip")` or
+  `Snips.setConfigPrefix(Symbol("main_light:ip"))`
+  without setting the prefix (the second form will work even if another
+  prefix is set; see doc of the functions for details).
+
 
 
 ```@docs

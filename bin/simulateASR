@@ -1,4 +1,4 @@
-#!/bin/bash -xv
+#!/bin/bash 
 #
 # simulate a voice command for Snips.
 #
@@ -35,13 +35,16 @@ echo "Tokens = $TOKENS"
 #
 sleep 2; mosquitto_pub -t hermes/dialogueManager/startSession -m '{"siteId":"default","init":{"type":"action","canBeEnqueued":true}}' &
 
+# echo final recognised intent:
+#
+mosquitto_sub -C 1 -t "hermes/intent/#" | jq &
+
 # read sessId from answer:
 
 # send MQTT to NLU:
 #
 ANSWER_SESS="$(mosquitto_sub -C 1 -t hermes/dialogueManager/sessionStarted)"
 SESSION_ID="$(echo $ANSWER_SESS | jq '.sessionId')"
-echo " sessId = $SESSION_ID"
 
 # send MQTT to NLU by simulating asr result:
 #
