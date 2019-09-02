@@ -1,4 +1,4 @@
-#!/bin/bash 
+#!/bin/bash
 #
 # simulate a voice command for Snips.
 #
@@ -28,7 +28,8 @@ for tok in $REMAINING ; do
   TOKENS="$TOKENS,{\"value\":\"$tok\",\"confidence\":1.0,\"rangeStart\":$RANGE_START,\"rangeEnd\":$RANGE_END,\"time\":{\"start\":$TIME_START,\"end\":$TIME_END}}"
 done
 
-echo "Tokens = $TOKENS"
+# echo "Tokens = $TOKENS"
+echo "... sending command \"$COMMAND\" to Snips ..."
 
 
 # start session:
