@@ -103,7 +103,7 @@ Dirctionary of parameter values.
 If name is an `AbstractString`, the prefix is added if a
 prefix is defined (as `<prefix>:<name>`).
 """
-function getConfig(namel; multiple = false, onePrefix = nothing)
+function getConfig(name; multiple = false, onePrefix = nothing)
 
     global CONFIG_INI
 
@@ -224,4 +224,16 @@ modified as `<prefix>:<name>`.
 function setConfigPrefix(newPrefix)
 
     global prefix = newPrefix
+end
+
+
+"""
+    resetConfigPrefix()
+
+Remove the prefix for all following calls to a parameter from
+`config.ini`.
+"""
+function resetConfigPrefix(newPrefix)
+
+    global prefix = nothing
 end

@@ -88,6 +88,7 @@ some extensions:
 ```@docs
 getConfig
 setConfigPrefix
+resetConfigPrefix
 getAllConfig
 readConfig
 matchConfig
