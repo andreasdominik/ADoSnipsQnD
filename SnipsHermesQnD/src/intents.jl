@@ -116,6 +116,28 @@ Publish a system trigger with topic and payload.
 """
 function publishSystemTrigger(topic, trigger; develName = CURRENT_DEVEL_NAME)
 
+    (topic, payload) = makeSystemTrigger(topic, trigger, develName)
+
+    publishMQTT(topic, payload)
+end
+
+
+
+"""
+    makeSystemTrigger(topic, trigger; develName = CURRENT_DEVEL_NAME)
+
+Return (topic, payload) where topic is the fully quallified topic and
+payload a Dict() that include a system trigger topic and payload.
+
+## Arguments:
+* topic: MQTT topic, with or w/o the developername. If no
+         developername is included, CURRENT_DEVEL_NAME will be added.
+         If the topic does not start with `qnd/trigger/`, this
+         will be added.
+* trigger: specific payload for the trigger.
+"""
+function makeSystemTrigger(topic, trigger; develName = CURRENT_DEVEL_NAME)
+
     topic = expandTopic(topic, develName)
 
     payload = Dict( :topic => topic,
@@ -126,9 +148,8 @@ function publishSystemTrigger(topic, trigger; develName = CURRENT_DEVEL_NAME)
                     :trigger => trigger
                   )
 
-    publishMQTT(topic, payload)
+    return topic, payload
 end
-
 
 function expandTopic(topic, develName = CURRENT_DEVEL_NAME)
 
