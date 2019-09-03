@@ -81,6 +81,37 @@ function isInSlot(payload, slotName, value)
 end
 
 
+"""
+    readTimeFromSlot(payload, slotName)
+
+Return a DateTime from a slot with a time string of the format
+`"2019-09-03 18:00:00 +00:00"` or `nothing` if it is
+not possible to parse the slot.
+"""
+function readTimeFromSlot(payload, slotName)
+
+    dateTime = nothing
+
+    # date format delivered from Snips:
+    #
+    dateFormat = Dates.DateFormat("yyyy-mm-dd HH:MM:SS")
+    timeStr = extractSlotValue(payload, slotName, multiple = false)
+    if timeStr == nothing
+        return nothing
+    end
+
+    # fix timezone in slot:
+    #
+    timeStr = replace(timeStr, r" \+\d\d:\d\d$"=>"")
+    printDebug("Correctes timeStr in readTimeFromSlot(): $timeStr")
+
+    try
+        dateTime = Dates.DateTime(timeStr, dateFormat)
+    catch
+        dateTime = nothing
+    end
+    return dateTime
+end
 
 
 
@@ -325,7 +356,7 @@ end
     printDebug(s)
 
 Print the message only, if debug-mode is on.
-Debog-modes include
+Debug-modes include
 * `none`: no debugging
 * `logging`: only printDebug() will print
 * `no_parallel`: logging is on and skill actions will

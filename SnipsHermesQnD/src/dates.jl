@@ -82,7 +82,7 @@ end
 
 
 function readableDateTime(datetime::DateTime; lang = LANG,
-            wholeDay = false, onlyDay = true)
+            wholeDay = false, onlyDay = false)
 
     # set locale:
     #

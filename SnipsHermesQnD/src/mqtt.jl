@@ -231,3 +231,44 @@ function publishMQTT(topic, payload, hostname = nothing, port = nothing)
     printLog(cmd)
     run(cmd, wait = true)  # false maybe possible?
 end
+
+
+"""
+    publishMQTTfile(topic, fname, hostname = nothing, port = nothing)
+
+Publish a MQTT message with a file as payload.
+
+## Arguments
+* `topics`: String with the topic
+* `fname`: full path and name of file to be published
+* `hostname`:
+* `port`:     Hostname and port to use. If not specified
+            mosquitto_sub will be called without hostname/port
+            (using the default configuration of the system).
+"""
+function publishMQTTfile(topic, fname, hostname = nothing, port = nothing)
+
+    # build cmd string:
+    #
+    cmd = `mosquitto_pub`
+    if hostname != nothing
+        cmd = `$cmd -h $hostname`
+    end
+
+    if port != nothing
+        cmd = `$cmd -p $port`
+    end
+
+    cmd = `$cmd -t $topic`
+
+    if fname isa AbstractString && length(fname) > 0
+        cmd = `$cmd -f $fname`
+    else
+        cmd = `$cmd -m ''`
+    end
+
+    cmd = Cmd(cmd, ignorestatus = true)
+
+    printLog(cmd)
+    run(cmd, wait = true)  # false maybe possible?
+end

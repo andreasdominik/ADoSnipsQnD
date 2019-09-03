@@ -44,7 +44,7 @@ INI_MATCH = "must_include"
 SKILL_INTENT_ACTIONS = Tuple{AbstractString, AbstractString, AbstractString,
                              Module, Function}[]
 
-export subscribeMQTT, readOneMQTT, publishMQTT,
+export subscribeMQTT, readOneMQTT, publishMQTT, publishMQTTfile,
        subscribe2Intents, subscribe2Topics, listenIntentsOneTime,
        publishEndSession, publishContinueSession,
        publishStartSessionAction, publishStartSessionNotification,
@@ -64,7 +64,7 @@ export subscribeMQTT, readOneMQTT, publishMQTT,
        isConfigValid, isValidOrEnd, setConfigPrefix, resetConfigPrefix,
        tryrun, tryReadTextfile, ping,
        tryParseJSONfile, tryParseJSON, tryMkJSON,
-       extractSlotValue, isInSlot, isOnOffMatched,
+       extractSlotValue, isInSlot, isOnOffMatched, readTimeFromSlot,
        readableDateTime,
        setGPIO, printDebug, printLog,
        switchShelly1,

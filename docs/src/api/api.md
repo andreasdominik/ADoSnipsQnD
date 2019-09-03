@@ -106,6 +106,7 @@ extractSlotValue
 isInSlot
 isOnOffMatched
 isValidOrEnd
+readTimeFromSlot
 ```
 
 
@@ -121,6 +122,7 @@ robust and easy to maintain - there might be no need to change.
 subscribeMQTT
 readOneMQTT
 publishMQTT
+publishMQTTfile
 ```
 
 
