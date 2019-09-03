@@ -36,12 +36,12 @@ function startScheduler()
         # Snips.printDebug("length: $(length(db))")
         # Snips.printDebug("length: $(length(db)), scheduler db: $db")
 
-        # exec action since last iteration
+        # exec oldest action since last iteration
         #
         if length(db) > 0 && isDue(db[1])
             nextAction = deepcopy(db[1])
-            rm1stAction!(db)
             runAction(nextAction)
+            rm1stAction!(db)
         end
 
         sleep(interval)

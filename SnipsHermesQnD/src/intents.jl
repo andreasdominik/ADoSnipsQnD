@@ -116,8 +116,10 @@ Publish a system trigger with topic and payload.
 """
 function publishSystemTrigger(topic, trigger; develName = CURRENT_DEVEL_NAME)
 
-    (topic, payload) = makeSystemTrigger(topic, trigger, develName)
+    (topic, payload) = makeSystemTrigger(topic, trigger, develName = develName)
 
+
+    printDebug("PUBLISH payload: $payload")
     publishMQTT(topic, payload)
 end
 
@@ -138,6 +140,7 @@ payload a Dict() that include a system trigger topic and payload.
 """
 function makeSystemTrigger(topic, trigger; develName = CURRENT_DEVEL_NAME)
 
+    printDebug("TRIGGER: $trigger")
     topic = expandTopic(topic, develName)
 
     payload = Dict( :topic => topic,
@@ -148,6 +151,7 @@ function makeSystemTrigger(topic, trigger; develName = CURRENT_DEVEL_NAME)
                     :trigger => trigger
                   )
 
+    printDebug("PAYLOAD: $payload")
     return topic, payload
 end
 
