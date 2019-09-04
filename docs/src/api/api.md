@@ -170,6 +170,8 @@ or use a cloud service (although the Shelly1 documentation recommends).
 ```@docs
 setGPIO
 switchShelly1
+switchShelly25relay
+moveShelly25roller
 ```
 
 ## Status database
