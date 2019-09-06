@@ -110,7 +110,7 @@ function getConfig(name; multiple = false, onePrefix = nothing)
     if onePrefix == nothing
         name = addPrefix(name)
     else
-        name = Symbol("$oncePrefix:$name")
+        name = Symbol("$onePrefix:$name")
     end
 
     if haskey(CONFIG_INI, name)

@@ -86,7 +86,7 @@ and return `true`, if successful.
 - `action`: demanded action as symbol; one of `:open`, `:close`, `:stop`
             or `:to_pos`.
 - `pos`: desired position in percent
-- 'duration': If specified, the motor will move for this period in seconds.
+- 'duration': is not yet implemented.
 
 For the API-doc of the Shelly devices see:
 `<https://shelly-api-docs.shelly.cloud>`.

@@ -12,15 +12,15 @@ returned.
 """
 function tryParseJSON(text)
 
-    json = Dict()
+    jsonDict = Dict()
     try
-        json = JSON.parse(text)
-        json = key2symbol(json)
+        jsonDict = JSON.parse(text)
+        jsonDict = key2symbol(json)
     catch
-        json = text
+        jsonDict = text
     end
 
-    return json
+    return jsonDict
 end
 
 
