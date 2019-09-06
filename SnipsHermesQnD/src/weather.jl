@@ -1,9 +1,9 @@
 # get weather info from openweater.org
 #
 
-INI_WEATHER_API = "openweather_api_key"
-INI_WEATHER_ID = "openweather_city_id"
-WEATHER_URL = "api.openweathermap.org/data/2.5/weather"
+const INI_WEATHER_API = :openweather_api_key
+const INI_WEATHER_ID = :openweather_city_id
+const WEATHER_URL = "api.openweathermap.org/data/2.5/weather"
 
 
 """
@@ -35,9 +35,12 @@ The return value has the elements:
 function getOpenWeather()
 
     api = getConfig(INI_WEATHER_API)
+    printDebug("api = $api")
     city = getConfig(INI_WEATHER_ID)
+    printDebug("city = $city")
 
     url = "http://$WEATHER_URL?id=$city&APPID=$api"
+    printDebug("url = $url")
 
     response = read(`curl $url`, String)
     openWeather = tryParseJSON(response)

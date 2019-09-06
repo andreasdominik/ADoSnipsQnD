@@ -16,6 +16,7 @@ include("db.jl")
 include("schedule.jl")
 include("gpio.jl")
 include("shelly.jl")
+include("weather.jl")
 include("languages.jl")
 include("callback.jl")
 

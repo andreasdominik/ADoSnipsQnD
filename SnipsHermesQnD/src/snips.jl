@@ -15,7 +15,7 @@ function tryParseJSON(text)
     jsonDict = Dict()
     try
         jsonDict = JSON.parse(text)
-        jsonDict = key2symbol(json)
+        jsonDict = key2symbol(jsonDict)
     catch
         jsonDict = text
     end

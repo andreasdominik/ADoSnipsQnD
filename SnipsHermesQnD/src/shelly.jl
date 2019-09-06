@@ -26,7 +26,7 @@ function switchShelly1(ip, action; timer = 10)
 
     if !switchShelly25relay(ip, 0, action; timer = timer)
         printLog("ERROR in switchShelly1: action $action is not supported")
-        publishSay("Try to switch a Shelly-one with an unsuppored command!")
+        publishSay("Try to switch a Shelly-one with an unsupported command!")
     end
 
     return(tryrun(cmd))
@@ -67,7 +67,7 @@ function switchShelly25relay(ip, relay, action; timer = 10)
         cmd = `curl -v -m $timeout "http://$ip/relay/$relay?turn=off"`
     else
         printLog("ERROR in switchShelly25: action $action is not supported")
-        publishSay("Try to switch a Shelly-two point five with an unsuppored command!")
+        publishSay("Try to switch a Shelly-two point five with an unsupported command!")
     end
 
     return(tryrun(cmd))
@@ -104,7 +104,7 @@ function moveShelly25roller(ip, action; pos = 100, duration = 1)
         cmd = `curl -v -m $timeout "http://$ip/roller/0?go=to_pos&roller_pos=$pos"`
     else
         printLog("ERROR in switchShelly25: action $action is not supported")
-        publishSay("Try to move a Shelly-two po=int five with an unsuppored command!")
+        publishSay("Try to move a Shelly-two point five with an unsupported command!")
     end
 
     return(tryrun(cmd))

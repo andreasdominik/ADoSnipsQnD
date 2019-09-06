@@ -15,8 +15,9 @@ function mainCallback(topic, payload)
        !(haskey(payload, :siteId)) ||
        !(haskey(payload, :sessionId))
 
+
         printLog("Corrupted payload detected for topic $topic")
-        printLog("payload: $payload")
+        # printLog("payload: $(JSON.print(payload))")
         printLog("intent or trigger aborted!")
         return
     end
