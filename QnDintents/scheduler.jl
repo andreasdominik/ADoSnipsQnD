@@ -11,7 +11,7 @@ function startScheduler()
     # loop forever
     # and execute one trigger per loop, if one is due
     #
-    interval = 15  # sec
+    interval = 60  # sec
     while true
 
         global actionChannel
@@ -22,7 +22,7 @@ function startScheduler()
         #
         while isready(actionChannel)
             action = take!(actionChannel)
-            # Snips.printDebug("action from Channel: $action")
+            Snips.printDebug("action from Channel: $action")
             addAction!(db, action)
         end
         # listen to delete signals:
