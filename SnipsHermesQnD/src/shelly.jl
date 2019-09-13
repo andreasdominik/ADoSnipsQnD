@@ -54,7 +54,7 @@ For the API-doc of the Shelly devices see:
 """
 function switchShelly25relay(ip, relay, action; timer = 10)
 
-    printLog("Switching Shelly1/2.5 with action: $action")
+    printLog("Switching Shelly1/2.5 $ip with action: $action")
     timeout = 10
     if action == :on
         cmd = `curl -v -m $timeout "http://$ip/relay/$relay?turn=on"`
