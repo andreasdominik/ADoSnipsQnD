@@ -58,20 +58,25 @@ function switchShelly25relay(ip, relay, action; timer = 10)
     timeout = 10
     if action == :on
         cmd = `curl -v -m $timeout "http://$ip/relay/$relay?turn=on"`
+        success = tryrun(cmd)
     elseif action == :timer
         cmd = `curl -v -m $timeout "http://$ip/relay/$relay?turn=on&timer=$timer"`
+        success = tryrun(cmd)
     elseif action == :off
         cmd = `curl -v -m $timeout "http://$ip/relay/$relay?turn=off"`
+        success = tryrun(cmd)
     elseif action == :push
         cmd = `curl -v -m $timeout "http://$ip/relay/$relay?turn=on"`
+        success = tryrun(cmd)
         sleep(1)
         cmd = `curl -v -m $timeout "http://$ip/relay/$relay?turn=off"`
+        success = tryrun(cmd)
     else
         printLog("ERROR in switchShelly25: action $action is not supported")
         publishSay("Try to switch a Shelly-two point five with an unsupported command!")
     end
 
-    return(tryrun(cmd))
+    return(success)
 end
 
 
