@@ -64,7 +64,7 @@ function switchShelly25relay(ip, relay, action; timer = 10)
         cmd = `curl -v -m $timeout "http://$ip/relay/$relay?turn=off"`
     elseif action == :push
         cmd = `curl -v -m $timeout "http://$ip/relay/$relay?turn=on"`
-        sleep(0.20)
+        sleep(1)
         cmd = `curl -v -m $timeout "http://$ip/relay/$relay?turn=off"`
     else
         printLog("ERROR in switchShelly25: action $action is not supported")
