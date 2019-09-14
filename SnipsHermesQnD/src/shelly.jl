@@ -24,12 +24,13 @@ For the API-doc of the Shelly devices see:
 """
 function switchShelly1(ip, action; timer = 10)
 
-    if !switchShelly25relay(ip, 0, action; timer = timer)
-        printLog("ERROR in switchShelly1: action $action is not supported")
-        publishSay("Try to switch a Shelly-one with an unsupported command!")
+    success = switchShelly25relay(ip, 0, action; timer = timer)
+    if !success
+        printLog("ERROR in switchShelly1 with ip $ip and action $action")
+        publishSay("Try to switch a Shelly-one was not successful!")
     end
 
-    return(tryrun(cmd))
+    return(success)
 end
 
 
@@ -55,6 +56,7 @@ For the API-doc of the Shelly devices see:
 function switchShelly25relay(ip, relay, action; timer = 10)
 
     printLog("Switching Shelly1/2.5 $ip with action: $action")
+    success = false
     timeout = 10
     if action == :on
         cmd = `curl -v -m $timeout "http://$ip/relay/$relay?turn=on"`
