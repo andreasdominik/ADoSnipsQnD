@@ -233,7 +233,7 @@ end
 Remove the prefix for all following calls to a parameter from
 `config.ini`.
 """
-function resetConfigPrefix(newPrefix)
+function resetConfigPrefix()
 
     global prefix = nothing
 end
