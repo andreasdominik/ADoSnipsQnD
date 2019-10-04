@@ -345,6 +345,9 @@ The current App-name is printed as prefix.
 """
 function printLog(s)
 
+    if s == nothing
+        s = "log-message is nothing"
+    end
     logtime = Dates.format(Dates.now(), "e, dd u yyyy HH:MM:SS")
     prefix =getAppName()
     println("***> $logtime [$prefix]: $s")
@@ -366,6 +369,9 @@ Current App-name is printed as prefix.
 """
 function printDebug(s)
 
+    if s == nothing
+        s = "log-message is nothing"
+    end
     if !matchConfig(:debug, "none")
         printLog("<<< DEBUG >>> $s")
     end
