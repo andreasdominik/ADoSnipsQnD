@@ -8,11 +8,17 @@
 #
 
 CONFIG=$1
-# TOML="$(cat $CONFIG)"
-JSON="$(toml2json -i $CONFIG | jq)"
 
-cat $CONFIG | toml2json > json
-J=$(cat json | jq '.title')
+TOML="$(cat $CONFIG | toml2json)"
 
-J="$(cat $CONFIG | toml2json)"
-T=$(echo $J | jq '.title')
+SITE_ID="$(echo $J | jq '.all.siteId')"
+
+DETECTOR="$(echo $J | jq '.hotword.binary')"
+MODEL="$(echo $J | jq '.hotword.model_path')/$(echo $J | jq '.hotword.model')"
+SENSITIVITY="$(echo $J | jq '.hotword.sensitivity')"
+TIMEOUT="$(echo $J | jq '.hotword.session_timeout')"
+
+while true ; do
+
+  # run Snowboy until hotword is detected
+  $DETECTOR $MODEL $SENSITIVITY

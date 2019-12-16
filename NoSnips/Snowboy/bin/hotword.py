@@ -1,3 +1,5 @@
+#!/usr/bin/python
+#
 import snowboydecoder
 import sys
 import signal
