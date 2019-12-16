@@ -1,0 +1,18 @@
+#!/bin/bash -vx
+#
+# Hotword service for NoSnips replacement service.
+# Usage:
+#     hotword.service path/to/nosnips.toml
+#
+# https://github.com/dbohdan/remarshal is used for reading toml
+#
+
+CONFIG=$1
+# TOML="$(cat $CONFIG)"
+JSON="$(toml2json -i $CONFIG | jq)"
+
+cat $CONFIG | toml2json > json
+J=$(cat json | jq '.title')
+
+J="$(cat $CONFIG | toml2json)"
+T=$(echo $J | jq '.title')

@@ -1,0 +1,44 @@
+# Configuration of NoSnips services
+#
+# Dec. 2019, A. Dominik
+#
+title = "NoSnips services config"
+
+[all]
+# satellite = false    false for the main system; if true, only hotword
+#                      detectiion and auidio I/O will be started
+# name = "default"     name of satellite/room
+# base_directory = ""  installation directory (/..../ADoNoSnips)
+satellite = false
+name = "default"
+base_directory = "/home/andreas/Snips/Dev/ADoNoSnips"
+
+[hotword]
+# start = true          start hotword service
+# binary = "Snowboy/bin/hotword"     path to the hotword detector
+# model_path = "Snowboy/resources"   path to the hotword models
+# model = "computer.pmdl"            name of hotword model
+# sensitivity = 0.5
+start = true
+binary = "Snowboy/bin/hotword"
+model_path = "Snowboy/resources"
+model = "computer.pmdl"
+sensitivity = 0.5
+
+
+[record]
+# start = true     start the service to record commands
+start = true
+
+[say]
+# start = true     start the service to utter text
+start = true
+
+[STT]
+# start = true     start the speech-to-text (aka ASR) service
+start = true
+
+[NLU]
+# start = true     start the natural language understanding service
+#                  to identify intents and extract slot values
+start = true
