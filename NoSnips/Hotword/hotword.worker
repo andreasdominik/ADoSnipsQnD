@@ -2,7 +2,8 @@
 #
 # Hotword service for NoSnips replacement service.
 # Usage:
-#     hotword.service path/to/nosnips.toml
+#     hotword.worker path/to/nosnips.toml 
+#     hotword.worker /etc/nosnips.toml
 #
 # https://github.com/dbohdan/remarshal is used for reading toml
 #
