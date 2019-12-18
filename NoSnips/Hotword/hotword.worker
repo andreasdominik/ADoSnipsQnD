@@ -2,24 +2,49 @@
 #
 # Hotword service for NoSnips replacement service.
 # Usage:
-#     hotword.worker path/to/nosnips.toml 
+#     hotword.worker path/to/nosnips.toml
 #     hotword.worker /etc/nosnips.toml
 #
 # https://github.com/dbohdan/remarshal is used for reading toml
 #
 
-CONFIG=$1
+# set config path:
+#
+if [[ $# -lt 1 ]] ; then
+  CONFIG="/etc/nosnips.toml"
+else
+  CONFIG=$1
+fi
 
+# parse config from toml:
+#
 TOML="$(cat $CONFIG | toml2json)"
 
-SITE_ID="$(echo $J | jq '.all.siteId')"
+PUBLISH="$(echo $J | jq '.mqtt.publish')"
+MQTT_PORT="$(echo $J | jq '.mqtt.port')"
+MQTT_HOST="$(echo $J | jq '.mqtt.host')"
 
+SITE_ID="$(echo $J | jq '.all.siteId')"
 DETECTOR="$(echo $J | jq '.hotword.binary')"
 MODEL="$(echo $J | jq '.hotword.model_path')/$(echo $J | jq '.hotword.model')"
 SENSITIVITY="$(echo $J | jq '.hotword.sensitivity')"
 TIMEOUT="$(echo $J | jq '.hotword.session_timeout')"
 
+# construct MQTT message for hotword detected
+#
+TOPIC="hermes/hotword/default/detected"
+PAYLOAD="{
+  \"siteID\": \"$SITE_ID\",
+  \"modelID\": \"default\",
+  \"modelVersion\": \"1.0\",
+  \"modeltype\": \"personal\",
+  \"currentSensitivity\": $SENSITIVITY
+}"
+
 while true ; do
 
   # run Snowboy until hotword is detected
   $DETECTOR $MODEL $SENSITIVITY
+
+  $PUBLISH -h $MQTT_HOST -p $MQTT_PORT -t $TOPIC -m $PAYLOAD
+done

@@ -4,7 +4,7 @@
 #
 title = "NoSnips services config"
 
-[all]
+[local]
 # satellite = false    false for the main system; if true, only hotword
 #                      detectiion and auidio I/O will be started
 # name = "default"     name of satellite/room
@@ -12,6 +12,14 @@ title = "NoSnips services config"
 satellite = false
 siteId = "default"
 base_directory = "/home/andreas/Snips/Dev/ADoSnipsQnD/NoSnips"
+
+
+[mqtt]
+host = localhost
+port = 8883
+susbcribe = mosquitto_sub
+publish = mosquitto_pub
+
 
 [hotword]
 # start = true          start hotword service
