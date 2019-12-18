@@ -50,15 +50,21 @@ while true ; do
   #
   DO="ignore"
   if [[ $TOPIC == $TOPIC_HOTWORD ]] ; then
-    DO="start"
+    DO="action"
     TRIGGERED_BY="hotword detected"
 
   elif [[ $TOPIC == $TOPIC_API ]] ; then
-    DO="start"
     TRIGGERED_BY="start session API call"
+    TYPE="$(echo $JSON | jq '.init.type')"
+
+    if [[ $TYPE == "action" ]] ; then
+      DO="action"
+    else
+      DO="notification"
+    fi
   fi
 
-  if [[ $DO == "start" ]] ; then
+  if [[ $DO == "action" ]] ; then
 
     SESSION_ID="$(uuidgen)"
     SITE_ID="$(echo $JSON | jq '.siteId')"
@@ -95,5 +101,12 @@ while true ; do
         echo $CONT_TIME > SESSION_FILE
       fi
     done
-  fi
-done
+  #
+  # end action
+elif [[ $DO == "notification" ]] ; then
+
+  SESSION_ID="$(uuidgen)"
+  SITE_ID="$(echo $JSON | jq '.siteId')"
+
+
+  bessere logic: nur say bei notifiation in temprärer session.
