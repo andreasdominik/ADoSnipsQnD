@@ -2,10 +2,11 @@
 #
 # Hotword service for NoSnips replacement service.
 # Usage:
-#     hotword.worker path/to/nosnips.toml
-#     hotword.worker /etc/nosnips.toml
+#     hotword.daemon path/to/nosnips.toml
+#     hotword.daemon /etc/nosnips.toml
 #
 # https://github.com/dbohdan/remarshal is used for reading toml
+# jq is used for parsing JSON
 #
 
 # set config path:
