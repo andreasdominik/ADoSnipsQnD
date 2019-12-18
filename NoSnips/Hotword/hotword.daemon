@@ -30,14 +30,13 @@ BASE_DIR="$(echo $J | jq '.local.base_directory')"
 DETECTOR="${BASE_DIR}/$(echo $J | jq '.hotword.binary')"
 MODEL="$(echo $J | jq '.hotword.model_path')/$(echo $J | jq '.hotword.model')"
 SENSITIVITY="$(echo $J | jq '.hotword.sensitivity')"
-TIMEOUT="$(echo $J | jq '.hotword.session_timeout')"
 
 # construct MQTT message for hotword detected
 #
 TOPIC="hermes/hotword/default/detected"
 PAYLOAD="{
-  \"siteID\": \"$SITE_ID\",
-  \"modelID\": \"default\",
+  \"siteId\": \"$SITE_ID\",
+  \"modelId\": \"default\",
   \"modelVersion\": \"1.0\",
   \"modeltype\": \"personal\",
   \"currentSensitivity\": $SENSITIVITY
