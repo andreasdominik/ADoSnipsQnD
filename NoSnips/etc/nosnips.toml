@@ -12,6 +12,7 @@ title = "NoSnips services config"
 satellite = false
 siteId = "default"
 base_directory = "/home/andreas/Snips/Dev/ADoSnipsQnD/NoSnips"
+work_dir = "/tmp"
 
 
 [mqtt]
@@ -59,5 +60,5 @@ start = true
 [session]
 # The session manager ...
 start = true
-binary = Session/
+daemon = "Session/session.daemon"
 session_timeout = 60
