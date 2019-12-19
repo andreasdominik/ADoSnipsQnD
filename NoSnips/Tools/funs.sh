@@ -34,7 +34,7 @@ function subscribeOnce() {
     TOPICS="$TOPICS -t $T"
   done
 
-  RECIEVED=$($SUBSCRIBE -C 1 $TOPICS -v)
+  RECIEVED=$($SUBSCRIBE -C 1 -h $MQTT_HOST -p $MQTT_PORT $TOPICS -v)
   parseMQTT "$RECIEVED"
 }
 

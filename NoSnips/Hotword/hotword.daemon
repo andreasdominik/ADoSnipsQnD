@@ -17,23 +17,20 @@ else
   CONFIG=$1
 fi
 
-# parse config from toml:
-#
-TOML="$(cat $CONFIG | toml2json)"
-
-PUBLISH="$(echo $J | jq '.mqtt.publish')"
-MQTT_PORT="$(echo $J | jq '.mqtt.port')"
-MQTT_HOST="$(echo $J | jq '.mqtt.host')"
-
-SITE_ID="$(echo $J | jq '.local.siteId')"
-BASE_DIR="$(echo $J | jq '.local.base_directory')"
-DETECTOR="${BASE_DIR}/$(echo $J | jq '.hotword.binary')"
-MODEL="$(echo $J | jq '.hotword.model_path')/$(echo $J | jq '.hotword.model')"
-SENSITIVITY="$(echo $J | jq '.hotword.sensitivity')"
-
 # load tool funs:
 #
 source $/BASE_DIR/Tools/funs.sh
+
+# parse config from toml:
+# PUBLISH, SUBSCRIBE, MQTT_PORT, MQTT_HOST,
+# BASE_DIR, WORK_DIR, SITE_ID
+#
+readToml $CONFIG
+
+TOML="$(cat $CONFIG | toml2json)"
+DETECTOR="${BASE_DIR}/$(echo $J | jq '.hotword.binary')"
+MODEL="$(echo $J | jq -r '.hotword.model_path')/$(echo $J | jq '.hotword.model')"
+SENSITIVITY="$(echo $J | jq -r '.hotword.sensitivity')"
 
 
 # construct MQTT message for hotword detected
@@ -49,8 +46,20 @@ PAYLOAD="{
 
 while true ; do
 
-  # run Snowboy until hotword is detected
-  $DETECTOR $MODEL $SENSITIVITY
+  # wait until strat frigger via mqtt:
+  #     mosquitto_pub -h <HOSTNAME> -t 'hermes/hotword/toggleOn' \
+  #         -m '{"siteId": "default"}'
+  #
+  MQTT_SITE="no_site_at_all"
+  while [[ $MQTT_SITE != $SITE_ID ]] ; do
+    subscribeOnce hermes/hotword/toggleOn
+    MQTT_SITE="$(echo $PAYLOAD | jq -r '.local.siteId')"
+  done
 
-  $PUBLISH -h $MQTT_HOST -p $MQTT_PORT -t $TOPIC -m $PAYLOAD
+    # run Snowboy until hotword is detected
+    #
+    $DETECTOR $MODEL $SENSITIVITY
+
+    $PUBLISH -h $MQTT_HOST -p $MQTT_PORT -t $TOPIC -m $PAYLOAD
+  fi
 done
