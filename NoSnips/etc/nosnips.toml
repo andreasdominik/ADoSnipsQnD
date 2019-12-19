@@ -16,10 +16,10 @@ work_dir = "/tmp"
 
 
 [mqtt]
-host = localhost
+host = "localhost"
 port = 8883
-susbcribe = mosquitto_sub
-publish = mosquitto_pub
+subscribe = "mosquitto_sub"
+publish = "mosquitto_pub"
 
 
 [hotword]
