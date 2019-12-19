@@ -110,3 +110,4 @@ elif [[ $DO == "notification" ]] ; then
 
 
   bessere logic: nur say bei notifiation in temprärer session.
+  eigene scripts für say-only und action-session

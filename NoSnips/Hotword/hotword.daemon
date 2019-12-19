@@ -31,6 +31,11 @@ DETECTOR="${BASE_DIR}/$(echo $J | jq '.hotword.binary')"
 MODEL="$(echo $J | jq '.hotword.model_path')/$(echo $J | jq '.hotword.model')"
 SENSITIVITY="$(echo $J | jq '.hotword.sensitivity')"
 
+# load tool funs:
+#
+source $/BASE_DIR/Tools/funs.sh
+
+
 # construct MQTT message for hotword detected
 #
 TOPIC="hermes/hotword/default/detected"
