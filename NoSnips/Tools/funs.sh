@@ -98,3 +98,22 @@ function extractJSON() {
 
   echo "$(echo $_JSON | jq -r $_FIELD)"
 }
+
+
+# schedule a mqtt timout trigger and define a
+# timoutId to be able to identify, if the trigger is still valid
+#
+function scheduleTimeOut() {
+  _TIMEOUT=$1
+  _SITE_ID=$2
+  TIMEOUT_ID="$(uuidgen)"
+
+  _TOPIC=$TOPIC_TIMEOUT
+  _PAYLOAD="{\"timeoutId\": $TIMEOUT_ID,
+             \"date\": \"$(date)\",
+             \"timeout\": $_TIMEOUT,
+             \"siteId\": $_SITE_ID
+            }"
+
+  (sleep $_TIMEOUT; $PUBLISH -t $_TOPIC -m $_PAYLOAD) &
+}
