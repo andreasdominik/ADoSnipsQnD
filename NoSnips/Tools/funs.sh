@@ -29,13 +29,25 @@ function subscribeOnce() {
 
   # add topics:
   #
-  TOPICS=""
+  _TOPICS=""
   for T in $@ ; do
-    TOPICS="$TOPICS -t $T"
+    _TOPICS="$_TOPICS -t $_T"
   done
 
-  RECIEVED=$($SUBSCRIBE -C 1 -h $MQTT_HOST -p $MQTT_PORT $TOPICS -v)
-  parseMQTT "$RECIEVED"
+  _RECIEVED=$($SUBSCRIBE -C 1 -h $MQTT_HOST -p $MQTT_PORT $_TOPICS -v)
+  parseMQTT "$_RECIEVED"
+}
+
+function subscribeSiteOnce() {
+  _SITE=$1
+  shift
+  _TOPICS=$@
+
+  _MQTT_SITE="_no_site_"
+  while [[ $_MQTT_SITE != $_SITE ]] ; do
+    subscribeOnce $_TOPICS
+    _MQTT_SITE="$(echo $PAYLOAD | jq -r '.local.siteId')"
+  done
 }
 
 function parseMQTT() {
