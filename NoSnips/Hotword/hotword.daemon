@@ -17,9 +17,12 @@ else
   CONFIG=$1
 fi
 
+TOML="$(cat $CONFIG | toml2json)"
+BASE_DIR="$(echo $TOML | jq -r .local.base_directory)"
+
 # load tool funs:
 #
-source $/BASE_DIR/Tools/funs.sh
+source /$BASE_DIR/Tools/funs.sh
 
 # parse config from toml:
 # PUBLISH, SUBSCRIBE, MQTT_PORT, MQTT_HOST,
@@ -28,7 +31,7 @@ source $/BASE_DIR/Tools/funs.sh
 readToml $CONFIG
 
 DETECTOR="${BASE_DIR}/$(extractJSON .hotword.binary)"
-MODEL="$(extractJSON .hotword.model_path)/$(extractJSON .hotword.model)"
+MODEL="$BASE_DIR/$(extractJSON .hotword.model_path)/$(extractJSON .hotword.model)"
 SENSITIVITY="$(extractJSON .hotword.sensitivity)"
 
 
