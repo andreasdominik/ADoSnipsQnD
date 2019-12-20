@@ -22,7 +22,7 @@ BASE_DIR="$(echo $TOML | jq -r .local.base_directory)"
 
 # load tool funs:
 #
-source /$BASE_DIR/Tools/funs.sh
+source $BASE_DIR/Tools/funs.sh
 
 # parse config from toml:
 # PUBLISH, SUBSCRIBE, MQTT_PORT, MQTT_HOST,

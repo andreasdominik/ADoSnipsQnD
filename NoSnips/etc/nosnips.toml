@@ -11,13 +11,15 @@ title = "NoSnips services config"
 # base_directory = ""  installation directory (/..../ADoNoSnips)
 satellite = false
 siteId = "default"
-base_directory = "/home/andreas/Snips/Dev/ADoSnipsQnD/NoSnips"
+base_directory = "/home/andreas/Projects/ADoSnipsQnD/NoSnips"
 work_dir = "/tmp"
 
 
 [mqtt]
-host = "localhost"
-port = 8883
+# host = "localhost"
+# port = 8883
+host = ""
+port = ""
 subscribe = "mosquitto_sub"
 publish = "mosquitto_pub"
 
@@ -46,24 +48,24 @@ sensitivity = 0.5
 
 [record]
 # start = true     start the service to record commands
-start = true
+start = false
 
 [say]
 # start = true     start the service to utter text
-start = true
+start = false
 
 [STT]
 # start = true     start the speech-to-text (aka ASR) service
-start = true
+start = false
 
 [NLU]
 # start = true     start the natural language understanding service
 #                  to identify intents and extract slot values
-start = true
+start = false
 
 
 [session]
 # The session manager ...
-start = true
+start = false
 daemon = "Session/session.daemon"
 session_timeout = 60
