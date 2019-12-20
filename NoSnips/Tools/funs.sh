@@ -72,10 +72,11 @@ function subscribeSiteOnce() {
 }
 
 function parseMQTT() {
-  MQTT=$1
+  _MQTT=$1
 
-  TOPIC=$(echo "$MQTT" | grep -Po '^.*?(?= {)')
-  PAYLOAD=$(echo "$MQTT" | grep -Po '{.*}')
+  MQTT_TOPIC=$(echo "$MQTT" | grep -Po '^.*?(?= {)')
+  MQTT_PAYLOAD=$(echo "$MQTT" | grep -Po '{.*}')
+  MQTT_SITE_ID=$(extractJSON .siteId $MQTT_PAYLOAD)
 }
 
 
