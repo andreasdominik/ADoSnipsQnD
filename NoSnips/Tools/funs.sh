@@ -63,10 +63,16 @@ function parseMQTT() {
 #    usage:
 #    VAL=$(extractJSON .field {json})
 #
+# if only one arg, JSON is assumed to be in $TOML
+#
 function extractJSON() {
   _FIELD=$1
-  shift
-  _JSON=$@
+  if [[ $# -gt 1 ]] ; then
+    shift
+    _JSON=$@
+  else
+    _JSON=$TOML
+  fi
 
   echo "$(echo $_JSON | jq -r $_FIELD)"
 }
