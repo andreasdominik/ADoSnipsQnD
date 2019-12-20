@@ -50,12 +50,12 @@ function subscribeOnce() {
 
   # add topics:
   #
-  _TOPICS=""
-  for T in $@ ; do
-    _TOPICS="$_TOPICS -t $_T"
+  __TOPICS=""
+  for _T in $@ ; do
+    __TOPICS="$__TOPICS -t $_T"
   done
 
-  _RECIEVED="$($SUBSCRIBE $_TOPICS)"
+  _RECIEVED="$($SUBSCRIBE $__TOPICS)"
   parseMQTT "$_RECIEVED"
 }
 
@@ -67,15 +67,15 @@ function subscribeSiteOnce() {
   _MQTT_SITE="_no_site_"
   while [[ $_MQTT_SITE != $_SITE ]] ; do
     subscribeOnce $_TOPICS
-    _MQTT_SITE="$(echo $PAYLOAD | jq -r '.local.siteId')"
+    _MQTT_SITE=$MQTT_SITE_ID
   done
 }
 
 function parseMQTT() {
   _MQTT=$1
 
-  MQTT_TOPIC=$(echo "$MQTT" | grep -Po '^.*?(?= {)')
-  MQTT_PAYLOAD=$(echo "$MQTT" | grep -Po '{.*}')
+  MQTT_TOPIC=$(echo "$_MQTT" | grep -Po '^.*?(?= {)')
+  MQTT_PAYLOAD=$(echo "$_MQTT" | grep -Po '{.*}')
   MQTT_SITE_ID=$(extractJSON .siteId $MQTT_PAYLOAD)
 }
 
