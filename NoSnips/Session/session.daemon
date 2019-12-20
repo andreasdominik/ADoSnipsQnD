@@ -16,17 +16,17 @@ else
   CONFIG=$1
 fi
 
-# parse config from toml:
+# load tool funs:
 #
-TOML="$(cat $CONFIG | toml2json)"
+source $/BASE_DIR/Tools/funs.sh
 
-PUBLISH="$(echo $J | jq '.mqtt.publish')"
-SUBSRIBE="$(echo $J | jq '.mqtt.subsrcibe')"
-MQTT_PORT="$(echo $J | jq '.mqtt.port')"
-MQTT_HOST="$(echo $J | jq '.mqtt.host')"
+# parse config from toml:
+# PUBLISH, SUBSCRIBE, MQTT_PORT, MQTT_HOST,
+# BASE_DIR, WORK_DIR, SITE_ID
+#
+readToml $CONFIG
 
-BASE_DIR="$(echo $J | jq '.local.base_directory')"
-TIMEOUT="$(echo $J | jq '.hotword.session_timeout')"
+TIMEOUT="$(extractJSON .hotword.session_timeout)"
 
 # Topics to listen to:
 #
@@ -35,27 +35,30 @@ TOPIC_API="hermes/dialogueManager/startSession"
 
 TOPIC_END="hermes/dialogueManager/endSession"
 TOPIC_CONTINUE="hermes/dialogueManager/continueSession"
+TOPIC_TIMEOUT="nosnips/timeout"
+
+TOPIC=TOPIC_HOTWORD_ON="hermes/hotword/toggleOn"
 
 SESSION_FILE="session.running"
 
 while true ; do
 
   # wait for a session start MQTT
+  # defines: MQTT_TOPIC, MQTT_PAYLOAD and MQTT_SITE_ID
   #
-  REC=$($SUBSRIBE -C 1 -t $TOPIC_HOTWORD -t $TOPIC_API -v)
-  TOPIC=$(echo "$REC" | sed 's/ {.*$//')
-  JSON=$(echo "$REC" | sed 's/^.*? {/{/')
+  subscribeOnce $TOPIC_HOTWORD $TOPIC_API
+  SESSION_SITE_ID=$MQTT_SITE_ID
 
-  # if hotword or strat session, start a new session:
+  # if hotword or start session, start a new session:
   #
   DO="ignore"
-  if [[ $TOPIC == $TOPIC_HOTWORD ]] ; then
+  if [[ $MQTT_TOPIC == $TOPIC_HOTWORD ]] ; then
     DO="action"
     TRIGGERED_BY="hotword detected"
 
-  elif [[ $TOPIC == $TOPIC_API ]] ; then
+  elif [[ $MQTT_TOPIC == $TOPIC_API ]] ; then
     TRIGGERED_BY="start session API call"
-    TYPE="$(echo $JSON | jq '.init.type')"
+    TYPE="$(extractJSON .init.type $MQTT_PAYLOAD)"
 
     if [[ $TYPE == "action" ]] ; then
       DO="action"
@@ -64,50 +67,55 @@ while true ; do
     fi
   fi
 
-  if [[ $DO == "action" ]] ; then
-
+  # now a new session is started!
+  #
+  if [[ $DO != ignore ]] ; then
     SESSION_ID="$(uuidgen)"
-    SITE_ID="$(echo $JSON | jq '.siteId')"
 
     # construct MQTT message for session started
     #
     TOPIC="hermes/dialogueManager/sessionStarted"
     PAYLOAD="{
       \"sessionId\": \"$SESSION_ID\",
-      \"siteId\": \"$SITE_ID\",
+      \"siteId\": \"$SESSION_SITE_ID\",
       \"customData\": \"Session started because of $TRIGGERED_BY\"
     }"
+    $PUBLISH -t $TOPIC -m $PAYLOAD
 
-    # start the new session:
+    # prepare timeout:
+    # (i.e. create a new timeout-id and schedule mqtt trigger)
     #
-    START_TIME=$(date +"%s")
-    echo $START_TIME > SESSION_FILE
-    $PUBLISH -h $MQTT_HOST -p $MQTT_PORT -t $TOPIC -m $PAYLOAD
+    scheduleTimeOut $TIMEOUT $SESION_SITE_ID
 
     # run the session until session end message:
+    #
+    if [[ $DO == "action" ]] ; then
+      $RUN_ACTION $MQTT_PAYLOAD &
+    elif [[ $DO == "notifiation" ]] ; then
+      $RUN_NOTIFICATION $MQTT_PAYLOAD &
+    fi
+
+    # wait for session timeout:
     #
     DO_SESSION="run"
     while [[ $DO_SESSION == "run" ]] ; do
 
-      REC=$($SUBSRIBE -C 1 -t $TOPIC_END -t $TOPIC_CONTINUE -v)
-      TOPIC=$(echo "$REC" | sed 's/ {.*$//')
-      JSON=$(echo "$REC" | sed 's/^.*? {/{/')
+      subscribeSiteOnce $SESION_SITE_ID $TOPIC_END $TOPIC_CONTINUE $TOPIC_TIMEOUT
 
-      if [[ $TOPIC == $TOPIC_END ]] ; then
+      if [[ $MQTT_TOPIC == $TOPIC_CONTINUE ]] ; then
+        scheduleTimeOut $TIMEOUT $SESION_SITE_ID
+        $RUN_ACTION $MQTT_PAYLOAD &
+
+      elif [[ $MQTT_TOPIC == $TOPIC_END ]] ; then
         DO_SESSION="end"
 
-      else
-        CONT_TIME=$(date +"%s")
-        echo $CONT_TIME > SESSION_FILE
+      elif [[ $MQTT_TOPIC == $TOPIC_TIMEOUT ]] &&
+           [[ $TIMEOUT_ID == $(extractJSON .timeoutID $MQTT_PAYLOAD)]] ; then
+        DO_SESSION="timeout"
+
       fi
     done
+  fi # do != ignore
   #
   # end action
-elif [[ $DO == "notification" ]] ; then
-
-  SESSION_ID="$(uuidgen)"
-  SITE_ID="$(echo $JSON | jq '.siteId')"
-
-
-  bessere logic: nur say bei notifiation in temprärer session.
-  eigene scripts für say-only und action-session
+done
