@@ -7,15 +7,15 @@
 function readToml() {
   CONFIG=$1
   TOML="$(cat $CONFIG | toml2json)"
-  PUBLISH="$(echo $TOML | jq -r '.mqtt.publish')"
-  SUBSCRIBE="$(echo $TOML | jq -r '.mqtt.subscribe')"
-  MQTT_PORT="$(echo $TOML | jq -r '.mqtt.port')"
-  MQTT_HOST="$(echo $TOML | jq -r '.mqtt.host')"
+  PUBLISH="$(extractJSON .mqtt.publish $TOML)"
+  SUBSCRIBE="$(extractJSON .mqtt.subscribe $TOML)"
+  MQTT_PORT="$(extractJSON .mqtt.port $TOML)"
+  MQTT_HOST="$(extractJSON .mqtt.host $TOML)"
 
-  BASE_DIR="$(echo $TOML | jq -r '.local.base_directory')"
-  WORK_DIR="$(echo $TOML | jq -r '.local.work_dir')"
+  BASE_DIR="$(extractJSON .local.base_directory $TOML)"
+  WORK_DIR="$(extractJSON .local.work_dir $TOML)"
 
-  SITE_ID="$(echo $TOML | jq -r '.local.siteId')"
+  SITE_ID="$(extractJSON .local.siteId $TOML)"
 }
 
 
@@ -55,4 +55,18 @@ function parseMQTT() {
 
   TOPIC=$(echo "$MQTT" | grep -Po '^.*?(?= {)')
   PAYLOAD=$(echo "$MQTT" | grep -Po '{.*}')
+}
+
+
+# extract a field from a JSON string:
+# extractJSON .field.name {json string}
+#    usage:
+#    VAL=$(extractJSON .field {json})
+#
+function extractJSON() {
+  _FIELD=$1
+  shift
+  _JSON=$@
+
+  echo "$(echo $_JSON | jq -r $_FIELD)"
 }
