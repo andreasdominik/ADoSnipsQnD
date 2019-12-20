@@ -18,7 +18,8 @@ fi
 
 # load tool funs:
 #
-source $/BASE_DIR/Tools/funs.sh
+source $BASE_DIR/Tools/funs.sh
+source $BASE_DIR/Session/actionsfuns.sh
 
 # parse config from toml:
 # PUBLISH, SUBSCRIBE, MQTT_PORT, MQTT_HOST,
@@ -27,6 +28,11 @@ source $/BASE_DIR/Tools/funs.sh
 readToml $CONFIG
 
 TIMEOUT="$(extractJSON .hotword.session_timeout)"
+
+# execute scripts for actions:
+#
+RUN_ACTION_SCRIPT=$BASE_DIR/Session/runaction.sh
+RUN_NOTIFICATION_SCRIPT=$BASE_DIR/Session/runnotification.sh
 
 # Topics to listen to:
 #
@@ -38,8 +44,6 @@ TOPIC_CONTINUE="hermes/dialogueManager/continueSession"
 TOPIC_TIMEOUT="nosnips/timeout"
 
 TOPIC=TOPIC_HOTWORD_ON="hermes/hotword/toggleOn"
-
-SESSION_FILE="session.running"
 
 while true ; do
 
@@ -90,9 +94,11 @@ while true ; do
     # run the session until session end message:
     #
     if [[ $DO == "action" ]] ; then
-      $RUN_ACTION $MQTT_PAYLOAD &
+      runactionfun &
+      ACTION_PID=$!
     elif [[ $DO == "notifiation" ]] ; then
-      $RUN_NOTIFICATION $MQTT_PAYLOAD &
+      runnotificationfun &
+      ACTION_PID=$!
     fi
 
     # wait for session timeout:
@@ -112,7 +118,7 @@ while true ; do
       elif [[ $MQTT_TOPIC == $TOPIC_TIMEOUT ]] &&
            [[ $TIMEOUT_ID == $(extractJSON .timeoutID $MQTT_PAYLOAD)]] ; then
         DO_SESSION="timeout"
-
+        kill -9 $ACTION_PID
       fi
     done
   fi # do != ignore
