@@ -21,6 +21,11 @@ port = 8883
 subscribe = "mosquitto_sub"
 publish = "mosquitto_pub"
 
+# set user/password to use authetication:
+#
+user = ""
+password = ""
+
 
 [hotword]
 # start = true          start hotword service

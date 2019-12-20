@@ -55,5 +55,5 @@ while true ; do
   #
   $DETECTOR $MODEL $SENSITIVITY
 
-  $PUBLISH -h $MQTT_HOST -p $MQTT_PORT -t $TOPIC -m $PAYLOAD
+  $PUBLISH $TOPIC -m $PAYLOAD
 done

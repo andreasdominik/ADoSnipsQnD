@@ -7,17 +7,38 @@
 function readToml() {
   CONFIG=$1
   TOML="$(cat $CONFIG | toml2json)"
-  PUBLISH="$(extractJSON .mqtt.publish $TOML)"
-  SUBSCRIBE="$(extractJSON .mqtt.subscribe $TOML)"
   MQTT_PORT="$(extractJSON .mqtt.port $TOML)"
   MQTT_HOST="$(extractJSON .mqtt.host $TOML)"
+  MQTT_USER="$(extractJSON .mqtt.user $TOML)"
+  MQTT_PW="$(extractJSON .mqtt.password $TOML)"
 
   BASE_DIR="$(extractJSON .local.base_directory $TOML)"
   WORK_DIR="$(extractJSON .local.work_dir $TOML)"
 
   SITE_ID="$(extractJSON .local.siteId $TOML)"
+
+  SUBSCRIBE="$(extractJSON .mqtt.subscribe $TOML)"
+  SUBSCRIBE="$SUBSCRIBE -C 1 -v $(mqtt_auth)"
+  PUBLISH="$(extractJSON .mqtt.publish $TOML)"
+  PUBLISH="$PUBLISH $(mqtt_auth)"
 }
 
+
+
+# mqtt_sub/pub command with optional user/password:
+#
+function mqtt_auth() {
+
+  # _FLAGS="-C 1 -v"
+  _FLAGS=""
+
+  [[ -n $MQTT_HOST ]] && _FLAGS="$_FLAGS -h $MQTT_HOST"
+  [[ -n $MQTT_PORT ]] && _FLAGS="$_FLAGS -p $MQTT_PORT"
+  [[ -n $MQTT_USER ]] && _FLAGS="$_FLAGS -u $MQTT_USER"
+  [[ -n $MQTT_PW ]] && _FLAGS="$_FLAGS -P $MQTT_PW"
+
+  echo "$_FLAGS"
+}
 
 
 
@@ -34,7 +55,7 @@ function subscribeOnce() {
     _TOPICS="$_TOPICS -t $_T"
   done
 
-  _RECIEVED=$($SUBSCRIBE -C 1 -h $MQTT_HOST -p $MQTT_PORT $_TOPICS -v)
+  _RECIEVED="$($SUBSCRIBE $_TOPICS)"
   parseMQTT "$_RECIEVED"
 }
 
