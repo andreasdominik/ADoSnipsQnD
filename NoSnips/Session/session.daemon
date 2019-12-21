@@ -8,7 +8,7 @@
 # jq is used for parsing JSON
 #
 
-# set config path:
+# set config file:
 #
 if [[ $# -lt 1 ]] ; then
   CONFIG="/etc/nosnips.toml"
@@ -18,8 +18,11 @@ fi
 
 # load tool funs:
 #
+THIS_DIR=$(dirname $(readlink -f $0))
+BASE_DIR="$(dirname $THIS_DIR)"
+
 source $BASE_DIR/Tools/funs.sh
-source $BASE_DIR/Session/actionsfuns.sh
+source $BASE_DIR/Session/actionfuns.sh
 
 # parse config from toml:
 # PUBLISH, SUBSCRIBE, MQTT_PORT, MQTT_HOST,
@@ -45,7 +48,18 @@ TOPIC_TIMEOUT="nosnips/timeout"
 
 TOPIC=TOPIC_HOTWORD_ON="hermes/hotword/toggleOn"
 
+# core loop that catches all MQTTs depending on
+# state:
+#
+NEXT_SUBSRCIBE="start_session"
 while true ; do
+
+  case "$NEXT_SUBSRCIBE" in
+    start_session)
+      subscribeStartSession
+      ;;
+  esac
+
 
   # wait for a session start MQTT
   # defines: MQTT_TOPIC, MQTT_PAYLOAD and MQTT_SITE_ID
