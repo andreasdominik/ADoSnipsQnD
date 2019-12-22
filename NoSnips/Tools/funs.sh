@@ -77,6 +77,8 @@ function parseMQTT() {
   MQTT_TOPIC=$(echo "$_MQTT" | grep -Po '^.*?(?= {)')
   MQTT_PAYLOAD=$(echo "$_MQTT" | grep -Po '{.*}')
   MQTT_SITE_ID=$(extractJSON .siteId $MQTT_PAYLOAD)
+  MQTT_SESSION_ID=$(extractJSON .sessionId $MQTT_PAYLOAD)
+  MQTT_ID=$(extractJSON .id $MQTT_PAYLOAD)
 }
 
 
@@ -116,4 +118,75 @@ function scheduleTimeOut() {
             }"
 
   (sleep $_TIMEOUT; $PUBLISH -t $_TOPIC -m $_PAYLOAD) &
+}
+
+
+function publishLog() {
+
+  _MESSAGE=$1
+  _PAYLOAD="{
+             \"sessionId\": \"$SESSION_ID\",
+             \"siteId\": \"$SESSION_SITE_ID\",
+             \"customData\": \"$MESSAGE\"
+            }"
+  publish -t $TOPIC_WATCH_LOG -m "$_MESSAGE"
+}
+
+function publish() {
+  _TOPIC="$1"
+  _PAYLOAD="$2"
+
+  $PUBLISH -t $_TOPIC -m $_PAYLOAD
+}
+
+
+function publishSessionEnded() {
+
+  _PAYLOAD="{
+            \"sessionId\": \"$SESSION_ID\",
+            \"siteId\": \"$SESSION_SITE_ID\",
+            \"termination\": { \"reason\":\"$@\" }
+           }"
+  $PUBLISH -t $TOPIC_SESSION_ENDED -m $_PAYLOAD
+}
+
+
+function publishAsrStart() {
+
+  _PAYLOAD="{
+            \"sessionId\": \"$SESSION_ID\",
+            \"siteId\": \"$SESSION_SITE_ID\",
+            \"id\": \"$ID\"
+           }"
+  $PUBLISH -t $TOPIC_ASR_START -m $_PAYLOAD
+}
+
+
+function publishAsrTransscribe() {
+
+  _PAYLOAD="{
+            \"sessionId\": \"$SESSION_ID\",
+            \"siteId\": \"$SESSION_SITE_ID\",
+            \"id\": \"$ID\",
+            \"audio\": \"$AUDIO\"
+           }"
+  $PUBLISH -t $TOPIC_ASR_TRANSSCRIBE -m $_PAYLOAD
+}
+
+
+function publishNluQuery() {
+
+  _PAYLOAD="{
+            \"sessionId\": \"$SESSION_ID\",
+            \"siteId\": \"$SESSION_SITE_ID\",
+            \"id\": \"$ID\",
+            \"input\": \"$TEXT\"
+           }"
+  $PUBLISH -t $TOPIC_ASR_TRANSSCRIBE -m $_PAYLOAD
+}
+
+function pubishIntent() {
+
+  _INTENT_NAME="$(extractJSON .intent.intentName $INTENT)"
+  $PUBLISH -t $_INTENT_NAME -m $INTENT
 }

@@ -28,7 +28,7 @@ IS_SATELLITE="$(extractJSON .local.satellite $TOML)"
 if [[ $IS_SATELLITE == true ]] ; then
   DAEMONS="hotword record say"
 else
-  DAEMONS="hotword record say stt nlu tts"
+  DAEMONS="hotword record say stt nlu tts session"
 fi
 
 function startDaemon() {

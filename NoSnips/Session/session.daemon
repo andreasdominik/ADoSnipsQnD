@@ -32,33 +32,137 @@ readToml $CONFIG
 
 TIMEOUT="$(extractJSON .hotword.session_timeout)"
 
-# execute scripts for actions:
-#
-RUN_ACTION_SCRIPT=$BASE_DIR/Session/runaction.sh
-RUN_NOTIFICATION_SCRIPT=$BASE_DIR/Session/runnotification.sh
-
-# Topics to listen to:
-#
-TOPIC_HOTWORD="hermes/hotword/default/detected"
-TOPIC_API="hermes/dialogueManager/startSession"
-
-TOPIC_END="hermes/dialogueManager/endSession"
-TOPIC_CONTINUE="hermes/dialogueManager/continueSession"
-TOPIC_TIMEOUT="nosnips/timeout"
-
-TOPIC=TOPIC_HOTWORD_ON="hermes/hotword/toggleOn"
+# Topics:
+source $BASE_DIR/Tools/topics.sh
 
 # core loop that catches all MQTTs depending on
 # state:
 #
-NEXT_SUBSRCIBE="start_session"
+DOING="wait_start_session"
 while true ; do
 
-  case "$NEXT_SUBSRCIBE" in
-    start_session)
-      subscribeStartSession
+  todo: hotword off if strart session
+
+  if [[ $DOING == "wait_start_session" ]] ; then
+    TOPICS=$TOPIC_HOTWORD $TOPIC_API
+    MATCH="no_match"
+    SESSION_ID="no_session"
+    SESSION_SITE_ID="no_site"
+    TIMEOUT_ID="no_timeout"
+  fi
+
+  subscribeSmart $MATCH $TOPICS
+
+  case "$MQTT_TOPIC" in
+    $TIMEOUT)
+      if [[ $MQTT_ID == $TIMEOUT_ID ]] ; then
+        publishSessionEnded "timeout"
+      fi
+      DOING="wait_start_session"
       ;;
-  esac
+
+    $TOPIC_HOTWORD)
+      SESSION_ID="session:$(uuidgen)"
+      TIMEOUT_ID="timeout:$(uuidgen)"
+      ID="id:$(uuidgen)"
+      SESSION_SITE_ID=$MQTT_SITE_ID
+
+      # get command recording form site:
+      #
+      publishAsrStart
+
+      # next: wait for audio recording:
+      #
+      TOPICS=$TOPIC_ASR_AUDIO
+      MATCH="id"
+      DOING="wait_for_audio"
+      ;;
+
+
+    $TOPIC_ASR_AUDIO)
+      AUDIO="$(extractJSON .audio $MQTT_PAYLOAD)"
+      if [[ -z $AUDIO ]] ; then
+        publishSessionEnded "error: no audio"
+        DOING="wait_start_session"
+      fi
+
+      # send audio to STT:
+      #
+      ID="id:$(uuidgen)"
+      publishAsrTransscribe
+
+      # next: wait for STT result:
+      #
+      TOPICS=$TOPIC_ASR_TEXT
+      MATCH="id"
+      DOING="wait_for_STT"
+      ;;
+
+
+    $TOPIC_ASR_TEXT)
+      TEXT="$(extractJSON .transscript $MQTT_PAYLOAD)"
+      if [[ -z $TEXT ]] ; then
+        publishSessionEnded "error: no transscript"
+        DOING="wait_start_session"
+      fi
+
+      # send transscript to NLU:
+      #
+      ID="id:$(uuidgen)"
+      publishNluQuery
+
+      # next: wait for NLU result:
+      #
+      TOPICS="$TOPIC_NLU_PARSED $TOPIC_NLU_NOT"
+      MATCH="id"
+      DOING="wait_for_NLU"
+      ;;
+
+
+    $TOPIC_NLU_NOT)
+      publishSessionEnded "error: NLU failed"
+      qndSay "failedNLU"
+      DOING="wait_start_session"
+      ;;
+
+
+    $TOPIC_NLU_PARSED)
+      INTENT="$(extractJSON .intent $MQTT_PAYLOAD)"
+      publishIntent
+
+      ******
+
+
+    $TOPIC_START_SESSION)
+      SESSION_ID="$(uuidgen)"
+
+      # check if action or notification or api:
+      #
+      TYPE="$(extractJSON .init.type $MQTT_PAYLOAD)"
+      if [[ $TYPE == "action" ]] ; then
+        DO="action"
+      elif [[ $TYPE == "notification" ]] ; then
+        DO="notification"
+      elif [[ $TYPE == "api" ]] ; then
+        api
+      else  # wrong formatted payload:
+        NEXT_SUBSRCIBE="start_session"
+      fi
+    fi
+  else
+    case "$NEXT_SUBSRCIBE" in
+      start_session)
+        tartSession
+
+        if [[ $DO == "action" ]] ; then
+          NEXT_ACTION="ask_audio"
+        elif [[ $DO == "notifiation" ]] ; then
+          runnotificationfun &
+          ACTION_PID=$!
+        fi
+
+        ;;
+    esac
 
 
   # wait for a session start MQTT
