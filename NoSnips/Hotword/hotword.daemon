@@ -53,14 +53,15 @@ while true ; do
   #
   $DETECTOR $MODEL $SENSITIVITY
   STATUS=$?
+  STATUS=0  # cancel should work for debugging
   echo "$STATUS"
 
   # publish "hotword detected" if status == 0; otherwise just keep
   # detector stopped:
   #
-  # if [[ $STATUS -eq 0 ]] ; then
-  #   publish $TOPIC "$PAYLOAD"
-  # fi
+  if [[ $STATUS -eq 0 ]] ; then
+    publish $TOPIC "$PAYLOAD"
+  fi
 
   # wait until retsart is triggered via:
   #     mosquitto_pub -h <HOSTNAME> -t 'hermes/hotword/toggleOn' \
