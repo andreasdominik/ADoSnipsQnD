@@ -43,203 +43,126 @@ while true ; do
 
   todo: hotword off if strart session
 
-  if [[ $DOING == "wait_start_session" ]] ; then
-    TOPICS=$TOPIC_HOTWORD $TOPIC_API
-    MATCH="no_match"
-    SESSION_ID="no_session"
-    SESSION_SITE_ID="no_site"
-    TIMEOUT_ID="no_timeout"
-  fi
 
   subscribeSmart $MATCH $TOPICS
+  if [[ SESSION_ID != "no_session" ]] ; then
+    scheduleTimeOut
+  fi
+  ID="id:$(uuidgen)"    # set request ID for next round.
 
   case "$MQTT_TOPIC" in
     $TIMEOUT)
       if [[ $MQTT_ID == $TIMEOUT_ID ]] ; then
         publishSessionEnded "timeout"
       fi
-      DOING="wait_start_session"
+      DOING="no_session"
       ;;
 
     $TOPIC_HOTWORD)
       SESSION_ID="session:$(uuidgen)"
-      TIMEOUT_ID="timeout:$(uuidgen)"
-      ID="id:$(uuidgen)"
       SESSION_SITE_ID=$MQTT_SITE_ID
-
-      # get command recording form site:
-      #
-      publishAsrStart
-
-      # next: wait for audio recording:
-      #
-      TOPICS=$TOPIC_ASR_AUDIO
-      MATCH="id"
-      DOING="wait_for_audio"
+      publishAsrStart # next: wait for audio recording
+      DOING="wait_for_asr"
       ;;
-
 
     $TOPIC_ASR_AUDIO)
       AUDIO="$(extractJSON .audio $MQTT_PAYLOAD)"
       if [[ -z $AUDIO ]] ; then
         publishSessionEnded "error: no audio"
-        DOING="wait_start_session"
+        DOING="no_session"
+      else
+        publishAsrTransscribe  # next: wait for STT result
+        DOING="wait_for_stt"
       fi
-
-      # send audio to STT:
-      #
-      ID="id:$(uuidgen)"
-      publishAsrTransscribe
-
-      # next: wait for STT result:
-      #
-      TOPICS=$TOPIC_ASR_TEXT
-      MATCH="id"
-      DOING="wait_for_STT"
       ;;
-
 
     $TOPIC_ASR_TEXT)
       TEXT="$(extractJSON .transscript $MQTT_PAYLOAD)"
       if [[ -z $TEXT ]] ; then
         publishSessionEnded "error: no transscript"
-        DOING="wait_start_session"
+        DOING="no_session"
+      else
+        publishNluQuery # next: wait for NLU result
+        DOING="wait_for_nlu"
       fi
-
-      # send transscript to NLU:
-      #
-      ID="id:$(uuidgen)"
-      publishNluQuery
-
-      # next: wait for NLU result:
-      #
-      TOPICS="$TOPIC_NLU_PARSED $TOPIC_NLU_NOT"
-      MATCH="id"
-      DOING="wait_for_NLU"
       ;;
-
 
     $TOPIC_NLU_NOT)
       publishSessionEnded "error: NLU failed"
       qndSay "failedNLU"
-      DOING="wait_start_session"
+      DOING="no_session"
       ;;
-
 
     $TOPIC_NLU_PARSED)
       INTENT="$(extractJSON .intent $MQTT_PAYLOAD)"
       publishIntent
-
-      ******
-
+      DOING="session_ongoing"
+      ;;
 
     $TOPIC_START_SESSION)
-      SESSION_ID="$(uuidgen)"
+      SESSION_ID="session:$(uuidgen)"
+      SESSION_SITE_ID=$MQTT_SITE_ID
 
-      # check if action or notification or api:
+      # check if action or notification or api or command:
       #
       TYPE="$(extractJSON .init.type $MQTT_PAYLOAD)"
       if [[ $TYPE == "action" ]] ; then
-        DO="action"
+        publishAsrStart # next: wait for audio recording
+        DOING="wait_for_asr"
+
       elif [[ $TYPE == "notification" ]] ; then
-        DO="notification"
+        TEXT="$(extractJSON .init.text $MQTT_PAYLOAD)"
+        publishTTSrequest
+        DOING="wait_for_tts"
+        NEXT_DOING="end_session"
+        PLAY_SITE=$SESION_SITE_ID
+
       elif [[ $TYPE == "api" ]] ; then
-        api
+        INTENT="$(extractJSON .intent $MQTT_PAYLOAD)"
+        publishIntent
+        DOING="session_ongoing"
+
+      elif [[ $TYPE == "command" ]] ; then
+        TEXT="$(extractJSON .init.command $MQTT_PAYLOAD)"
+        publishNluQuery
+        DOING="wait_for_nlu"
+
       else  # wrong formatted payload:
-        NEXT_SUBSRCIBE="start_session"
+        DOING="no_session"
       fi
-    fi
-  else
-    case "$NEXT_SUBSRCIBE" in
-      start_session)
-        tartSession
+      ;;
 
-        if [[ $DO == "action" ]] ; then
-          NEXT_ACTION="ask_audio"
-        elif [[ $DO == "notifiation" ]] ; then
-          runnotificationfun &
-          ACTION_PID=$!
+    $TOPIC_TTS_AUDIO)
+      AUDIO="$(extractJSON .audio $MQTT_PAYLOAD)"
+      if [[ -z $AUDIO ]] ; then
+        publishSessionEnded "error: no audio from TTS"
+        DOING="no_session"
+      else
+        if [[ -z $PLAY_SITE ]] ; then
+          PLAY_SITE=$SESSION_SITE_ID
         fi
-
-        ;;
-    esac
-
-
-  # wait for a session start MQTT
-  # defines: MQTT_TOPIC, MQTT_PAYLOAD and MQTT_SITE_ID
-  #
-  subscribeOnce $TOPIC_HOTWORD $TOPIC_API
-  SESSION_SITE_ID=$MQTT_SITE_ID
-
-  # if hotword or start session, start a new session:
-  #
-  DO="ignore"
-  if [[ $MQTT_TOPIC == $TOPIC_HOTWORD ]] ; then
-    DO="action"
-    TRIGGERED_BY="hotword detected"
-
-  elif [[ $MQTT_TOPIC == $TOPIC_API ]] ; then
-    TRIGGERED_BY="start session API call"
-    TYPE="$(extractJSON .init.type $MQTT_PAYLOAD)"
-
-    if [[ $TYPE == "action" ]] ; then
-      DO="action"
-    else
-      DO="notification"
-    fi
-  fi
-
-  # now a new session is started!
-  #
-  if [[ $DO != ignore ]] ; then
-    SESSION_ID="$(uuidgen)"
-
-    # construct MQTT message for session started
-    #
-    TOPIC="hermes/dialogueManager/sessionStarted"
-    PAYLOAD="{
-      \"sessionId\": \"$SESSION_ID\",
-      \"siteId\": \"$SESSION_SITE_ID\",
-      \"customData\": \"Session started because of $TRIGGERED_BY\"
-    }"
-    $PUBLISH -t $TOPIC -m $PAYLOAD
-
-    # prepare timeout:
-    # (i.e. create a new timeout-id and schedule mqtt trigger)
-    #
-    scheduleTimeOut $TIMEOUT $SESION_SITE_ID
-
-    # run the session until session end message:
-    #
-    if [[ $DO == "action" ]] ; then
-      runactionfun &
-      ACTION_PID=$!
-    elif [[ $DO == "notifiation" ]] ; then
-      runnotificationfun &
-      ACTION_PID=$!
-    fi
-
-    # wait for session timeout:
-    #
-    DO_SESSION="run"
-    while [[ $DO_SESSION == "run" ]] ; do
-
-      subscribeSiteOnce $SESION_SITE_ID $TOPIC_END $TOPIC_CONTINUE $TOPIC_TIMEOUT
-
-      if [[ $MQTT_TOPIC == $TOPIC_CONTINUE ]] ; then
-        scheduleTimeOut $TIMEOUT $SESION_SITE_ID
-        $RUN_ACTION $MQTT_PAYLOAD &
-
-      elif [[ $MQTT_TOPIC == $TOPIC_END ]] ; then
-        DO_SESSION="end"
-
-      elif [[ $MQTT_TOPIC == $TOPIC_TIMEOUT ]] &&
-           [[ $TIMEOUT_ID == $(extractJSON .timeoutID $MQTT_PAYLOAD)]] ; then
-        DO_SESSION="timeout"
-        kill -9 $ACTION_PID
+        publishPlay $PLAY_SITE
+        PLAY_SITE=$SESION_SITE_ID
+        DOING="playing"
       fi
-    done
-  fi # do != ignore
-  #
-  # end action
+      ;;
+
+    $TOPIC_PLAY_FINISHED)
+      if [[ $NEXT_DOING == "end_session" ]] ; then
+        publishSessionEnded
+        DOING="no_session"
+      else
+        DOING="session_ongoing"
+      fi
+      ;;
+
+    $TOPIC_SAY)
+      TEXT="$(extractJSON .text $MQTT_PAYLOAD)"
+      PLAY_SITE="$(extractJSON .siteId $MQTT_PAYLOAD)"
+      publishTTSrequest
+      DOING="wait_for_tts"
+      NEXT_DOING="session_ongoing"
+      ;;
+
+  esac
 done

@@ -48,7 +48,7 @@ PAYLOAD="{
 
 while true ; do
 
-  # wait until strat frigger via mqtt:
+  # wait until start frigger via mqtt:
   #     mosquitto_pub -h <HOSTNAME> -t 'hermes/hotword/toggleOn' \
   #         -m '{"siteId": "default"}'
   #
