@@ -43,6 +43,7 @@ daemon = "Hotword/hotword.daemon"
 binary = "Snowboy/bin/hotword.py"
 model_path = "Snowboy/resources"
 model = "computer.pmdl"
+local_hotword = "Computer"
 sensitivity = 0.5
 
 

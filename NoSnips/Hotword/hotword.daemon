@@ -32,15 +32,16 @@ readToml $CONFIG
 
 DETECTOR="${BASE_DIR}/$(extractJSON .hotword.binary)"
 MODEL="$BASE_DIR/$(extractJSON .hotword.model_path)/$(extractJSON .hotword.model)"
+LOCAL_HOTWORD="$(extractJSON .hotword.local_hotword)"
 SENSITIVITY="$(extractJSON .hotword.sensitivity)"
 
 
 # construct MQTT message for hotword detected
 #
-TOPIC="hermes/hotword/default/detected"
+TOPIC="hermes/hotword/detected"
 PAYLOAD="{
   \"siteId\": \"$SITE_ID\",
-  \"modelId\": \"default\",
+  \"modelId\": \"$LOCAL_HOTWORD\",
   \"modelVersion\": \"1.0\",
   \"modeltype\": \"personal\",
   \"currentSensitivity\": $SENSITIVITY
