@@ -153,6 +153,7 @@ class HotwordDetector(object):
         while True:
             if interrupt_check():
                 logger.debug("detect voice break")
+                print("interrupted")
                 break
             data = self.ring_buffer.get()
             if len(data) == 0:
@@ -166,11 +167,12 @@ class HotwordDetector(object):
                 message = "Keyword " + str(ans) + " detected at time: "
                 message += time.strftime("%Y-%m-%d %H:%M:%S",
                                          time.localtime(time.time()))
-                # logger.info(message)
+                logger.info(message)
                 callback = detected_callback[ans-1]
                 if callback is not None:
                     callback()
 
+                print("hotword")
                 break
 
         logger.debug("finished.")
