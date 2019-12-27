@@ -44,14 +44,13 @@ while true ; do
   setDMtopics
   subscribeSmart $MATCH $TOPICS
 
-  if [[ $SESSION_ID != "no_session" ]] ; then
-    scheduleTimeOut
-  fi
+  scheduleTimeOut
   ID="id:$(uuidgen)"    # set request ID for next round.
 
   case "$MQTT_TOPIC" in
     $TIMEOUT)
-      if [[ $MQTT_ID == $TIMEOUT_ID ]] ; then
+      if [[ $MQTT_ID == $TIMEOUT_ID ]] &&
+         [[ $DOING != "no_session" ]] ; then
         publishSessionEnded "timeout"
       fi
       DOING="no_session"
