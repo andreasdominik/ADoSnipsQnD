@@ -1,4 +1,4 @@
-#!/bin/bash -vx
+#!/bin/bash
 #
 # Hotword service for NoSnips replacement service.
 # Usage:
@@ -52,7 +52,15 @@ while true ; do
   # run Snowboy until hotword is detected
   #
   $DETECTOR $MODEL $SENSITIVITY
-  publish $TOPIC "$PAYLOAD"
+  STATUS=$?
+  echo "$STATUS"
+
+  # publish "hotword detected" if status == 0; otherwise just keep
+  # detector stopped:
+  #
+  # if [[ $STATUS -eq 0 ]] ; then
+  #   publish $TOPIC "$PAYLOAD"
+  # fi
 
   # wait until retsart is triggered via:
   #     mosquitto_pub -h <HOSTNAME> -t 'hermes/hotword/toggleOn' \

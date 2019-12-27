@@ -134,6 +134,8 @@ class HotwordDetector(object):
         :param float sleep_time: how much time in second every loop waits.
         :return: None
         """
+        end_reason = "none"
+
         if interrupt_check():
             logger.debug("detect voice return")
             return
@@ -154,6 +156,7 @@ class HotwordDetector(object):
             if interrupt_check():
                 logger.debug("detect voice break")
                 print("interrupted")
+                end_reason = "interrupted"
                 break
             data = self.ring_buffer.get()
             if len(data) == 0:
@@ -173,9 +176,11 @@ class HotwordDetector(object):
                     callback()
 
                 print("hotword")
+                end_reason = "hotword"
                 break
 
         logger.debug("finished.")
+        return end_reason
 
     def terminate(self):
         """

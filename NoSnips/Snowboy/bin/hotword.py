@@ -30,8 +30,13 @@ signal.signal(signal.SIGINT, signal_handler)
 detector = snowboydecoder.HotwordDetector(model, sensitivity=sensi)
 
 # main loop
-detector.start(detected_callback=snowboydecoder.play_audio_file,
+reason = detector.start(detected_callback=snowboydecoder.play_audio_file,
                interrupt_check=interrupt_callback,
                sleep_time=0.03)
 
 detector.terminate()
+
+if reason == "hotword":
+    sys.exit(0)
+else:
+    sys.exit(1)
