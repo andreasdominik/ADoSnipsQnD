@@ -1,0 +1,34 @@
+#!/bin/bash
+#
+# Record service for NoSnips replacement.
+# Usage:
+#     record.daemon <path/to/nosnips.toml>
+#
+#
+
+# set config path:
+#
+if [[ $# -lt 1 ]] ; then
+  CONFIG="/etc/nosnips.toml"
+else
+  CONFIG=$1
+fi
+
+TOML="$(cat $CONFIG | toml2json)"
+BASE_DIR="$(echo $TOML | jq -r .local.base_directory)"
+
+# load tool funs:
+#
+source $BASE_DIR/Tools/funs.sh
+
+# parse config from toml:
+# PUBLISH, SUBSCRIBE, MQTT_PORT, MQTT_HOST,
+# BASE_DIR, WORK_DIR, SITE_ID
+#
+readToml $CONFIG
+
+REC_CMD="${BASE_DIR}/$(extractJSON .record.binary)"
+REC_FILE="${BASE_DIR}/$(extractJSON .record.recording_file)"
+NOTIFICATION="$(extractJSON .record.notification)"
+START_SOUND="${BASE_DIR}/$(extractJSON .record.notification_start)"
+END_SOUND="${BASE_DIR}/$(extractJSON .record.notification_end)"
