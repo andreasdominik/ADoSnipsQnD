@@ -6,21 +6,21 @@
 #
 function readToml() {
   CONFIG=$1
-  TOML="$(cat $CONFIG | toml2json)"
+  export TOML="$(cat $CONFIG | toml2json)"
   MQTT_PORT="$(extractJSON .mqtt.port $TOML)"
   MQTT_HOST="$(extractJSON .mqtt.host $TOML)"
   MQTT_USER="$(extractJSON .mqtt.user $TOML)"
   MQTT_PW="$(extractJSON .mqtt.password $TOML)"
 
-  BASE_DIR="$(extractJSON .local.base_directory $TOML)"
-  WORK_DIR="$(extractJSON .local.work_dir $TOML)"
+  export BASE_DIR="$(extractJSON .local.base_directory $TOML)"
+  export WORK_DIR="$(extractJSON .local.work_dir $TOML)"
 
-  SITE_ID="$(extractJSON .local.siteId $TOML)"
+  export SITE_ID="$(extractJSON .local.siteId $TOML)"
 
   SUBSCRIBE="$(extractJSON .mqtt.subscribe $TOML)"
-  SUBSCRIBE="$SUBSCRIBE -C 1 -v $(mqtt_auth)"
+  export SUBSCRIBE="$SUBSCRIBE -C 1 -v $(mqtt_auth)"
   PUBLISH="$(extractJSON .mqtt.publish $TOML)"
-  PUBLISH="$PUBLISH $(mqtt_auth)"
+  export PUBLISH="$PUBLISH $(mqtt_auth)"
 }
 
 
@@ -102,91 +102,16 @@ function extractJSON() {
 }
 
 
-# schedule a mqtt timout trigger and define a
-# timoutId to be able to identify, if the trigger is still valid
-#
-function scheduleTimeOut() {
-  _TIMEOUT=$1
-  _SITE_ID=$2
-  TIMEOUT_ID="$(uuidgen)"
 
-  _TOPIC=$TOPIC_TIMEOUT
-  _PAYLOAD="{\"timeoutId\": $TIMEOUT_ID,
-             \"date\": \"$(date)\",
-             \"timeout\": $_TIMEOUT,
-             \"siteId\": $_SITE_ID
-            }"
-
-  (sleep $_TIMEOUT; $PUBLISH -t $_TOPIC -m $_PAYLOAD) &
-}
-
-
-function publishLog() {
-
-  _MESSAGE=$1
-  _PAYLOAD="{
-             \"sessionId\": \"$SESSION_ID\",
-             \"siteId\": \"$SESSION_SITE_ID\",
-             \"customData\": \"$MESSAGE\"
-            }"
-  publish -t $TOPIC_WATCH_LOG -m "$_MESSAGE"
-}
 
 function publish() {
-  _TOPIC="$1"
+
+  _TOPICS="$1"
   _PAYLOAD="$2"
+  __TOPICS=""
+  for _T in $_TOPICS ; do
+    __TOPICS="$__TOPICS -t $_T"
+  done
 
-  $PUBLISH -t $_TOPIC -m $_PAYLOAD
-}
-
-
-function publishSessionEnded() {
-
-  _PAYLOAD="{
-            \"sessionId\": \"$SESSION_ID\",
-            \"siteId\": \"$SESSION_SITE_ID\",
-            \"termination\": { \"reason\":\"$@\" }
-           }"
-  $PUBLISH -t $TOPIC_SESSION_ENDED -m $_PAYLOAD
-}
-
-
-function publishAsrStart() {
-
-  _PAYLOAD="{
-            \"sessionId\": \"$SESSION_ID\",
-            \"siteId\": \"$SESSION_SITE_ID\",
-            \"id\": \"$ID\"
-           }"
-  $PUBLISH -t $TOPIC_ASR_START -m $_PAYLOAD
-}
-
-
-function publishAsrTransscribe() {
-
-  _PAYLOAD="{
-            \"sessionId\": \"$SESSION_ID\",
-            \"siteId\": \"$SESSION_SITE_ID\",
-            \"id\": \"$ID\",
-            \"audio\": \"$AUDIO\"
-           }"
-  $PUBLISH -t $TOPIC_ASR_TRANSSCRIBE -m $_PAYLOAD
-}
-
-
-function publishNluQuery() {
-
-  _PAYLOAD="{
-            \"sessionId\": \"$SESSION_ID\",
-            \"siteId\": \"$SESSION_SITE_ID\",
-            \"id\": \"$ID\",
-            \"input\": \"$TEXT\"
-           }"
-  $PUBLISH -t $TOPIC_ASR_TRANSSCRIBE -m $_PAYLOAD
-}
-
-function pubishIntent() {
-
-  _INTENT_NAME="$(extractJSON .intent.intentName $INTENT)"
-  $PUBLISH -t $_INTENT_NAME -m $INTENT
+  $PUBLISH  $__TOPICS -m "$_PAYLOAD"
 }
