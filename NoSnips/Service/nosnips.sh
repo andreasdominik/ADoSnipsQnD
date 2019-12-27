@@ -37,7 +37,7 @@ function startDaemon() {
   _FLAG="$(extractJSON .$_DAEMON.start $TOML)"
 
   if [[ $_FLAG == true ]] ; then
-    echo "starting hotword daemon"
+    echo "starting $_DAEMON daemon"
     _EXEC="$(extractJSON .$_DAEMON.daemon $TOML)"
     $BASE_DIR/$_EXEC $CONFIG &
   fi
