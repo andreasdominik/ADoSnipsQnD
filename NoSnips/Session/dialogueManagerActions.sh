@@ -113,7 +113,7 @@ function scheduleTimeOut() {
              \"date\": \"$(date)\"
             }"
 
-  (sleep $SESSION_TIMEOUT; $PUBLISH -t $_TOPIC -m $_PAYLOAD) &
+  (sleep $SESSION_TIMEOUT; $PUBLISH -t $_TOPIC -m "$_PAYLOAD") &
 }
 
 
