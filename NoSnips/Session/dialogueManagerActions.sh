@@ -6,14 +6,14 @@ function publishLog() {
              \"siteId\": \"$SESSION_SITE_ID\",
              \"customData\": \"$MESSAGE\"
             }"
-  publish -t $TOPIC_WATCH_LOG -m "$_MESSAGE"
+  publish -t "$TOPIC_WATCH_LOG" -m "$_MESSAGE"
 }
 
 function publish() {
   _TOPIC="$1"
   _PAYLOAD="$2"
 
-  $PUBLISH -t $_TOPIC -m $_PAYLOAD
+  publish "$_TOPIC" "$_PAYLOAD"
 }
 
 
@@ -24,7 +24,7 @@ function publishSessionEnded() {
             \"siteId\": \"$SESSION_SITE_ID\",
             \"termination\": { \"reason\":\"$@\" }
            }"
-  $PUBLISH -t "$TOPIC_SESSION_ENDED" -m "$_PAYLOAD"
+  publish "$TOPIC_SESSION_ENDED" "$_PAYLOAD"
 }
 
 
@@ -35,7 +35,7 @@ function publishAsrStart() {
             \"siteId\": \"$SESSION_SITE_ID\",
             \"id\": \"$ID\"
            }"
-  $PUBLISH -t $TOPIC_ASR_START -m $_PAYLOAD
+  publish "$TOPIC_ASR_START" "$_PAYLOAD"
 }
 
 
@@ -47,7 +47,7 @@ function publishAsrTransscribe() {
             \"id\": \"$ID\",
             \"audio\": \"$AUDIO\"
            }"
-  $PUBLISH -t $TOPIC_ASR_TRANSSCRIBE -m $_PAYLOAD
+  publish "$TOPIC_ASR_TRANSSCRIBE" "$_PAYLOAD"
 }
 
 
@@ -59,13 +59,13 @@ function publishNluQuery() {
             \"id\": \"$ID\",
             \"input\": \"$TEXT\"
            }"
-  $PUBLISH -t $TOPIC_ASR_TRANSSCRIBE -m $_PAYLOAD
+  publish "$TOPIC_ASR_TRANSSCRIBE" "$_PAYLOAD"
 }
 
 function pubishIntent() {
 
   _INTENT_NAME="$(extractJSON .intent.intentName $INTENT)"
-  $PUBLISH -t $_INTENT_NAME -m $INTENT
+  publish "$_INTENT_NAME" "$INTENT"
 }
 
 
@@ -78,7 +78,7 @@ function publishTTSrequest() {
             \"id\": \"$ID\",
             \"input\": \"$TEXT\"
            }"
-  $PUBLISH -t $TOPIC_TTS_REQUEST -m $_PAYLOAD
+  publish "$TOPIC_TTS_REQUEST" "$_PAYLOAD"
 }
 
 
@@ -92,7 +92,7 @@ function publishPlay() {
             \"id\": \"$ID\",
             \"audio\": \"$AUDIO\"
            }"
-  $PUBLISH -t $TOPIC_QND_PLAY -m $_PAYLOAD
+  publish "$TOPIC_QND_PLAY" "$_PAYLOAD"
 }
 
 
