@@ -38,7 +38,7 @@ SENSITIVITY="$(extractJSON .hotword.sensitivity)"
 
 # construct MQTT message for hotword detected
 #
-TOPIC="hermes/hotword/detected"
+TOPIC=$TOPIC_HOTWORD
 PAYLOAD="{
   \"siteId\": \"$SITE_ID\",
   \"modelId\": \"$LOCAL_HOTWORD\",

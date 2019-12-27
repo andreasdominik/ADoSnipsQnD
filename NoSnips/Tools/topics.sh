@@ -4,17 +4,19 @@
 
 # DialogueManager topics:
 #
-TOPIC_API="hermes/dialogueManager/startSession"
+TOPIC_START_SESSION="hermes/dialogueManager/startSession"
 TOPIC_END="hermes/dialogueManager/endSession"
-TOPIC_CONTINUE="hermes/dialogueManager/continueSession"
+TOPIC_CONTINUE_SESSION="hermes/dialogueManager/continueSession"
 TOPIC_SESSION_ENDED="hermes/dialogueManager/sessionEnded"
+# TOPIC_COMMAND="qnd/dialogueManager/startCommand"
+# TOPIC_API="qnd/dialogueManager/startAPIcall"
 
 
 # Snips Hermes and QnD topics:
 #
 TOPIC=TOPIC_HOTWORD_ON="hermes/hotword/toggleOn"
 TOPIC=TOPIC_HOTWORD_OFF="hermes/hotword/toggleOff"
-TOPIC_HOTWORD="hermes/hotword/default/detected"
+TOPIC_HOTWORD="hermes/hotword/detected"
 
 TOPIC_ASR_START="hermes/asr/startListening"
 TOPIC_ASR_AUDIO="qnd/asr/audioCaptured"

@@ -35,18 +35,21 @@ TIMEOUT="$(extractJSON .hotword.session_timeout)"
 # Topics:
 source $BASE_DIR/Tools/topics.sh
 
-exit
 # core loop that catches all MQTTs depending on
 # state:
 #
-DOING="wait_start_session"
+DOING="no_session"
 while true ; do
 
+  setDMtopics
   subscribeSmart $MATCH $TOPICS
+
   if [[ SESSION_ID != "no_session" ]] ; then
     scheduleTimeOut
   fi
   ID="id:$(uuidgen)"    # set request ID for next round.
+
+  exit
 
   case "$MQTT_TOPIC" in
     $TIMEOUT)

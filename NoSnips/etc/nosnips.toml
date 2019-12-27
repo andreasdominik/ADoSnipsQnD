@@ -73,4 +73,4 @@ start = false
 # The session manager ...
 start = false
 daemon = "Session/session.daemon"
-session_timeout = 60
+session_timeout = 30

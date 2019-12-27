@@ -16,6 +16,7 @@ function readToml() {
   export WORK_DIR="$(extractJSON .local.work_dir $TOML)"
 
   export SITE_ID="$(extractJSON .local.siteId $TOML)"
+  export SESSION_TIMEOUT="$(extractJSON .session.session_timeout $TOML)"
 
   SUBSCRIBE="$(extractJSON .mqtt.subscribe $TOML)"
   export SUBSCRIBE="$SUBSCRIBE -C 1 -v $(mqtt_auth)"
@@ -75,7 +76,7 @@ function parseMQTT() {
   _MQTT=$1
 
   MQTT_TOPIC=$(echo "$_MQTT" | grep -Po '^.*?(?= {)')
-  MQTT_PAYLOAD=$(echo "$_MQTT" | grep -Po '{.*}')
+  MQTT_PAYLOAD=$(echo "$_MQTT" | grep -Pzo '\{[\s\S]*\}')
   MQTT_SITE_ID=$(extractJSON .siteId $MQTT_PAYLOAD)
   MQTT_SESSION_ID=$(extractJSON .sessionId $MQTT_PAYLOAD)
   MQTT_ID=$(extractJSON .id $MQTT_PAYLOAD)

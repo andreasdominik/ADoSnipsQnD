@@ -106,14 +106,14 @@ function scheduleTimeOut() {
   TIMEOUT_ID="$(uuidgen)"
 
   _TOPIC=$TOPIC_TIMEOUT
-  _PAYLOAD="{\"timeoutId\": $TIMEOUT_ID,
-             \"timeout\": $TIMEOUT,
-             \"siteId\": $SESSION_SITE_ID,
-             \"sessionId\": $SESSION_ID,
+  _PAYLOAD="{\"timeoutId\": \"$TIMEOUT_ID\",
+             \"timeout\": $SESSION_TIMEOUT,
+             \"siteId\": \"$SESSION_SITE_ID\",
+             \"sessionId\": \"$SESSION_ID\",
              \"date\": \"$(date)\"
             }"
 
-  (sleep $TIMEOUT; $PUBLISH -t $_TOPIC -m $_PAYLOAD) &
+  (sleep $SESSION_TIMEOUT; $PUBLISH -t $_TOPIC -m $_PAYLOAD) &
 }
 
 
@@ -123,18 +123,18 @@ function setDMtopics() {
 
   case "$DOING" in
     "no_session")
-      TOPICS=$TOPIC_HOTWORD $TOPIC_API
+      TOPICS="$TOPIC_HOTWORD $TOPIC_START_SESSION"
       MATCH="no_match"
       SESSION_ID="no_session"
       SESSION_SITE_ID="no_site"
       TIMEOUT_ID="no_timeout"
       ;;
     "wait_for_asr")
-      TOPICS=$TOPIC_ASR_AUDIO
+      TOPICS="$TOPIC_ASR_AUDIO"
       MATCH="id"
       ;;
     "wait_for_stt")
-      TOPICS=$TOPIC_ASR_TEXT
+      TOPICS="$TOPIC_ASR_TEXT"
       MATCH="id"
       ;;
     "wait_for_nlu")
@@ -154,9 +154,14 @@ function setDMtopics() {
       MATCH="id"
       ;;
     *)
-    TOPICS=""
+      TOPICS=""
+      MATCH="no_match"
     ;;
   esac
+
+  if [[ $DOING != "no_session" ]] ; then
+    TOPICS="$TOPICS $TOPIC_TIMEOUT"
+  fi
 }
 
 function subscribeSmart() {
@@ -175,6 +180,9 @@ function subscribeSmart() {
       if [[ $MQTT_ID == $TIMEOUT_ID ]] ; then
         LISTEN="done"
       fi
+    elif [[ $MQTT_TOPIC == $TOPIC_START_SESSION ]] ||
+         [[ $MQTT_TOPIC == $TOPIC_HOTWORD ]] ; then
+      LISTEN="done"
     elif [[ $_MATCH == "id" ]] ; then
       if [[ $MQTT_ID == $ID ]] ; then
         LISTEN="done"
