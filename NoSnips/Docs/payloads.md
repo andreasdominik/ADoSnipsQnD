@@ -48,7 +48,43 @@
 
 ## NoNsips payloads
 
-### Topic: nosnips/record/asc
+### Hotword manager
+
+#### Topic: hermes/hotword/detected
+
+Published by the hotword service locally on each satellite:
+
+```
+{
+  "siteId": "default",
+  "modelId": "Computer",
+  "modelVersion": "1.0",
+  "modeltype": "personal",
+  "currentSensitivity": 0.5
+}
+```
+
+
+
+### Dialogue manager
+
+#### Topic: qnd/session/timeout
+
+Published by the dialogue manager TIMEOUT seconds after every
+dialogue manager iteration. Sessions are terminated only, if
+the timeoutId is still valid:
+
+```
+{
+  "timeoutId": "timeout:2c0dc569-321b-41f9-9012-2b0ac5f9fcd6",
+  "timeout": 30,
+  "siteId": "no_site",
+  "sessionId": "session:0e24799a-aa63-4205-9808-74ee92f2436b",
+  "date": "Fr 27. Dez 14:08:56 CET 2019"
+}
+```
+
+#### Topic: nosnips/record/asc
 
 Ask the NoSnips `Record` component of a satellite
 to record a command:
@@ -63,7 +99,18 @@ to record a command:
 
 
 
-### Topic: nosnips/record/audio
+#### Topic: hermes/asr/startListening
+
+Published ba the dialogue manager to ask a satellite to start
+listening (normally to a command):
+
+```
+{
+  "sessionId": "session:0e24799a-aa63-4205-9808-74ee92f2436b",
+  "siteId": "default",
+  "id": "id:f587690c-4612-4e8e-a138-dc66f41890e2"
+}
+```
 
 Sent by the NoSnips `Record` component of a satellite
 to deliver a base64-encoded audio recording of a command.
