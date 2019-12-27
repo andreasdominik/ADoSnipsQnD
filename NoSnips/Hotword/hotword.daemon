@@ -49,15 +49,17 @@ PAYLOAD="{
 
 while true ; do
 
-  # wait until start frigger via mqtt:
-  #     mosquitto_pub -h <HOSTNAME> -t 'hermes/hotword/toggleOn' \
-  #         -m '{"siteId": "default"}'
+  # start via mqtt
   #
-  subscribeSiteOnce $SITE_ID hermes/hotword/toggleOn
 
   # run Snowboy until hotword is detected
   #
   $DETECTOR $MODEL $SENSITIVITY
-
   $PUBLISH $TOPIC -m $PAYLOAD
+
+  # wait until retsart is triggered via:
+  #     mosquitto_pub -h <HOSTNAME> -t 'hermes/hotword/toggleOn' \
+  #         -m '{"siteId": "default"}'
+  #
+  subscribeSiteOnce $SITE_ID hermes/hotword/toggleOn
 done
