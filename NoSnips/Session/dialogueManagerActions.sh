@@ -103,7 +103,7 @@ function publishPlay() {
 #
 function scheduleTimeOut() {
 
-  TIMEOUT_ID="$(uuidgen)"
+  TIMEOUT_ID="timeout:$(uuidgen)"
 
   _TOPIC=$TOPIC_TIMEOUT
   _PAYLOAD="{\"timeoutId\": \"$TIMEOUT_ID\",
