@@ -84,20 +84,8 @@ the timeoutId is still valid:
 }
 ```
 
-#### Topic: nosnips/record/asc
 
-Ask the NoSnips `Record` component of a satellite
-to record a command:
-
-```
-{
-  "sessionId": "d15eb1a0-67ba-4a3b-a378-a5b06e370719",
-  "siteId": "default",
-  "requestId": "ff64e565-8398-4ca5-9742-a4f1712153e3"
-}
-```
-
-
+### ASR
 
 #### Topic: hermes/asr/startListening
 
@@ -112,6 +100,24 @@ listening (normally to a command):
 }
 ```
 
+### Topic: qnd/asr/audioCaptured
+
+Answer of a satellite to a topic hermes/asr/startListening request, with
+the base64-encoded audio. `id` is the request ID and matches the
+ID of the according asr/startListening topic:
+
+```
+{
+  "sessionId": "session:0e24799a-aa63-4205-9808-74ee92f2436b",
+  "siteId": "default",
+  "id": "id:f587690c-4612-4e8e-a138-dc66f41890e2",
+  "audio": "UG9seWZvbiB6d2l0c2NoZXJuZCBhw59lbiBNw6R4Y2hlbnMgVsO2Z2VsIF
+          LDvGJlbiwgSm9naHVydCB1bmQgUXVhcms="
+}
+```
+
+TOPIC_ASR_TRANSSCRIBE="qnd/asr/transsribe"
+TOPIC_ASR_TEXT="hermes/asr/textCaptured"
 Sent by the NoSnips `Record` component of a satellite
 to deliver a base64-encoded audio recording of a command.
 All IDs match the IDs of the request:
