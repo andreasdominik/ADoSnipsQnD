@@ -2,7 +2,7 @@
 # Topics:
 #
 
-# Snips dialogueManager topics:
+# DialogueManager topics:
 #
 TOPIC_API="hermes/dialogueManager/startSession"
 TOPIC_END="hermes/dialogueManager/endSession"
@@ -25,6 +25,8 @@ TOPIC_NLU_QUERY="hermes/nlu/query"
 TOPIC_NLU_PARSED="hermes/nlu/intentParsed"
 TOPIC_NLU_NOT="hermes/nlu/intentNotRecognized"
 
+TOPIC_TTS_REQUEST="qnd/tts/request"
+TOPIC_TTS_AUDIO="qnd/tts/audio"
 
 # QnD NoSnips topics:
 #
