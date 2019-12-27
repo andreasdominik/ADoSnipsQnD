@@ -106,12 +106,8 @@ function extractJSON() {
 
 function publish() {
 
-  _TOPICS="$1"
+  _TOPIC="$1"
   _PAYLOAD="$2"
-  __TOPICS=""
-  for _T in $_TOPICS ; do
-    __TOPICS="$__TOPICS -t $_T"
-  done
 
-  $PUBLISH  $__TOPICS -m "$_PAYLOAD"
+  $PUBLISH  -t "$_TOPIC" -m "$_PAYLOAD"
 }

@@ -49,13 +49,10 @@ PAYLOAD="{
 
 while true ; do
 
-  # start via mqtt
-  #
-
   # run Snowboy until hotword is detected
   #
   $DETECTOR $MODEL $SENSITIVITY
-  $PUBLISH $TOPIC -m $PAYLOAD
+  publish $TOPIC "$PAYLOAD"
 
   # wait until retsart is triggered via:
   #     mosquitto_pub -h <HOSTNAME> -t 'hermes/hotword/toggleOn' \
