@@ -47,18 +47,22 @@ sensitivity = 0.5
 
 
 [record]
-# start = true     start the service to record commands
+# start = true     start the local service to record commands
 start = false
 
 [say]
-# start = true     start the service to utter text
+# start = true     start the local service to utter text
 start = false
 
-[STT]
-# start = true     start the speech-to-text (aka ASR) service
+[tts]
+# start = true     start the central text-to-speech service
 start = false
 
-[NLU]
+[stt]
+# start = true     start the central speech-to-text (aka ASR) service
+start = false
+
+[nlu]
 # start = true     start the natural language understanding service
 #                  to identify intents and extract slot values
 start = false
