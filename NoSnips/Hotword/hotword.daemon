@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Hotword service for NoSnips replacement service.
+# Hotword service for NoSnips replacement.
 # Usage:
 #     hotword.daemon path/to/nosnips.toml
 #     hotword.daemon /etc/nosnips.toml

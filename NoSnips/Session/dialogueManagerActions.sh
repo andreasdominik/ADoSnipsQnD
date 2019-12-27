@@ -9,13 +9,6 @@ function publishLog() {
   publish -t "$TOPIC_WATCH_LOG" -m "$_MESSAGE"
 }
 
-function publish() {
-  _TOPIC="$1"
-  _PAYLOAD="$2"
-
-  publish "$_TOPIC" "$_PAYLOAD"
-}
-
 
 function publishSessionEnded() {
 
