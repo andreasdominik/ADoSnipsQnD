@@ -32,3 +32,36 @@ REC_FILE="${BASE_DIR}/$(extractJSON .record.recording_file)"
 NOTIFICATION="$(extractJSON .record.notification)"
 START_SOUND="${BASE_DIR}/$(extractJSON .record.notification_start)"
 END_SOUND="${BASE_DIR}/$(extractJSON .record.notification_end)"
+
+
+# main loop:
+#  - wait for request
+#  - call record binary
+#  - base64 encode recording
+#  - send MQTT
+#
+while true ; do
+
+  subscribeSiteOnce $SITE_ID $TOPIC_ASR_START
+
+  [[ $NOTIFICATION == true ]] && $PLAY_CMD $START_SOUND
+  rm -f $REC_FILE
+  REC_CMD $REC_FILE
+  [[ $NOTIFICATION == true ]] && $PLAY_CMD $END_SOUND
+
+  if [[ -s $REC_FILE ]] ; then
+    AUDIO="$(base64 $REC_FILE)"
+  else
+    AUDIO=""
+  fi
+
+TOPIC=$TOPIC_ASR_AUDIO
+PAYLOAD="{
+  \"siteId\": \"$SITE_ID\",
+  \"sessionId\": \"$SESSION_ID\",
+  \"id\": \"$ID\",
+  \"audio\": \"$AUDIO\"
+}"
+
+publish $TOPIC "$PAYLOAD"
+done

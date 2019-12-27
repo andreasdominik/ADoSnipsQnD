@@ -107,6 +107,8 @@ function extractJSON() {
 
 function publish() {
 
+# echo "publish"
+# exit
   _TOPIC="$1"
   _PAYLOAD="$2"
 
