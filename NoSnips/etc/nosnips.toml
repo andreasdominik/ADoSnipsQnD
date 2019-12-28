@@ -51,18 +51,22 @@ sensitivity = 0.5
 # start = true     start the local service to record commands
 # daemon = "Record/record.daemon"     daemon binary
 # binary = "Record/Sox/recCmd.sh"     command to perform recording
-# recording_file = "cmd.flac"         file with recording
+# recording_file = "cmd.flac"         file with recording (defines the format, too)
+# recording_limit = 15                stop recording after 15 sec
 # notification = true                 play sounds when starting/stopping rec
 # notification_start = "Record/Sounds/startlisten.wav"
 # notification_end = "Record/Sounds/stoplisten.wav"
+# play = "play"                       command to play an audio file
 #
 start = false
 daemon = "Record/record.daemon"
-binary = "Record/Sox/recCmd.sh"
+binary = "Record/soxrec.sh"
 recording_file = "cmd.flac"
+recording_limit = 15
 notification = true
 notification_start = "Record/Sounds/startlisten.wav"
 notification_end = "Record/Sounds/stoplisten.wav"
+play = "play"
 
 
 [say]
