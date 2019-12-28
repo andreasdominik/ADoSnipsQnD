@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -xv
 #
 # Hotword service for NoSnips replacement.
 # Usage:
@@ -23,6 +23,7 @@ BASE_DIR="$(echo $TOML | jq -r .local.base_directory)"
 # load tool funs:
 #
 source $BASE_DIR/Tools/funs.sh
+source $BASE_DIR/Tools/topics.sh
 
 # parse config from toml:
 # PUBLISH, SUBSCRIBE, MQTT_PORT, MQTT_HOST,
@@ -38,7 +39,6 @@ SENSITIVITY="$(extractJSON .hotword.sensitivity)"
 
 # construct MQTT message for hotword detected
 #
-TOPIC=$TOPIC_HOTWORD
 PAYLOAD="{
   \"siteId\": \"$SITE_ID\",
   \"modelId\": \"$LOCAL_HOTWORD\",
@@ -60,7 +60,7 @@ while true ; do
   # detector stopped:
   #
   if [[ $STATUS -eq 0 ]] ; then
-    publish $TOPIC "$PAYLOAD"
+    publish $TOPIC_HOTWORD "$PAYLOAD"
   fi
 
   # wait until retsart is triggered via:
