@@ -14,8 +14,8 @@ TOPIC_SESSION_ENDED="hermes/dialogueManager/sessionEnded"
 
 # Snips Hermes and QnD topics:
 #
-TOPIC=TOPIC_HOTWORD_ON="hermes/hotword/toggleOn"
-TOPIC=TOPIC_HOTWORD_OFF="hermes/hotword/toggleOff"
+TOPIC_HOTWORD_ON="hermes/hotword/toggleOn"
+TOPIC_HOTWORD_OFF="hermes/hotword/toggleOff"
 TOPIC_HOTWORD="hermes/hotword/detected"
 
 TOPIC_ASR_START="hermes/asr/startListening"

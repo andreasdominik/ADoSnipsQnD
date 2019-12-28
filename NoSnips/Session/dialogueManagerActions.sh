@@ -20,6 +20,15 @@ function publishSessionEnded() {
   publish "$TOPIC_SESSION_ENDED" "$_PAYLOAD"
 }
 
+function publishHotwordOn() {
+
+  _PAYLOAD="{
+            \"sessionId\": \"no_session\",
+            \"siteId\": \"$SESSION_SITE_ID\"
+           }"
+  publish "$TOPIC_HOTWORD_ON" "$_PAYLOAD"
+}
+
 
 function publishAsrStart() {
 
@@ -99,7 +108,7 @@ function scheduleTimeOut() {
   TIMEOUT_ID="timeout:$(uuidgen)"
 
   _TOPIC=$TOPIC_TIMEOUT
-  _PAYLOAD="{\"timeoutId\": \"$TIMEOUT_ID\",
+  _PAYLOAD="{\"id\": \"$TIMEOUT_ID\",
              \"timeout\": $SESSION_TIMEOUT,
              \"siteId\": \"$SESSION_SITE_ID\",
              \"sessionId\": \"$SESSION_ID\",

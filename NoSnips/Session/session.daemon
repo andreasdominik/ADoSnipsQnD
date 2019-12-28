@@ -44,18 +44,24 @@ while true ; do
   setDMtopics
   subscribeSmart $MATCH $TOPICS
 
-  scheduleTimeOut
   ID="id:$(uuidgen)"    # set request ID for next round.
 
-  case "$MQTT_TOPIC" in
-    $TIMEOUT)
-      if [[ $MQTT_ID == $TIMEOUT_ID ]] &&
-         [[ $DOING != "no_session" ]] ; then
-        publishSessionEnded "timeout"
-      fi
+  # manage timeouts:
+  #
+  if [[ $MQTT_TOPIC == $TOPIC_TIMEOUT ]] ; then
+    if [[ $MQTT_ID == $TIMEOUT_ID ]] &&
+       [[ $DOING != "no_session" ]] ; then
+      publishSessionEnded "timeout"
+      publishHotwordOn
       DOING="no_session"
-      ;;
+    fi
+  else
+    scheduleTimeOut
+  fi
 
+  # manage dialogue manager sequences:
+  #
+  case "$MQTT_TOPIC" in
     $TOPIC_HOTWORD)
       SESSION_ID="session:$(uuidgen)"
       SESSION_SITE_ID=$MQTT_SITE_ID
@@ -67,6 +73,7 @@ while true ; do
       AUDIO="$(extractJSON .audio $MQTT_PAYLOAD)"
       if [[ -z $AUDIO ]] ; then
         publishSessionEnded "error: no audio"
+        publishHotwordOn
         DOING="no_session"
       else
         publishAsrTransscribe  # next: wait for STT result
@@ -78,6 +85,7 @@ while true ; do
       TEXT="$(extractJSON .transscript $MQTT_PAYLOAD)"
       if [[ -z $TEXT ]] ; then
         publishSessionEnded "error: no transscript"
+        publishHotwordOn
         DOING="no_session"
       else
         publishNluQuery # next: wait for NLU result
@@ -88,6 +96,7 @@ while true ; do
     $TOPIC_NLU_NOT)
       publishSessionEnded "error: NLU failed"
       qndSay "failedNLU"
+      publishHotwordOn
       DOING="no_session"
       ;;
 
@@ -134,6 +143,7 @@ while true ; do
       AUDIO="$(extractJSON .audio $MQTT_PAYLOAD)"
       if [[ -z $AUDIO ]] ; then
         publishSessionEnded "error: no audio from TTS"
+        publishHotwordOn
         DOING="no_session"
       else
         if [[ -z $PLAY_SITE ]] ; then
@@ -148,6 +158,7 @@ while true ; do
     $TOPIC_PLAY_FINISHED)
       if [[ $NEXT_DOING == "end_session" ]] ; then
         publishSessionEnded
+        publishHotwordOn
         DOING="no_session"
       else
         DOING="session_ongoing"
