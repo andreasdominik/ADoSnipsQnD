@@ -120,7 +120,7 @@ Timeout is in sec.
 function constructMQTTcmd(topics; hostname = nothing, port = nothing,
                           timeout = nothing)
 
-    cmd = `mosquitto_sub -v -C 1`
+    cmd = `mosquitto_sub --qos 2 -v -C 1`
     if hostname != nothing
         cmd = `$cmd -h $hostname`
     end
@@ -208,7 +208,7 @@ function publishMQTT(topic, payload, hostname = nothing, port = nothing)
 
     # build cmd string:
     #
-    cmd = `mosquitto_pub`
+    cmd = `mosquitto_pub --qos 2`
     if hostname != nothing
         cmd = `$cmd -h $hostname`
     end
@@ -250,7 +250,7 @@ function publishMQTTfile(topic, fname, hostname = nothing, port = nothing)
 
     # build cmd string:
     #
-    cmd = `mosquitto_pub`
+    cmd = `mosquitto_pub --qos 2`
     if hostname != nothing
         cmd = `$cmd -h $hostname`
     end
