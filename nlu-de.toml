@@ -1,0 +1,107 @@
+# Intent definition for Yes/no:
+#
+#  (c) A. Dominik, 2020
+#
+skill = "ADoSnipsHermesQnD_DE"
+developer = "andreasdominik"
+
+
+[inventory]
+# slot_types = ["yes_or_no_type"]     # predefined types need not to be declared:
+#                                     # any/date/time/datetime/currency/...
+slots = ["room", "TV_channel", "on_or_off", "device", "yes_or_no"]
+intents = ["ADoSnipsOnOffDE", "ADoSnipsYesNoDE"]
+
+
+# define slots:
+# Types: Any/List/InstantTime/Currency/Number/Ordinal/...
+#
+[room]
+slot_type = "ListOfValues"
+
+        [room.synonyms]
+        "house" = ["ganzen Haus", "ganzes Haus", "Haus"]
+        "dining" = ["Esszimmer"]
+        "stairs" = ["Treppenhaus", "Flur"]
+        "kitchen" = ["Küche"]
+        "bedroom" = "Schlafzimmer"
+        "guest" = "Gästezimmer"
+        "Andreas" = ["Andreas Büro", "Büro von Andreas", "ADos Büro"]
+        "default" = ["wohnzimmer"]
+
+[TV_channel]
+slot_type = "ListOfValues"
+
+        [TV_channel.synonyms]
+        "Servus" = ["Servus", "Servus TV"]
+        "One" = "One"
+        "BR" = ["Bayern", "Bayern 3", "BR", "BR 3"]
+        "MDR" = "MDR"
+        "SWR" = ["SWR", "Südwest 3", "Südwestfunk"]
+        "HR" = ["HR", "Hessen", "Hessen 3", "HR 3"]
+        "NDR" = ["NDR", "Norddeutscher Rundfunk"]
+        "Arte" = "Arte"
+        "ZDF" = ["Das Zweite", "Zweite", "zweite.? Programm", "zweiten", "2"]
+        "ARD" = ["Das Erste", "Erste", "ersten Programm", "erste Programm",
+                 "Ersten"]
+
+[on_or_off]
+slot_type = "ListOfValues"
+
+        [on_or_off.synonyms]
+        ON = ["ein", "an", "einschalten", "anschalten",
+              "anmachen", "öffne"]
+        OFF = ["aus", "ab", "ausschalten", "abschalten"]
+
+
+[device]
+slot_type = "ListOfValues"
+
+        [device.synonyms]
+        desk_light = ["Schreibtischlampe", "Arbeitsleuchte", "Schreibtischleuchte"]
+        ZDF_media_centre = ["ZDF Mediathek", "ZDF online", "ZDF Datenbank"]
+        ARD_media_centre = ["ARD Mediathek", "ARD online", "ADR Datenbank"]
+        volume = "Ton"
+        amazon_fire = ["Amazon Fire Stick", "Amazon Fire", "Amazon",
+                       "Fire Stick"]
+        irrigation = ["Bewässerung", "Gartenbewässerung", "Wasser im Garten"]
+        wall_light = "Wandlampe"
+        main_light = ["Deckenlicht", "Licht an der Decke", "großes Licht"]
+        floor_light = ["Stehlampe"]
+        KODI = ["KODI", "Videorecorder", "Videoarchiv", "Libreelec","XBMC"]
+        light = ["Licht", "Lampe", "Beleuchtung", "hell"]
+        TV_light = ["Licht am Fernseher", "TV-Licht", "Fernsehlicht"]
+        TV = ["TV", "Fernseher", "Fernsehen", "Glotze", "Flimmerkasten"]
+
+
+[yes_or_no]
+slot_type = "ListOfValues"
+
+        [yes_or_no.synonyms]
+        NO = ["Nein", "nö" ,"nicht", "auf keinen Fall",
+        "Abbruch", "abbrechen", "ende", "exit"]
+        YES = ["ja", "jawohl", "ja doch", "natürlich",
+        "sowieso", "mach", "mach es", "weiter", "mehr",
+        "sicher", "bitte"]
+
+
+# define phrases for intent recognition:
+# exact, regex, part
+#
+[ADoSnipsOnOffDE]
+disable_on_start = false
+
+tv = "partial: <<Bitte|>> den Fernseher <<im|mit|im Programm>> <<TV_channel>> <<on_or_off>>"
+tv2 = "exact: <<Bitte|>> schalte den Fernseher <<im|mit|im Programm>> <<TV_channel>> <<on_or_off>>"
+
+any = "exact: <<bitte|>> <<schalte|mach>> <<bitte|>> <<den|die|das>> <<device>> <<on_or_off>>"
+room = "exact: <<bitte|>> <<schalte|mach>> <<bitte|>> <<den|die|das>> <<device>> <<im|in der>> <<room>> <<on_or_off>>"
+
+media = "partial: öffne <<bitte|>> <<die|den|das>> <<device>>"
+
+[ADoSnipsYesNoDE]
+disable_on_start = true
+
+# lazy = "regex: \\s{1,}<<yes_or_no>>\\s{1,}"
+exactlyone = "exact: <<yes_or_no>>"
+lazy = "partial: <<yes_or_no>>"
