@@ -1,0 +1,19 @@
+[global]
+# debug mode: none, no-parallel or logging
+#
+debug=none
+
+# devices, switched by th eon/off-intent:
+# home database in dir AppilcationData
+#
+on_off_devices=floor_light,light,irrigation,TV,amazon_fire,KODI
+database_file=home.json
+
+[secret]
+application_data_dir=/opt/Susi/ApplicationData
+
+# API key and city-ID for openWeather (here: example Berlin, DE)
+# if not defined, no weather data will be downloaded:
+#
+openweather_api_key=c589832ab1231245482ab05168bce19c
+openweather_city_id=6350865
