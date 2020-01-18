@@ -8,7 +8,7 @@
 lang = Snips.getConfig(:language)
 const LANG = (lang != nothing) ? lang : "de"
 
-const CONTINUE_WO_HOTWORD = true
+const CONTINUE_WO_HOTWORD = false
 const DEVELOPER_NAME = "andreasdominik"
 Snips.setDeveloperName(DEVELOPER_NAME)
 Snips.setModule(@__MODULE__)
