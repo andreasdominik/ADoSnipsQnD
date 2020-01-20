@@ -145,8 +145,6 @@ function constructMQTTcmd(topics; hostname = nothing, port = nothing,
     end
 
     cmd = Cmd(cmd, ignorestatus = true)
-    #println("Mosquito command is : $cmd")
-
     return cmd
 end
 
