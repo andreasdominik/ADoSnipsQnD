@@ -335,6 +335,7 @@ function publishSay(text; sessionId = CURRENT_SESSION_ID,
                     id = nothing, wait = true)
 
     text = langText(text)
+    text = replace(text, r"\n|\r"=>" ")
     payload = Dict(:text => text, :siteId => siteId)
 
     if lang != nothing
