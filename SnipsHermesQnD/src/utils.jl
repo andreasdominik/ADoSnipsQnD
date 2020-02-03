@@ -65,6 +65,34 @@ function extractSlotValue(payload, slotName; multiple = false)
     end
 end
 
+"""
+    extractMultiSlotValues(payload, slotNames)
+
+Return a list with all values of a list of slots.
+
+Nothing is returned, if
+* no slots in payload,
+* no slots with name in slotNames in payload,
+* no values in slot slotNames.
+"""
+function extractMultiSlotValues(payload, slotNames::AbstractArray)
+
+    values = []
+
+    for slot in slotNames
+        value = extractSlotValue(payload, slot, multiple=true)
+        if value != nothing
+            append!(values, values)
+
+
+    if length(values) < 1
+        return nothing
+    else
+        return values
+    end
+end
+
+
 
 """
     isInSlot(payload, slotName, value)
