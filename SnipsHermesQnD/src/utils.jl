@@ -83,7 +83,8 @@ function extractMultiSlotValues(payload, slotNames::AbstractArray)
         value = extractSlotValue(payload, slot, multiple=true)
         if value != nothing
             append!(values, values)
-
+        end
+    end
 
     if length(values) < 1
         return nothing
