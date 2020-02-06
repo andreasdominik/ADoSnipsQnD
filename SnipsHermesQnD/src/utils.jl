@@ -82,7 +82,7 @@ function extractMultiSlotValues(payload, slotNames::AbstractArray)
     for slot in slotNames
         value = extractSlotValue(payload, slot, multiple=true)
         if value != nothing
-            append!(values, values)
+            append!(values, value)
         end
     end
 
@@ -398,13 +398,10 @@ Current App-name is printed as prefix.
 """
 function printDebug(s)
 
-    println("IN printDebug()")
     if s == nothing
         s = "log-message is nothing"
     end
-    println("IN nach if printDebug()")
     if !matchConfig(:debug, "none")
-        println("IN in if printDebug()")
         printLog("<<< DEBUG >>> $s")
     end
 end
