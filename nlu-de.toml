@@ -22,24 +22,24 @@ slot_type = "ListOfValues"
         [room.synonyms]
         "house" = ["ganzen Haus", "ganzes Haus", "Haus"]
         "dining" = ["Esszimmer"]
-        "stairs" = ["Treppenhaus", "Flur"]
+        "stairs" = ["Treppenhaus", "Treppe", "Flur"]
         "kitchen" = ["Küche"]
         "bedroom" = "Schlafzimmer"
         "guest" = "Gästezimmer"
         "Andreas" = ["Andreas Büro", "Büro von Andreas", "ADos Büro"]
-        "default" = ["wohnzimmer"]
+        "default" = ["Wohnzimmer"]
 
 [TV_channel]
 slot_type = "ListOfValues"
 
         [TV_channel.synonyms]
-        "Servus" = ["Servus", "Servus TV"]
+        "Servus" = ["Servus TV", "Servus"]
         "One" = "One"
-        "BR" = ["Bayern", "Bayern 3", "BR", "BR 3"]
-        "MDR" = "MDR"
-        "SWR" = ["SWR", "Südwest 3", "Südwestfunk"]
-        "HR" = ["HR", "Hessen", "Hessen 3", "HR 3"]
-        "NDR" = ["NDR", "Norddeutscher Rundfunk"]
+        "BR" = ["Bayern 3", "Bayern", "BR 3", "BR3", "BR"]
+        "MDR" = ["MDR 3", "MDR"]
+        "SWR" = ["SWR 3", "SWR", "Südwest 3", "Südwestfunk"]
+        "HR" = ["HR 3", "Hessen 3", "Hessen", "HR"]
+        "NDR" = ["NDR 3", "NDR", "Norddeutscher Rundfunk"]
         "Arte" = "Arte"
         "ZDF" = ["Das Zweite", "Zweite", "zweite.? Programm", "zweiten", "2"]
         "ARD" = ["Das Erste", "Erste", "ersten Programm", "erste Programm",
@@ -49,9 +49,9 @@ slot_type = "ListOfValues"
 slot_type = "ListOfValues"
 
         [on_or_off.synonyms]
-        ON = ["ein", "an", "einschalten", "anschalten",
-              "anmachen", "öffne"]
-        OFF = ["aus", "ab", "ausschalten", "abschalten"]
+        ON = ["einschalten", "anschalten",
+              "anmachen", "an", "ein", "öffne"]
+        OFF = ["ausschalten", "abschalten", "aus", "ab"]
 
 
 [device]
@@ -80,8 +80,8 @@ slot_type = "ListOfValues"
         [yes_or_no.synonyms]
         NO = ["Nein", "nö" ,"nicht", "auf keinen Fall",
         "Abbruch", "abbrechen", "ende", "exit"]
-        YES = ["ja", "jawohl", "ja doch", "natürlich",
-        "sowieso", "mach", "mach es", "weiter", "mehr",
+        YES = ["jawohl", "ja doch", "ja", "natürlich",
+        "sowieso", "mach es", "mach", "weiter", "mehr",
         "sicher", "bitte"]
 
 
