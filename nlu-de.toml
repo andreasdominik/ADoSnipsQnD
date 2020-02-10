@@ -64,7 +64,7 @@ slot_type = "ListOfValues"
         volume = "Ton"
         amazon_fire = ["Amazon Fire Stick", "Amazon Fire", "Amazon",
                        "Fire Stick"]
-        irrigation = ["Bewässerung", "Gartenbewässerung", "Wasser im Garten"]
+        irrigation = ["Gartenbewässerung", "Bewässerung", "Wasser im Garten"]
         wall_light = "Wandlampe"
         main_light = ["Deckenlicht", "Licht an der Decke", "großes Licht"]
         floor_light = ["Stehlampe"]
@@ -94,8 +94,8 @@ disable_on_start = false
 tv = "partial: <<Bitte|>> den Fernseher <<im|mit|im Programm>> <<TV_channel>> <<on_or_off>> <<bitte|>>"
 tv2 = "partial: <<Bitte|>> schalte den Fernseher <<im|mit|im Programm>> <<TV_channel>> <<on_or_off>> <<bitte|>>"
 
-any = "exact: <<bitte|>> <<schalte|mach>> <<bitte|>> <<den|die|das>> <<device>> <<on_or_off>> <<bitte|>>"
-room = "exact: <<bitte|>> <<schalte|mach>> <<bitte|>> <<den|die|das>> <<device>> <<im|in der>> <<room>> <<on_or_off>> <<bitte|>>"
+any = "exact: <<bitte|>> <<schalte|mach>> <<bitte|>> <<den|die|das|>> <<device>> <<on_or_off>> <<bitte|>>"
+room = "exact: <<bitte|>> <<schalte|mach>> <<bitte|>> <<den|die|das|>> <<device>> <<im|in der>> <<room>> <<on_or_off>> <<bitte|>>"
 
 media = "partial: öffne <<bitte|>> <<die|den|das>> <<device>> <<bitte|>>"
 
