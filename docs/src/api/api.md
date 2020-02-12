@@ -95,6 +95,7 @@ readConfig
 matchConfig
 isInConfig
 isConfigValid
+getConfigPath
 ```
 
 

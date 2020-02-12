@@ -124,6 +124,31 @@ function getConfig(name; multiple = false, onePrefix = nothing)
     end
 end
 
+"""
+    function getConfigPath(name, defaultPath; onePrefix = nothing)
+
+Read the config value 'name' as filename and generate a full
+(absolute) path:
+* if fName starts with '/', it is returned as is.
+* otherwise a full path is created with 'defaultPath' as prefix.
+
+## Arguments:
+* `name`: name of the config parameter as Symbol or String
+* `defaultPath`: path to be used if name is not already a path
+* `onePrefix`: if defined, the prefix will be used only for this
+              single call instead of the stored prefix.
+"""
+function getConfigPath(name, defaultPath; onePrefix = nothing)
+
+    fName = getConfig(name, onePrefix = onePrefix)
+    if (fName == nothing) || (length(fName) < 1)
+        return nothing
+    elseif fName[1] == '/'
+        return fName
+    else
+        return joinpath(defaultPath, fName)
+    end
+end
 
 
 """
