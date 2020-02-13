@@ -123,10 +123,22 @@ function constructMQTTcmd(topics; hostname = nothing, port = nothing,
     cmd = `mosquitto_sub --qos 2 -v -C 1`
     if hostname != nothing
         cmd = `$cmd -h $hostname`
+    elseif !isempty(SUSI_TOML["mqtt"]["host"])
+        cmd = `$cmd -h $(SUSI_TOML["mqtt"]["host"])`
     end
 
     if port != nothing
         cmd = `$cmd -p $port`
+    elseif !isempty(SUSI_TOML["mqtt"]["port"])
+        cmd = `$cmd -p $(SUSI_TOML["mqtt"]["port"])`
+    end
+
+    if !isempty(SUSI_TOML["mqtt"]["user"])
+        cmd = `$cmd -u $(SUSI_TOML["mqtt"]["user"])`
+    end
+
+    if !isempty(SUSI_TOML["mqtt"]["password"])
+        cmd = `$cmd -P $(SUSI_TOML["mqtt"]["password"])`
     end
 
     if topics isa AbstractString
@@ -209,10 +221,22 @@ function publishMQTT(topic, payload, hostname = nothing, port = nothing)
     cmd = `mosquitto_pub --qos 2`
     if hostname != nothing
         cmd = `$cmd -h $hostname`
+    elseif !isempty(SUSI_TOML["mqtt"]["host"])
+        cmd = `$cmd -h $(SUSI_TOML["mqtt"]["host"])`
     end
 
     if port != nothing
         cmd = `$cmd -p $port`
+    elseif !isempty(SUSI_TOML["mqtt"]["port"])
+        cmd = `$cmd -p $(SUSI_TOML["mqtt"]["port"])`
+    end
+
+    if !isempty(SUSI_TOML["mqtt"]["user"])
+        cmd = `$cmd -u $(SUSI_TOML["mqtt"]["user"])`
+    end
+
+    if !isempty(SUSI_TOML["mqtt"]["password"])
+        cmd = `$cmd -P $(SUSI_TOML["mqtt"]["password"])`
     end
 
     cmd = `$cmd -t $topic`
@@ -251,11 +275,24 @@ function publishMQTTfile(topic, fname, hostname = nothing, port = nothing)
     cmd = `mosquitto_pub --qos 2`
     if hostname != nothing
         cmd = `$cmd -h $hostname`
+    elseif !isempty(SUSI_TOML["mqtt"]["host"])
+        cmd = `$cmd -h $(SUSI_TOML["mqtt"]["host"])`
     end
 
     if port != nothing
         cmd = `$cmd -p $port`
+    elseif !isempty(SUSI_TOML["mqtt"]["port"])
+        cmd = `$cmd -p $(SUSI_TOML["mqtt"]["port"])`
     end
+
+    if !isempty(SUSI_TOML["mqtt"]["user"])
+        cmd = `$cmd -u $(SUSI_TOML["mqtt"]["user"])`
+    end
+
+    if !isempty(SUSI_TOML["mqtt"]["password"])
+        cmd = `$cmd -P $(SUSI_TOML["mqtt"]["password"])`
+    end
+
 
     cmd = `$cmd -t $topic`
 
