@@ -80,6 +80,7 @@ export subscribeMQTT, readOneMQTT, publishMQTT, publishMQTTfile,
        dbWritePayload, dbWriteValue, dbReadEntry, dbReadValue, dbHasEntry,
        schedulerAddAction, schedulerAddActions, schedulerMakeAction,
        schedulerDeleteAll, schedulerDeleteTopic, schedulerDeleteOrigin,
-       getOpenWeather
+       getOpenWeather,
+       getSusiToml
 
 end # module

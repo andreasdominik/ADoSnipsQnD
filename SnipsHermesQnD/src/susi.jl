@@ -20,3 +20,15 @@ function parseSusiConfig(tomlFile=SUSI_CONFIG)
 
     return config
 end
+
+
+"""
+    function getSusiToml()
+
+Return a dictionary with all settings of the file
+`/etc/sisu.toml`.
+"""
+function getSusiToml()
+
+    return SUSI_TOML
+end

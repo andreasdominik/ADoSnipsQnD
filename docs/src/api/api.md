@@ -28,6 +28,11 @@ askYesOrNo
 publishSay
 ```
 
+## Interaction with Susi/NoSnips
+
+```@docs
+getSusiToml
+```
 
 ## Functions to handle intents
 
