@@ -123,7 +123,7 @@ function readTimeFromSlot(payload, slotName)
 
     # date format delivered from Snips:
     #
-    dateFormat = Dates.DateFormat("yyyy-mm-dd HH:MM:SS")
+    # dateFormat = Dates.DateFormat("yyyy-mm-dd HH:MM:SS")
     timeStr = extractSlotValue(payload, slotName, multiple = false)
     if timeStr == nothing
         return nothing
@@ -135,7 +135,8 @@ function readTimeFromSlot(payload, slotName)
     printDebug("Correctes timeStr in readTimeFromSlot(): $timeStr")
 
     try
-        dateTime = Dates.DateTime(timeStr, dateFormat)
+        # dateTime = Dates.DateTime(timeStr, dateFormat)
+        dateTime = Dates.DateTime(timeStr)
     catch
         dateTime = nothing
     end
