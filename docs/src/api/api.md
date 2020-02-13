@@ -32,6 +32,7 @@ publishSay
 
 ```@docs
 getSusiToml
+getLanguage
 ```
 
 ## Functions to handle intents

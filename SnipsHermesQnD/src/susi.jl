@@ -32,3 +32,22 @@ function getSusiToml()
 
     return SUSI_TOML
 end
+
+
+
+"""
+    function getLanguage()
+
+Return a the language as defined in
+`/etc/sisu.toml` or 'en' if no language entry found.
+"""
+function getLanguage()
+
+    if haskey(SUSI_TOML, "assistant") && haskey(SUSI_TOML["assistant"], "language") &&
+       !isempty(SUSI_TOML["assistant"]["language"])
+        language = SUSI_TOML["assistant"]["language"]
+    else
+        language = "en"
+    end
+    return language
+end

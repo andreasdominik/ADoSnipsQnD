@@ -81,6 +81,6 @@ export subscribeMQTT, readOneMQTT, publishMQTT, publishMQTTfile,
        schedulerAddAction, schedulerAddActions, schedulerMakeAction,
        schedulerDeleteAll, schedulerDeleteTopic, schedulerDeleteOrigin,
        getOpenWeather,
-       getSusiToml
+       getSusiToml, getLanguage
 
 end # module
