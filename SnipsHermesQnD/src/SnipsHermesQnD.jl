@@ -19,6 +19,7 @@ include("shelly.jl")
 include("weather.jl")
 include("languages.jl")
 include("callback.jl")
+include("susi.jl")
 
 CONFIG_INI = Dict{Symbol, Any}()
 prefix = nothing    # prefix for parameter names
@@ -29,6 +30,10 @@ CURRENT_MODULE = Main
 CURRENT_INTENT = "none"
 CURRENT_APP_DIR = ""
 CURRENT_APP_NAME = "QnD framework"
+
+# read susi config:
+#
+SUSI_TOML = parseSusiConfig()
 
 # set default language and texts to en
 #
