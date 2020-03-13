@@ -26,7 +26,7 @@ end
     function getSusiToml()
 
 Return a dictionary with all settings of the file
-`/etc/sisu.toml`.
+`/etc/susi.toml`.
 """
 function getSusiToml()
 
@@ -38,8 +38,8 @@ end
 """
     function getLanguage()
 
-Return a the language as defined in
-`/etc/sisu.toml` or 'en' if no language entry found.
+Return a the language as 2-letter-code as defined in
+`/etc/susi.toml` or 'en' if no language entry found.
 """
 function getLanguage()
 
@@ -49,5 +49,5 @@ function getLanguage()
     else
         language = "en"
     end
-    return language
+    return language[1:2]
 end
