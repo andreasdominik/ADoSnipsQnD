@@ -50,13 +50,14 @@ Supported languages: "en", "de", "fr".
 * datetime: date and optional time as ISO string or as DateTime object.
 * lang: Language code (e.g. "en" or "de")
 * wholeDay: boolean, if true, no time is returned, instead "whole day"
-* onlyDay: just tell the day, not the time.
+* onlyDay: just tell the day, not the time
+* onlyTime: just tell the time, not the day
 
 ## Value:
 String value with readable date and time.
 """
 function readableDateTime(datetime::AbstractString; lang = LANG,
-                          wholeDay = false, onlyDay = false)
+                          wholeDay=false, onlyDay=false, onlyTime=false)
 
     # remove time zone and make DateTime object:
     #
@@ -71,18 +72,20 @@ function readableDateTime(datetime::AbstractString; lang = LANG,
 
     # make date String:
     #
-    return readableDateTime(d, lang = lang, wholeDay = wholeDay, onlyDay = onlyDay)
+    return readableDateTime(d, lang=lang,
+                            wholeDay=wholeDay, onlyDay=onlyDay, onlyTime=onlyTime)
 end
 
 
 function readableDate(datetime::Date; lang = LANG)
 
-    return readableDateTime(Dates.DateTime(datetime), lang = lang, wholeDay = false, onlyDay = true)
+    return readableDateTime(Dates.DateTime(datetime), lang = lang,
+                            wholeDay=false, onlyDay=true)
 end
 
 
 function readableDateTime(datetime::DateTime; lang = LANG,
-            wholeDay = false, onlyDay = false)
+            wholeDay = false, onlyDay = false, onlyTime = false)
 
     # set locale:
     #
@@ -96,11 +99,15 @@ function readableDateTime(datetime::DateTime; lang = LANG,
         locale = "english"
     end
 
-    dname = Dates.dayname(datetime, locale = locale)
-    d =  Dates.dayofmonth(datetime)
-    mname = Dates.monthname(datetime, locale = locale)
-    y =  Dates.year(datetime)
-    textDate = "$dname, $d. $mname $y"
+    if onlyTime
+        textDate = ""
+    else
+        dname = Dates.dayname(datetime, locale = locale)
+        d =  Dates.dayofmonth(datetime)
+        mname = Dates.monthname(datetime, locale = locale)
+        y =  Dates.year(datetime)
+        textDate = "$dname, $d. $mname $y"
+    end
 
     if onlyDay
         textTime = ""
