@@ -124,17 +124,17 @@ function readableDateTime(datetime::DateTime; lang = LANG,
         m = Dates.minute(datetime)
 
         if locale == "german"
-            textTime = "um $h Uhr $m"
+            textTime = "$h Uhr $m"
         elseif locale == "french"
-            textTime = "à $h heures et $m minutes"
+            textTime = "$h heures et $m minutes"
         else
             if m == 0
-                textTime = """at $h o'clock"""
+                textTime = """$h o'clock"""
             else
-                textTime = "at $h:$m"
+                textTime = "$h:$m"
             end
         end
     end
 
-    return "$textDate $textTime"
+    return "$textDate, $textTime"
 end
