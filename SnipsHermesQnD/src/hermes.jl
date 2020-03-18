@@ -513,3 +513,49 @@ function isValidOrEnd(param; errorMsg)
         return true
     end
 end
+
+
+"""
+    function publishHotwordOn(siteId)
+
+Publish a hotword-on topic for the siteId.
+
+## Arguments:
+* siteId: mandatory argument siteId must be given as String (no default)
+"""
+function publishHotwordOn(siteId)
+
+    publishHotwordOnOff(:on, siteId)
+end
+
+
+
+"""
+    function publishHotwordOff(siteId)
+
+Publish a hotword-off topic for the siteId.
+
+## Arguments:
+* siteId: mandatory argument siteId must be given as String (no default)
+"""
+function publishHotwordOff(siteId)
+
+    publishHotwordOnOff(:off, siteId)
+end
+
+
+
+
+function publishHotwordOnOff(onoff, siteId)
+
+    if onoff == :off
+        topic = "hermes/hotword/toggleOn"
+    else
+        topic = "hermes/hotword/toggleOff"
+    end
+
+    payload = Dict(:siteId=>siteId,
+                   :sessionId=>"no_session")
+
+    publishMQTT(topic, payload)
+end

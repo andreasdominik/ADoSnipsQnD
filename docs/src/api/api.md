@@ -10,6 +10,8 @@ subscribe2Topics
 publishStartSessionAction
 publishStartSessionNotification
 publishEndSession
+publishHotwordOn
+publishHotwordOff
 ```
 
 
