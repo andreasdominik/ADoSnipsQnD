@@ -102,6 +102,7 @@ If name is of type `Symbol`, it is treated as key in the
 Dirctionary of parameter values.
 If name is an `AbstractString`, the prefix is added if a
 prefix is defined (as `<prefix>:<name>`).
+'getConfig()' returns ''nothing if something is wrong.
 """
 function getConfig(name; multiple = false, onePrefix = nothing)
 
