@@ -131,8 +131,9 @@ function readTimeFromSlot(payload, slotName)
 
     # fix timezone in slot:
     #
+    printDebug("Raw timeStr in readTimeFromSlot(): $timeStr")
     timeStr = replace(timeStr, r" \+\d\d:\d\d$"=>"")
-    printDebug("Correctes timeStr in readTimeFromSlot(): $timeStr")
+    printDebug("Corrected timeStr in readTimeFromSlot(): $timeStr")
 
     try
         # dateTime = Dates.DateTime(timeStr, dateFormat)
