@@ -10,7 +10,7 @@ developer = "andreasdominik"
 # slot_types = ["yes_or_no_type"]     # predefined types need not to be declared:
 #                                     # any/date/time/datetime/currency/...
 slots = ["room", "TV_channel", "on_or_off", "device", "yes_or_no"]
-intents = ["ADoSnipsOnOffDE", "ADoSnipsYesNoDE"]
+intents = ["ADoSnipsOnOff", "ADoSnipsYesNo"]
 
 
 # define slots:
@@ -88,7 +88,7 @@ slot_type = "ListOfValues"
 # define phrases for intent recognition:
 # exact, regex, part
 #
-[ADoSnipsOnOffDE]
+[ADoSnipsOnOff]
 disable_on_start = false
 
 tv = "partial: <<Bitte|>> den Fernseher <<im|mit|im Programm>> <<TV_channel>> <<on_or_off>> <<bitte|>>"
@@ -99,7 +99,7 @@ room = "exact: <<bitte|>> <<schalte|mach>> <<bitte|>> <<den|die|das|>> <<device>
 
 media = "partial: öffne <<bitte|>> <<die|den|das>> <<device>> <<bitte|>>"
 
-[ADoSnipsYesNoDE]
+[ADoSnipsYesNo]
 disable_on_start = true
 
 # lazy = "regex: \\s{1,}<<yes_or_no>>\\s{1,}"

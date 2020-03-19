@@ -29,16 +29,5 @@ INI_NAMES = :on_off_devices
 #
 # link between actions and intents:
 #
-# language settings:
-# 1) set LANG to "en", "de", "fr", etc.
-# 2) link the Dict with messages to the version with
-#    desired language as defined in languages.jl:
-#
-if LANG == "de"
-    Snips.registerIntentAction("ADoSnipsOnOffDE", ignoreDevice)
-    TEXTS = TEXTS_DE
-else
-    Snips.registerIntentAction("ADoSnipsOnOffEN", ignoreDevice)
-    TEXTS = TEXTS_EN
-end
-    Snips.registerTriggerAction("ADoSnipsScheduler", schedulerAction)
+Snips.registerIntentAction("ADoSnipsOnOff", ignoreDevice)
+Snips.registerTriggerAction("ADoSnipsScheduler", schedulerAction)

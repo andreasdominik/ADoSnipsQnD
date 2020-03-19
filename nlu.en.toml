@@ -92,15 +92,15 @@ slot_type = "ListOfValues"
 # define phrases for intent recognition:
 # exact, regex, part
 #
-[ADoSnipsOnOffDE]
+[ADoSnipsOnOff]
 disable_on_start = false
 
 tv = "partial: <<please|>> <<on_or_off>> the TV <<>> <<>> <<TV_channel>> <<please|>>"
 
 any = "partial: <<please|>> <<on_or_off>> <<the|>> <<devive>> <<please|>>"
-room = "exact: <<please|>> <<on_or_off>> <<the|>> <<devive>> in the <<room>> <<please|>>
+room = "exact: <<please|>> <<on_or_off>> <<the|>> <<devive>> in the <<room>> <<please|>>"
 
-[ADoSnipsYesNoDE]
+[ADoSnipsYesNo]
 disable_on_start = true
 
 # lazy = "regex: \\s{1,}<<yes_or_no>>\\s{1,}"
