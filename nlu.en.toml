@@ -32,17 +32,6 @@ slot_type = "ListOfValues"
 slot_type = "ListOfValues"
 
         [TV_channel.synonyms]
-        "Servus" = ["Servus TV", "Servus"]
-        "One" = "One"
-        "BR" = ["Bayern 3", "Bayern", "BR 3", "BR3", "BR"]
-        "MDR" = ["MDR 3", "MDR"]
-        "SWR" = ["SWR 3", "SWR", "Südwest 3", "Südwestfunk"]
-        "HR" = ["HR 3", "Hessen 3", "Hessen", "HR"]
-        "NDR" = ["NDR 3", "NDR", "Norddeutscher Rundfunk"]
-        "Arte" = "Arte"
-        "ZDF" = ["Das Zweite", "Zweite", "zweite.? Programm", "zweiten", "2"]
-        "ARD" = ["Das Erste", "Erste", "ersten Programm", "erste Programm",
-                 "Ersten"]
         "Channel_4" = "channel 4"
         "BBC_1" = ["BBC 1", "BBC One"]
         "BBC_2" = ["BBC 2", "BBC Two"]

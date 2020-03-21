@@ -47,7 +47,7 @@ function getLanguage()
        !isempty(SUSI_TOML["assistant"]["language"])
         language = SUSI_TOML["assistant"]["language"]
     else
-        language = "en"
+        language = DEFAULT_LANG
     end
     return language[1:2]
 end

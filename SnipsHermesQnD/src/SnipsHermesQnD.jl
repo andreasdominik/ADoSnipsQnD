@@ -31,18 +31,21 @@ CURRENT_INTENT = "none"
 CURRENT_APP_DIR = ""
 CURRENT_APP_NAME = "QnD framework"
 
-# read susi config:
-#
-SUSI_TOML = parseSusiConfig()
 
 # set default language and texts to en
 #
 DEFAULT_LANG = "en"
-LANG = DEFAULT_LANG
-TEXTS = TEXTS_EN
-setLanguage(LANG)
+# LANG = DEFAULT_LANG
+# TEXTS = TEXTS_EN
+# setLanguage(LANG)
 LANGUAGE_TEXTS = Dict{Any, Any}()   # one entry for every language, e.g. "en", "de", ...
 INI_MATCH = "must_include"
+
+# read susi config:
+#
+SUSI_TOML = parseSusiConfig()
+LANG = getLanguage()
+setLanguage(LANG)
 
 # List of intents to listen to:
 # (intent, developer, complete topic, module, skill-action)
