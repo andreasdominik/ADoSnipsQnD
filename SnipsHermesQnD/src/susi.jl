@@ -44,7 +44,7 @@ Return a the language as 2-letter-code as defined in
 function getSusiLanguage()
 
     language = DEFAULT_LANG
-    
+
     if haskey(SUSI_TOML, "assistant") && haskey(SUSI_TOML["assistant"], "language") &&
        !isempty(SUSI_TOML["assistant"]["language"])
         language = SUSI_TOML["assistant"]["language"]
@@ -59,5 +59,6 @@ Return a the framework language as 2-letter-code.
 """
 function getLanguage()
 
-    return global LANG
+    global LANG
+    return LANG
 end

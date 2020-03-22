@@ -282,11 +282,9 @@ if LANG == "de"
 elseif LANG == "en"
     Snips.registerIntentAction("myNewIntentEN", myNewSkillfun)
     Snips.registerIntentAction("myNextIntentEN", myNextSkillfun)
-    TEXTS = TEXTS_EN
 else
     Snips.registerIntentAction("myNewIntentEN", myNewSkillfun)
     Snips.registerIntentAction("myNextIntentEN", myNextSkillfun)
-    TEXTS = TEXTS_EN
 end
 ```
 
