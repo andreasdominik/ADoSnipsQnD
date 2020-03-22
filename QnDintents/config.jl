@@ -6,7 +6,7 @@
 # commands without need of a hotword in between:
 #
 lang = Snips.getConfig(:language)
-const LANG = (lang != nothing) ? lang : "de"
+LANG = (lang != nothing) ? lang : "de"
 
 const CONTINUE_WO_HOTWORD = false
 const DEVELOPER_NAME = "andreasdominik"

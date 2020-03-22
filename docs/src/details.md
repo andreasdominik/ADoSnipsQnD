@@ -272,20 +272,7 @@ The `config.jl` of the template app shows how switching languages is
 possible within SnipsHermesQnD:
 
 ```Julia
-const LANG = Snips.getIniLanguage() != nothing ? Snips.getIniLanguage() : "en"
-
-...
-
-if LANG == "de"
-    Snips.registerIntentAction("myNewIntentDE", myNewSkillfun)
-    Snips.registerIntentAction("myNextIntentDE", myNextSkillfun)
-elseif LANG == "en"
-    Snips.registerIntentAction("myNewIntentEN", myNewSkillfun)
-    Snips.registerIntentAction("myNextIntentEN", myNextSkillfun)
-else
-    Snips.registerIntentAction("myNewIntentEN", myNewSkillfun)
-    Snips.registerIntentAction("myNextIntentEN", myNextSkillfun)
-end
+TODO
 ```
 
 The first line tries to read the language from `config.ini` and sets it
