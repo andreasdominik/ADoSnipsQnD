@@ -35,7 +35,8 @@ CURRENT_APP_NAME = "QnD framework"
 # set default language and texts to en
 #
 const DEFAULT_LANG = "en"
-LANGUAGE_TEXTS = Dict{Any, Any}()   # one entry for every language, e.g. "en", "de", ...
+LANGUAGE_TEXTS = Dict{Any, Any}()   # one entry for every language
+                                    # with a Tuple as key (e.g. ("en", :ok) ...
 INI_MATCH = "must_include"
 
 # read susi config:

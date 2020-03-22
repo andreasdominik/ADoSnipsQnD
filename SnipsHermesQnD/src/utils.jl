@@ -243,12 +243,6 @@ function setLanguage(lang)
     else
         global LANG = DEFAULT_LANG
     end
-
-    # if LANG == "de"
-    #     TEXTS = TEXTS_DE
-    # else
-    #     TEXTS = TEXTS_EN
-    # end
 end
 
 """

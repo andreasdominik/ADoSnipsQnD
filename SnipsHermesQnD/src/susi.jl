@@ -59,6 +59,5 @@ Return a the framework language as 2-letter-code.
 """
 function getLanguage()
 
-    global LANG
     return LANG
 end
