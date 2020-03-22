@@ -27,13 +27,13 @@ function ignoreDevice(topic, payload)
     #
     if !(device isa AbstractString)
         Snips.printLog("no device: ignored and session ended.")
-        Snips.publishEndSession("$(TEXTS[:not_handled])")
+        Snips.publishEndSession(:not_handled)
         return true     # no hotword needed for next command
 
     elseif !Snips.matchConfig(INI_NAMES, device)
         # Snips.printDebug("Device: $device, List: $(Snips.getConfig(INI_NAMES))")
         Snips.printLog("device $device ignored and session ended.")
-        Snips.publishEndSession("$(TEXTS[:not_handled]) $device")
+        Snips.publishEndSession("$(Snips.langText(:not_handled)) $device")
         return true     # no hotword needed for next command
     else
         # just ignore and let another app deal with the session...

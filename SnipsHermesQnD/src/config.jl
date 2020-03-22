@@ -184,7 +184,7 @@ end
 
 
 """
-    isConfigValid(name; regex = r".", elem = 1, errorMsg = TEXTS[:error_config])
+    isConfigValid(name; regex = r".", elem = 1, errorMsg = ERRORS_EN[:error_config])
 
 Return `true`, if the parameter `name` have been read correctly from the
 `config.ini` file and `false` otherwise. By default "correct" means: it is aString with
@@ -196,7 +196,7 @@ length > 0. For a meire specific test, a regex can be provided.
 * elem: element to be tested, if the parameter returns an array
 * errorMsg: alternative error message.
 """
-function isConfigValid(name; regex = r".", elem = 1, errorMsg = TEXTS[:error_config])
+function isConfigValid(name; regex = r".", elem = 1, errorMsg = ERRORS_EN[:error_config])
 
     name = addPrefix(name)
     if !isInConfig(name)

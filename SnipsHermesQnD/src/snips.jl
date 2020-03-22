@@ -98,7 +98,7 @@ function tryParseJSONfile(fname; quiet = false)
     try
         json = JSON.parsefile( fname)
     catch
-        msg = TEXTS[:error_json]
+        msg = ERRORS_EN[:error_json]
         if ! quiet
             publishSay(msg)
         end

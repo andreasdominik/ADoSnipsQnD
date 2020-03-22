@@ -147,7 +147,7 @@ end
 
 
 """
-    tryrun(cmd; wait = true, errorMsg = TEXTS[:error_script], silent = flase)
+    tryrun(cmd; wait = true, errorMsg = ERRORS_EN[:error_script], silent = flase)
 
 Try to run an external command and returns true if successful
 or false if not.
@@ -159,7 +159,7 @@ or false if not.
             error message.
 * silent: if `true`, no error is published, if something went wrong.
 """
-function tryrun(cmd; wait = true, errorMsg = TEXTS_EN[:error_script], silent = false)
+function tryrun(cmd; wait = true, errorMsg = ERRORS_EN[:error_script], silent = false)
 
     errorMsg = langText(errorMsg)
     result = true
@@ -244,11 +244,11 @@ function setLanguage(lang)
         global LANG = DEFAULT_LANG
     end
 
-    if LANG == "de"
-        TEXTS = TEXTS_DE
-    else
-        TEXTS = TEXTS_EN
-    end
+    # if LANG == "de"
+    #     TEXTS = TEXTS_DE
+    # else
+    #     TEXTS = TEXTS_EN
+    # end
 end
 
 """
