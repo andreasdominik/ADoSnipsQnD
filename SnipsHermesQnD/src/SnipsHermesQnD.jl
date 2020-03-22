@@ -34,18 +34,14 @@ CURRENT_APP_NAME = "QnD framework"
 
 # set default language and texts to en
 #
-DEFAULT_LANG = "en"
-# LANG = DEFAULT_LANG
-# TEXTS = TEXTS_EN
-# setLanguage(LANG)
+const DEFAULT_LANG = "en"
 LANGUAGE_TEXTS = Dict{Any, Any}()   # one entry for every language, e.g. "en", "de", ...
 INI_MATCH = "must_include"
 
 # read susi config:
 #
-SUSI_TOML = parseSusiConfig()
-LANG = getLanguage()
-setLanguage(LANG)
+const SUSI_TOML = parseSusiConfig()
+LANG = getSusiLanguage()
 
 # List of intents to listen to:
 # (intent, developer, complete topic, module, skill-action)
@@ -64,7 +60,7 @@ export subscribeMQTT, readOneMQTT, publishMQTT, publishMQTTfile,
        getIntentActions, setIntentActions,
        askYesOrNoOrUnknown, askYesOrNo,
        publishSay,
-       setLanguage, addText, langText,
+       addText, langText,
        setSiteId, getSiteId,
        setSessionId, getSessionId,
        setDeveloperName, getDeveloperName, setModule, getModule,
@@ -85,6 +81,6 @@ export subscribeMQTT, readOneMQTT, publishMQTT, publishMQTTfile,
        schedulerAddAction, schedulerAddActions, schedulerMakeAction,
        schedulerDeleteAll, schedulerDeleteTopic, schedulerDeleteOrigin,
        getOpenWeather,
-       getSusiToml, getLanguage
+       getLanguage, setLanguage
 
 end # module

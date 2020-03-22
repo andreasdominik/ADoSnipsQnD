@@ -234,7 +234,7 @@ This will affect publishSay() and all system messages.
 Log-messages will always be in English.
 
 ## Arguments
-* lang: one of `"en"` or `"de"`.
+* lang: one of `"en"` or `"de"` or any other.
 """
 function setLanguage(lang)
 
@@ -380,7 +380,7 @@ function printLog(s)
         s = "log-message is nothing"
     end
     logtime = Dates.format(Dates.now(), "e, dd u yyyy HH:MM:SS")
-    prefix =getAppName()
+    prefix = getAppName()
     println("***> $logtime [$prefix]: $s")
     flush(stdout)
 end
