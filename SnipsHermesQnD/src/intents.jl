@@ -118,7 +118,6 @@ function publishSystemTrigger(topic, trigger; develName = CURRENT_DEVEL_NAME)
 
     (topic, payload) = makeSystemTrigger(topic, trigger, develName = develName)
 
-
     printDebug("PUBLISH payload: $payload")
     publishMQTT(topic, payload)
 end

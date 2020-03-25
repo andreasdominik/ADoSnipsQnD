@@ -173,6 +173,10 @@ function publishEndSession(text = nothing, sessionId = CURRENT_SESSION_ID)
         payload[:text] = text
     end
     publishMQTT("hermes/dialogueManager/endSession", payload)
+
+    # wait for end session:
+    #
+    (topic, payload) = readOneMQTT("hermes/dialogueManager/sessionEnded")
 end
 
 
