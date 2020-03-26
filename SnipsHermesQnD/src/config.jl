@@ -188,7 +188,7 @@ end
 
 Return `true`, if the parameter `name` have been read correctly from the
 `config.ini` file and `false` otherwise. By default "correct" means: it is aString with
-length > 0. For a meire specific test, a regex can be provided.
+length > 0. For a moore specific test, a regex can be provided.
 
 ## Arguments:
 * name: name of parameter as AbstractString or Symbol
