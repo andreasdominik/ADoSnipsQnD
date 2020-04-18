@@ -7,7 +7,8 @@ using Pkg
 TOML = Pkg.TOML
 
 const SUSI_CONFIG = "/etc/susi.toml"
-
+const TOPIC_NOTIFICATION_ON = "hermes/feedback/sound/toggleOn"
+const TOPIC_NOTIFICATION_OFF = "hermes/feedback/sound/toggleOff"
 
 function parseSusiConfig(tomlFile=SUSI_CONFIG)
 

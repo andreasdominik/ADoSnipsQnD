@@ -115,6 +115,7 @@ function askYesOrNoOrUnknown(question)
     payload = Dict()
 
     configureIntent(intentListen, true)
+    Snips.publishMQTT(TOPIC_NOTIFICATION_OFF, Dict(:siteId => CURRENT_SITE_ID))
 
     question = langText(question)
     publishContinueSession(question, sessionId = CURRENT_SESSION_ID,
@@ -127,6 +128,10 @@ function askYesOrNoOrUnknown(question)
                             moreTopics = topicsListen)
 
     configureIntent(intentListen, false)
+    # TODO_: check path to toml setting
+    if SUSI_TOML["record"]["notification"]
+        Snips.publishMQTT(TOPIC_NOTIFICATION_ON, Dict(:siteId => CURRENT_SITE_ID))
+    end
 
     if isInSlot(payload, slotName, "YES")
         return :yes
