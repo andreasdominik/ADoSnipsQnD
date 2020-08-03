@@ -73,13 +73,10 @@ Return a Dict with weather information from openweather.org.
 function getOpenWeather()
 
     api = getConfig(INI_WEATHER_API, onePrefix="openweather")
-    printDebug("api = $api")
     city = getConfig(INI_WEATHER_ID, onePrefix="openweather")
-    printDebug("city = $city")
 
     url = "$OPEN_WEATHER_URL?id=$city&APPID=$api"
-    printDebug("url = $url")
-
+    printDebug("openweather URL = $url")
     response = read(`curl $url`, String)
 
     printLog("Weather from OpenWeatherMap: $response")
@@ -123,7 +120,6 @@ function getOpenWeather()
         end
     end
 
-    printDebug("weater end: $weather")
     return weather
 end
 
@@ -144,14 +140,15 @@ function getWeatherApi()
         printLog("Wrong location in config.ini for weatherAPI: lon,lat expected!")
         return Dict(:service => "no_service")
     end
-    lon = location[1]
-    lat = location[2]
-    printDebug("location = $lon, $lat")
+    lat = location[1]
+    lon = location[2]
+    printDebug("location = $lat, $lon")
 
     url = "$WEATHER_API_URL?key=$api&q=$lat,$lon"
     printDebug("url = $url")
 
-    response = read(`curl $url`, String)
+    cmd = `curl $url`
+    response = read(cmd, String)
     Snips.printLog("Weather from WeatherApi: $response")
     weatherApi = tryParseJSON(response)
 
@@ -172,8 +169,9 @@ function getWeatherApi()
     url = "$WEATHER_AST_URL?key=$api&q=$lat,$lon"
     printDebug("url = $url")
 
-    response = read(`curl $url`, String)
-    Snips.printLog("Astronomy from WeatherApi: $response")
+    cmd = `curl $url`
+    response = read(cmd, String)
+    printLog("Astronomy from WeatherApi: $response")
     weatherApi = tryParseJSON(response)
 
     if !(weatherApi isa Dict)
