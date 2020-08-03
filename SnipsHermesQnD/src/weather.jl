@@ -123,6 +123,7 @@ function getOpenWeather()
         end
     end
 
+    printDebug("weater end: $weather")
     return weather
 end
 
