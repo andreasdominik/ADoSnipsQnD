@@ -36,7 +36,7 @@ and the id or coordinates of a city.
 
 ## Value:
 The return value has the elements:
-- `:service`: name of the weather service or "no_service"
+- `:service`: name of the weather service
 - `:pressure`: pressure in hPa
 - `:temperature`: temperature in degrees Celsius
 - `:windspeed`: wind speed in meter/sec
@@ -47,6 +47,8 @@ The return value has the elements:
 - `:rain3h`: rain in mm in the last 1 or 3 hours
 - `:sunrise`
 - `:sunset`: local time of sunrise/sunset as DateTime object
+
+If something went wrong with the API-service, `nothing` is returned.
 """
 function getWeather()
 
@@ -60,7 +62,7 @@ function getWeather()
 
     else
         printLog("Try to get weather information form invalid service $weatherService")
-        return Dict(:service => "no_service")
+        return nothing
     end
 end
 
@@ -72,52 +74,56 @@ Return a Dict with weather information from openweather.org.
 """
 function getOpenWeather()
 
-    api = getConfig(INI_WEATHER_API, onePrefix="openweather")
-    city = getConfig(INI_WEATHER_ID, onePrefix="openweather")
+    try
+        api = getConfig(INI_WEATHER_API, onePrefix="openweather")
+        city = getConfig(INI_WEATHER_ID, onePrefix="openweather")
 
-    url = "$OPEN_WEATHER_URL?id=$city&APPID=$api"
-    printDebug("openweather URL = $url")
-    response = read(`curl $url`, String)
+        url = "$OPEN_WEATHER_URL?id=$city&APPID=$api"
+        printDebug("openweather URL = $url")
+        response = read(`curl $url`, String)
 
-    printLog("Weather from OpenWeatherMap: $response")
-    openWeather = tryParseJSON(response)
+        printLog("Weather from OpenWeatherMap: $response")
+        openWeather = tryParseJSON(response)
 
-    if !(openWeather isa Dict)
-        return nothing
-    end
-
-    weather = Dict()
-    weather[:service] = "OpenWeatherMap"
-    weather[:temperature] = getFromKeys(openWeather, :main, :temp)
-    weather[:windspeed] = getFromKeys( openWeather, :wind, :speed)
-    weather[:winddir] = getFromKeys( openWeather, :wind, :deg)
-    weather[:clouds] = getFromKeys( openWeather, :clouds, :all)
-    weather[:rain1h] = getFromKeys( openWeather, :rain, Symbol("1h"))
-    if weather[:rain1h] == nothing
-        weather[:rain1h] = 0.0
-    end
-    weather[:rain3h] = getFromKeys( openWeather, :rain, Symbol("3h"))
-    if weather[:rain3h] == nothing
-        weather[:rain3h] = 0.0
-    end
-    weather[:rain] = 0.0
-
-    timeEpoch = getFromKeys(openWeather, :sys, :sunrise)
-    if timeEpoch != nothing
-        weather[:sunrise] = unix2datetime(timeEpoch)
-
-        if (weather[:sunrise] isa DateTime) && haskey(openWeather, :timezone)
-            weather[:sunrise] += Dates.Second(openWeather[:timezone])
+        if !(openWeather isa Dict)
+            return nothing
         end
-    end
 
-    timeEpoch = getFromKeys(openWeather, :sys, :sunset)
-    if timeEpoch != nothing
-        weather[:sunset] = unix2datetime(timeEpoch)
-
-        if (weather[:sunset] isa DateTime) && haskey(openWeather, :timezone)
-            weather[:sunset] += Dates.Second(openWeather[:timezone])
+        weather = Dict()
+        weather[:service] = "OpenWeatherMap"
+        weather[:temperature] = getFromKeys(openWeather, :main, :temp)
+        weather[:windspeed] = getFromKeys( openWeather, :wind, :speed)
+        weather[:winddir] = getFromKeys( openWeather, :wind, :deg)
+        weather[:clouds] = getFromKeys( openWeather, :clouds, :all)
+        weather[:rain1h] = getFromKeys( openWeather, :rain, Symbol("1h"))
+        if weather[:rain1h] == nothing
+            weather[:rain1h] = 0.0
         end
+        weather[:rain3h] = getFromKeys( openWeather, :rain, Symbol("3h"))
+        if weather[:rain3h] == nothing
+            weather[:rain3h] = 0.0
+        end
+        weather[:rain] = 0.0
+
+        timeEpoch = getFromKeys(openWeather, :sys, :sunrise)
+        if timeEpoch != nothing
+            weather[:sunrise] = unix2datetime(timeEpoch)
+
+            if (weather[:sunrise] isa DateTime) && haskey(openWeather, :timezone)
+                weather[:sunrise] += Dates.Second(openWeather[:timezone])
+            end
+        end
+
+        timeEpoch = getFromKeys(openWeather, :sys, :sunset)
+        if timeEpoch != nothing
+            weather[:sunset] = unix2datetime(timeEpoch)
+
+            if (weather[:sunset] isa DateTime) && haskey(openWeather, :timezone)
+                weather[:sunset] += Dates.Second(openWeather[:timezone])
+            end
+        end
+    catch
+        weather = nothing
     end
 
     return weather
@@ -132,66 +138,62 @@ Return a Dict with weather information from weatherapi.com.
 """
 function getWeatherApi()
 
-    api = getConfig(INI_WEATHER_API, onePrefix="weatherapi")
-    printDebug("api = $api")
-    location = getConfig(INI_WEATHER_LOCATION,
-                         multiple=true, onePrefix="weatherapi")
-    if length(location) != 2
-        printLog("Wrong location in config.ini for weatherAPI: lon,lat expected!")
-        return Dict(:service => "no_service")
-    end
-    lat = location[1]
-    lon = location[2]
-    printDebug("location = $lat, $lon")
-
-    url = "$WEATHER_API_URL?key=$api&q=$lat,$lon"
-    printDebug("url = $url")
-
-    cmd = `curl $url`
-    printDebug("cmd = $cmd")
-    response = read(cmd, String)
-    printLog("Weather from WeatherApi: $response")
-    weatherApi = tryParseJSON(response)
-
-    if !(weatherApi isa Dict)
-        return nothing
-    end
-
-    weather = Dict()
-    weather[:service] = "WeatherApi"
-    weather[:temperature] = getFromKeys(weatherApi, :current, :temp_c)
-    weather[:windspeed] = getFromKeys( weatherApi, :current, :wind_kph)
-    weather[:winddir] = getFromKeys( weatherApi, :current, :wind_degree)
-    weather[:clouds] = getFromKeys( weatherApi, :current, :cloud)
-    weather[:rain] = getFromKeys( weatherApi, :current, :precip_mm)
-    weather[:rain1h] = 0.0
-    weather[:rain3h] = 0.0
-
-    url = "$WEATHER_AST_URL?key=$api&q=$lat,$lon"
-    printDebug("url = $url")
-
-    cmd = `curl $url`
-    printDebug("cmd: $cmd")
-    response = read(cmd, String)
-    printLog("Astronomy from WeatherApi: $response")
-    weatherApi = tryParseJSON(response)
-
-    if !(weatherApi isa Dict)
-        return nothing
-    end
-
-    timestr = getFromKeys(weatherApi, :astronomy, :astro, :sunrise)
     try
+        api = getConfig(INI_WEATHER_API, onePrefix="weatherapi")
+        printDebug("api = $api")
+        location = getConfig(INI_WEATHER_LOCATION,
+                             multiple=true, onePrefix="weatherapi")
+        if length(location) != 2
+            printLog("Wrong location in config.ini for weatherAPI: lon,lat expected!")
+            return Dict(:service => "no_service")
+        end
+        lat = location[1]
+        lon = location[2]
+        printDebug("location = $lat, $lon")
+
+        url = "$WEATHER_API_URL?key=$api&q=$lat,$lon"
+        printDebug("url = $url")
+
+        cmd = `curl $url`
+        printDebug("cmd = $cmd")
+        response = read(cmd, String)
+        printLog("Weather from WeatherApi: $response")
+        weatherApi = tryParseJSON(response)
+
+        if !(weatherApi isa Dict)
+            return nothing
+        end
+
+        weather = Dict()
+        weather[:service] = "WeatherApi"
+        weather[:temperature] = getFromKeys(weatherApi, :current, :temp_c)
+        weather[:windspeed] = getFromKeys( weatherApi, :current, :wind_kph)
+        weather[:winddir] = getFromKeys( weatherApi, :current, :wind_degree)
+        weather[:clouds] = getFromKeys( weatherApi, :current, :cloud)
+        weather[:rain] = getFromKeys( weatherApi, :current, :precip_mm)
+        weather[:rain1h] = 0.0
+        weather[:rain3h] = 0.0
+
+        url = "$WEATHER_AST_URL?key=$api&q=$lat,$lon"
+        printDebug("url = $url")
+
+        cmd = `curl $url`
+        printDebug("cmd: $cmd")
+        response = read(cmd, String)
+        printLog("Astronomy from WeatherApi: $response")
+        weatherApi = tryParseJSON(response)
+
+        if !(weatherApi isa Dict)
+            return nothing
+        end
+
+        timestr = getFromKeys(weatherApi, :astronomy, :astro, :sunrise)
         weather[:sunrise] = Time(timestr, "HH:MM pp")
-    catch
-        weather[:sunrise] = nothing
-    end
 
-    timestr = getFromKeys(weatherApi, :astronomy, :astro, :sunset)
-    try
+        timestr = getFromKeys(weatherApi, :astronomy, :astro, :sunset)
         weather[:sunset] = Time(timestr, "HH:MM pp")
     catch
-        weather[:sunset] = nothing
+        weather = nothing
     end
     return weather
 end
