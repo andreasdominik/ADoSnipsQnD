@@ -148,6 +148,7 @@ function getWeatherApi()
     printDebug("url = $url")
 
     cmd = `curl $url`
+    printDebug("cmd = $cmd")
     response = read(cmd, String)
     Snips.printLog("Weather from WeatherApi: $response")
     weatherApi = tryParseJSON(response)
@@ -170,6 +171,7 @@ function getWeatherApi()
     printDebug("url = $url")
 
     cmd = `curl $url`
+    printDebug("cmd: $cmd")
     response = read(cmd, String)
     printLog("Astronomy from WeatherApi: $response")
     weatherApi = tryParseJSON(response)
