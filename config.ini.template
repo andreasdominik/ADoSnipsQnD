@@ -12,8 +12,14 @@ database_file=home.json
 [secret]
 application_data_dir=/opt/Susi/ApplicationData
 
-# API key and city-ID for openWeather (here: example Berlin, DE)
+# API key and city-ID for openWeather and weatherAPI
+# (here: example Berlin, DE)
 # if not defined, no weather data will be downloaded:
 #
-openweather_api_key=insert_valid_API-key_here
-openweather_city_id=6350865
+weather_service=openweather
+openweather:api_key=insert_valid_API-key_here
+openweather:city_id=6350865
+
+#weather_service=weatherapi
+weatherapi:api_key=insert_valid_API-key_here
+weatherapi:location=52.52,13.40
