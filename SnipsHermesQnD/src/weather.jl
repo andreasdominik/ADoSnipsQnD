@@ -51,6 +51,7 @@ The return value has the elements:
 function getWeather()
 
     weatherService = getConfig(INI_WEATHER_SERVICE)
+
     if weatherService == "openweather"
         return getOpenWeather()
 
