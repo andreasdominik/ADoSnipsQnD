@@ -138,7 +138,7 @@ function getWeatherApi()
     location = getConfig(INI_WEATHER_LOCATION, multiple=true, prefix="weatherapi")
     if length(location) != 2
         printLog("Wrong location in config.ini for weatherAPI: lon,lat expected!")
-        return Dict(:service="no_service")
+        return Dict(:service => "no_service")
     end
     lon = location[1]
     lat = location[2]
