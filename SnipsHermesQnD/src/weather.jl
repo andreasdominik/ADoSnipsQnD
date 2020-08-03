@@ -55,11 +55,11 @@ function getWeather()
     if weatherService == "openweather"
         return getOpenWeather()
 
-    elseif weatherservice == "weatherapi"
+    elseif weatherService == "weatherapi"
         return getWeatherApi()
 
     else
-        printLog("Try to get wetaher information form invalid service $weatherService")
+        printLog("Try to get weather information form invalid service $weatherService")
         return Dict(:service => "no_service")
     end
 end
@@ -72,17 +72,17 @@ Return a Dict with weather information from openweather.org.
 """
 function getOpenWeather()
 
-    api = getConfig(INI_WEATHER_API, prefix="openweather")
+    api = getConfig(INI_WEATHER_API, onePrefix="openweather")
     printDebug("api = $api")
-    city = getConfig(INI_WEATHER_ID, prefix="openweather")
+    city = getConfig(INI_WEATHER_ID, onePrefix="openweather")
     printDebug("city = $city")
 
-    url = "http://$WEATHER_URL?id=$city&APPID=$api"
+    url = "$OPEN_WEATHER_URL?id=$city&APPID=$api"
     printDebug("url = $url")
 
     response = read(`curl $url`, String)
 
-    Snips.printLog("Weather from OpenWeatherMap: $response")
+    printLog("Weather from OpenWeatherMap: $response")
     openWeather = tryParseJSON(response)
 
     if !(openWeather isa Dict)
@@ -105,26 +105,27 @@ function getOpenWeather()
     end
     weather[:rain] = 0.0
 
-    timestr = getFromKeys(openWeather, :sys, :sunrise)
-    if timestr != nothing
-        weather[:sunrise] = unix2datetime(timestr)
+    timeEpoch = getFromKeys(openWeather, :sys, :sunrise)
+    if timeEpoch != nothing
+        weather[:sunrise] = unix2datetime(timeEpoch)
 
-        if (sunrise isa DateTime) && haskey(openWeather, :timezone)
+        if (weather[:sunrise] isa DateTime) && haskey(openWeather, :timezone)
             weather[:sunrise] += Dates.Second(openWeather[:timezone])
         end
     end
 
-    timestr = getFromKeys(openWeather, :sys, :sunset)
-    if timestr != nothing
-        weather[:sunset] = unix2datetime(timestr)
+    timeEpoch = getFromKeys(openWeather, :sys, :sunset)
+    if timeEpoch != nothing
+        weather[:sunset] = unix2datetime(timeEpoch)
 
-        if (sunset isa DateTime) && haskey(openWeather, :timezone)
+        if (weather[:sunset] isa DateTime) && haskey(openWeather, :timezone)
             weather[:sunset] += Dates.Second(openWeather[:timezone])
         end
     end
 
     return weather
 end
+
 
 
 """
@@ -134,9 +135,10 @@ Return a Dict with weather information from weatherapi.com.
 """
 function getWeatherApi()
 
-    api = getConfig(INI_WEATHER_API, prefix="weatherapi")
+    api = getConfig(INI_WEATHER_API, onePrefix="weatherapi")
     printDebug("api = $api")
-    location = getConfig(INI_WEATHER_LOCATION, multiple=true, prefix="weatherapi")
+    location = getConfig(INI_WEATHER_LOCATION,
+                         multiple=true, onePrefix="weatherapi")
     if length(location) != 2
         printLog("Wrong location in config.ini for weatherAPI: lon,lat expected!")
         return Dict(:service => "no_service")
