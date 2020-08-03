@@ -188,13 +188,17 @@ function getWeatherApi()
         end
 
         timestr = weatherApi[:astronomy][:astro][:sunrise]
-        weather[:sunrise] = Time(timestr, "HH:MM pp")
+        sunriseTime = Time(timestr, "HH:MM pp")
+        weather[:sunrise] = DateTime(today(), sunriseTime)
 
         timestr = weatherApi[:astronomy][:astro][:sunset]
-        weather[:sunset] = Time(timestr, "HH:MM pp")
+        sunsetTime = Time(timestr, "HH:MM pp")
+        weather[:sunset] = DateTime(today(), sunsetTime)
     catch
         weather = nothing
     end
+
+    printDebug("weatherapi complete: $weather")
     return weather
 end
 
