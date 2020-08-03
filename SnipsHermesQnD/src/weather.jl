@@ -150,7 +150,7 @@ function getWeatherApi()
     cmd = `curl $url`
     printDebug("cmd = $cmd")
     response = read(cmd, String)
-    Snips.printLog("Weather from WeatherApi: $response")
+    printLog("Weather from WeatherApi: $response")
     weatherApi = tryParseJSON(response)
 
     if !(weatherApi isa Dict)
