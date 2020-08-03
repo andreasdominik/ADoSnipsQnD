@@ -138,6 +138,7 @@ Return a Dict with weather information from weatherapi.com.
 """
 function getWeatherApi()
 
+    weather = Dict()
     try
         api = getConfig(INI_WEATHER_API, onePrefix="weatherapi")
         printDebug("api = $api")
@@ -145,7 +146,7 @@ function getWeatherApi()
                              multiple=true, onePrefix="weatherapi")
         if length(location) != 2
             printLog("Wrong location in config.ini for weatherAPI: lon,lat expected!")
-            return Dict(:service => "no_service")
+            return nothing
         end
         lat = location[1]
         lon = location[2]
@@ -164,13 +165,12 @@ function getWeatherApi()
             return nothing
         end
 
-        weather = Dict()
         weather[:service] = "WeatherApi"
-        weather[:temperature] = getFromKeys(weatherApi, :current, :temp_c)
-        weather[:windspeed] = getFromKeys( weatherApi, :current, :wind_kph)
-        weather[:winddir] = getFromKeys( weatherApi, :current, :wind_degree)
-        weather[:clouds] = getFromKeys( weatherApi, :current, :cloud)
-        weather[:rain] = getFromKeys( weatherApi, :current, :precip_mm)
+        weather[:temperature] = weatherApi[:current][:temp_c]
+        weather[:windspeed] = weatherApi[:current][:wind_kph]
+        weather[:winddir] = weatherApi[:current][:wind_degree]
+        weather[:clouds] = weatherApi[:current][:cloud]
+        weather[:rain] = weatherApi[:current][:precip_mm]
         weather[:rain1h] = 0.0
         weather[:rain3h] = 0.0
 
@@ -187,10 +187,10 @@ function getWeatherApi()
             return nothing
         end
 
-        timestr = getFromKeys(weatherApi, :astronomy, :astro, :sunrise)
+        timestr = weatherApi[:astronomy][:astro][:sunrise]
         weather[:sunrise] = Time(timestr, "HH:MM pp")
 
-        timestr = getFromKeys(weatherApi, :astronomy, :astro, :sunset)
+        timestr = weatherApi[:astronomy][:astro][:sunset]
         weather[:sunset] = Time(timestr, "HH:MM pp")
     catch
         weather = nothing
