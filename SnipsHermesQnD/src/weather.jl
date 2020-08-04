@@ -16,7 +16,8 @@ Return a Dict with weather information from openweather.org
 or weatherapi.com.
 The `config.ini`
 of the framework must include the lines to define which
-service to be used and api key and location for the service used.
+service to be used and api key and location for the service used
+(available from openweather.org or weatherapi.com).
 
 ```
 # weather_service=openweather
@@ -26,13 +27,8 @@ openweather:city_id=6350865
 
 weatherapi:api_key=insert_valid_API-key_here
 weatherapi:location=52.52,13.40
-
-weatherapi:api_key=12345abcdef
-weatherapi:location=48.8567,2.3508 # lon,lat is needed
 ```
 
-with a valid app-key (available from openweather.org or weatherapi.com)
-and the id or coordinates of a city.
 
 ## Value:
 The return value has the elements:
