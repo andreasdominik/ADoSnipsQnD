@@ -311,7 +311,7 @@ when developing a skill.
 
 ```@docs
 readableDateTime
-getOpenWeather
+getWeather
 tryrun
 ping
 tryReadTextfile
