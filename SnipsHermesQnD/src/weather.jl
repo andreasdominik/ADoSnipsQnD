@@ -70,6 +70,7 @@ Return a Dict with weather information from openweather.org.
 """
 function getOpenWeather()
 
+    weather = Dict()
     try
         api = getConfig(INI_WEATHER_API, onePrefix="openweather")
         city = getConfig(INI_WEATHER_ID, onePrefix="openweather")
@@ -85,7 +86,6 @@ function getOpenWeather()
             return nothing
         end
 
-        weather = Dict()
         weather[:service] = "OpenWeatherMap"
         weather[:temperature] = getFromKeys(openWeather, :main, :temp)
         weather[:windspeed] = getFromKeys( openWeather, :wind, :speed)
